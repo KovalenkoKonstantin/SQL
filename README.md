@@ -26,15 +26,16 @@ go*/
 -- select * from book;
 -- select *from таблица;
 /*insert into book (title, author, price, amount)
-values ('Мастер и Маргарита','Булгаков М.А.',670.99,3);*/
--- select *from book;
-
-/*insert into book (title, author, price, amount)
+values ('Мастер и Маргарита','Булгаков М.А.',670.99,3);
+insert into book (title, author, price, amount)
 values ('Белая гвардия','Булгаков М.А.',540.50,5);
 insert into book (title, author, price, amount)
 values ('Идиот','Достоевский Ф.М.',460.00,10);
 insert into book (title, author, price, amount)
 values ('Братья Карамазовы','Достоевский Ф.М.',799.01,2);*/
+/*insert into book (title, author, price, amount)
+values ('Стихотворения и поэмы','Есенин С.А.',650.00,15);*/
+-- select *from book;
 -- select *from book;
 -- select author, title, price from book;
 -- SELECT title AS Название, amount FROM book;
@@ -76,9 +77,7 @@ WHERE price < 600;*/
 FROM book
 WHERE price * amount > 4000;*/
 
-/*insert into book (title, author, price, amount)
-values ('Стихотворения и поэмы','Есенин С.А.',650.00,15);
-select *from book;*/
+
 /*select author, title, price
 from book
 where amount<10;*/
@@ -91,3 +90,117 @@ WHERE (author = 'Булгаков М.А.' OR author = 'Есенин С.А.') AND
 /*select title, author, price, amount
 from book
 where ((price<500 or price>600) and price*amount>=5000);*/
+/*SELECT title, amount
+FROM book
+WHERE amount BETWEEN 5 AND 14;*/
+/*SELECT title, amount
+FROM book
+WHERE amount >= 5 AND amount <=14;*/
+/*SELECT title, price
+FROM book
+WHERE author IN ('Булгаков М.А.', 'Достоевский Ф.М.');*/
+/*SELECT title, price
+FROM book
+WHERE author = 'Булгаков М.А.' OR author = 'Достоевский Ф.М.';*/
+/*select title, author
+from book
+where price between 540.50 and 800 and amount in (2, 3, 5, 7);*/
+/*SELECT title, author, price
+FROM book
+ORDER BY title;*/
+/*SELECT title, author, price
+FROM book
+ORDER BY 1;*/
+/*SELECT author, title, amount AS Количество
+FROM book
+WHERE price < 750
+ORDER BY author, amount DESC;*/
+/*SELECT author, title, amount AS Количество
+FROM book
+WHERE price < 750
+ORDER BY author, Количество DESC;*/
+/*SELECT author, title, amount AS Количество
+FROM book
+WHERE price < 750
+ORDER BY 1, 3 DESC;*/
+/*select author, title
+from book
+where amount between 2 and 14 order by author desc, title ASC;*/
+-- SELECT * FROM book WHERE author LIKE '%М.%'; --выполняет поиск и выдает все книги, инициалы авторов которых содержат «М.»
+-- SELECT * FROM book WHERE title LIKE 'Поэм_'; --выполняет поиск и выдает все книги, названия которых либо «Поэма», либо «Поэмы» и пр.
+/*SELECT title
+FROM book
+WHERE title LIKE 'Б%';*/
+/* эквивалентное условие
+title LIKE 'б%'
+*/
+--Строчные и прописные буквы в строках эквивалентны.
+/*SELECT title FROM book
+WHERE title LIKE '_____'; */-- _ Любой одиночный символ
+/*SELECT title FROM book
+WHERE title LIKE '______%';*/
+/* эквивалентные условия
+title LIKE "%______"
+title LIKE "%______%"
+*/
+/*SELECT title FROM book
+WHERE   title LIKE '_% и _%' /*отбирает слово И внутри названия */
+   OR title LIKE 'и _%' /*отбирает слово И в начале названия */
+   OR title LIKE '_% и' /*отбирает слово И в конце названия */
+   OR title LIKE 'и' /* отбирает название, состоящее из одного слова И */*/
+/*SELECT title FROM book
+WHERE title NOT LIKE '% %';*/
+/*select title,author
+from book
+where title like '% %'
+  and title not like ' '
+  and author like '%С.%'--or author like '%.с.'
+order by title ASC;*/
+/*select * from book
+insert into book(author, price, amount)
+values ('Иванов С.С.',50.00,10);
+insert into book(title, author, price, amount)
+values ('Дети полуночи', 'Рушди Салман',950.00,5);
+insert into book(title, author, price, amount)
+values ('Лирика', 'Гумилев Н.С.',460.00,10);
+insert into book(title, author, price, amount)
+values ('Поэмы', 'Бехтерев С.С.',460.00,10);
+insert into book(title, author, price, amount)
+values ('Капитанская дочка', 'Пушкин А.С.',520.00,7);
+select * from book;*/
+/*select *
+from book;*/
+/*SELECT DISTINCT author
+FROM book;*/
+/*SELECT  author
+FROM book
+GROUP BY author;*/
+/*select distinct amount from book;*/
+/*SELECT author, sum(amount)as'общее колличество', count(amount)as'количество отдельных позиций'
+FROM book
+GROUP BY author;*/
+/*SELECT author, SUM(amount)
+FROM book
+GROUP BY author;*/
+/*insert into book(title, author)
+values ('Черный человек','Есенин С.А.');*/
+/*SELECT author, COUNT(author)as 'автор', COUNT(amount)as 'кол-во', COUNT(*)as'все'
+FROM book
+GROUP BY author
+order by author ASC;*/
+/*select *from book;
+delete from book where book.book_id>4;
+select *from book;
+insert into book(title, author, price, amount)
+values ('Игрок', 'Достоевский Ф.М.',480.50,10);
+insert into book(title, author, price, amount)
+values ('Стихотворения и поэмы', 'Есенин С.А.',650.00,15);
+select *from book;*/
+/*update book set book_id=6 where book_id=12;
+select * from book;*/
+-- update book set amount=3 where book_id=4;
+/*select author as'Автор',
+       count(title) as 'Различных_книг',
+       sum(amount)as'Количество_экземпляров'
+from book
+group by author;*/
