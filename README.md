@@ -1,5 +1,6 @@
 # SQL
 Let's begin
+
 /*CREATE TABLE genre(
     genre_id INT identity (1, 1) primary key,
     name_genre VARCHAR(30)
@@ -204,3 +205,50 @@ select * from book;*/
        sum(amount)as'Количество_экземпляров'
 from book
 group by author;*/
+/*SELECT author, MIN(price) AS min_price
+FROM book
+GROUP BY author;*/
+/*select author,
+       min(price) as 'Минимальная_цена',
+       max(price) as 'Максимальная_цена',
+       avg(price) as 'Средняя_цена'
+       from book
+group by author;*/
+/*SELECT author, SUM(price * amount) AS Стоимость
+FROM book
+GROUP BY author;*/
+/*SELECT author, ROUND(AVG(price),2) AS Средняя_цена
+FROM book
+GROUP BY author;*/
+/*select author,
+       round(sum(price*amount),2) as 'Стоимость',
+       round(sum(price*amount)/118*18,2) as 'НДС',
+       round(sum(price*amount)/1.18,2) as 'Стоимость_без_НДС'
+from book
+group by author;*/
+/*SELECT SUM(amount) AS Количество
+FROM book;*/
+/*SELECT SUM(amount) AS Количество,
+       SUM(price * amount) AS Стоимость
+FROM book;*/
+/*select min(price) as 'Минимальная_цена',
+    max(price) as'Максимальная_цена',
+    round(avg(price),2) as 'Средняя_цена'
+from book;*/
+/*SELECT author,
+       MIN(price) AS Минимальная_цена,
+       MAX(price) AS Максимальная_цена
+FROM book
+GROUP BY author
+HAVING SUM(price * amount) > 5000;*/
+/*SELECT author,
+       MIN(price) AS Минимальная_цена,
+       MAX(price) AS Максимальная_цена
+FROM book
+GROUP BY author
+HAVING SUM(price * amount) > 5000
+ORDER BY Минимальная_цена DESC;*/
+/*select round(avg(price), 2) as 'Средняя_цена',
+round(sum(price*amount),2) as 'Стоимость'
+from book
+where amount between 5 and 14;*/
