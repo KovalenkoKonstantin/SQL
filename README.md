@@ -189,14 +189,15 @@ values ('Черный человек','Есенин С.А.');*/
 FROM book
 GROUP BY author
 order by author ASC;*/
-/*select *from book;
-delete from book where book.book_id>4;
-select *from book;
+-- select *from book;
+/*delete from book where book.book_id>4;
+-- select *from book;guest
 insert into book(title, author, price, amount)
 values ('Игрок', 'Достоевский Ф.М.',480.50,10);
 insert into book(title, author, price, amount)
 values ('Стихотворения и поэмы', 'Есенин С.А.',650.00,15);
-select *from book;*/
+select *from book;
+select * from sys.index_columns;*/
 /*update book set book_id=6 where book_id=12;
 select * from book;*/
 -- update book set amount=3 where book_id=4;
@@ -252,3 +253,29 @@ ORDER BY Минимальная_цена DESC;*/
 round(sum(price*amount),2) as 'Стоимость'
 from book
 where amount between 5 and 14;*/
+/*SELECT author,
+       MIN(price) AS Минимальная_цена,
+       MAX(price) AS Максимальная_цена
+FROM book
+WHERE author <> 'Есенин С.А.'
+GROUP BY author
+HAVING SUM(amount) > 10;*/
+/*SELECT author,
+       MIN(price) AS Минимальная_цена,
+       MAX(price) AS Максимальная_цена
+FROM book
+GROUP BY author
+HAVING SUM(amount) > 10 AND author <> 'Есенин С.А.';*/
+/*select author, sum(price*amount) as 'Стоимость'
+from book
+where title<>'Идиот' and title<>'Белая гвардия'
+group by author
+having sum(price*amount)>5000
+order by Стоимость desc;*/
+
+-- FROM
+-- WHERE
+-- GROUP BY
+-- HAVING
+-- SELECT
+-- ORDER BY
