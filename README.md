@@ -324,3 +324,51 @@ where amount in (
     group by amount
     having count(amount)=1
 );*/
+/*SELECT title, author, amount, price
+FROM book
+WHERE amount < ALL (
+    SELECT AVG(amount)
+    FROM book
+    GROUP BY author
+);*/
+/*SELECT title, author, amount, price
+FROM book
+WHERE amount < ANY (
+    SELECT AVG(amount)
+    FROM book
+    GROUP BY author
+);*/
+/*select author, title, price
+from book
+where price < any (
+    select min(price)
+    from book
+    group by author
+);*/
+/*SELECT title, author, amount,
+       (
+           SELECT AVG(amount)
+           FROM book
+       ) AS Среднее_количество
+FROM book
+WHERE abs(amount - (SELECT AVG(amount) FROM book)) >3;*/
+/*SELECT title, author, amount,
+       FLOOR((SELECT AVG(amount) FROM book)) AS Среднее_количество
+FROM book
+WHERE ABS(amount - (SELECT AVG(amount) FROM book)) >3;*/
+
+-- FROM
+-- WHERE
+-- GROUP BY
+-- HAVING
+-- SELECT
+-- ORDER BY
+/*select title,author,amount,
+       (
+select max(amount)
+from book)-amount as 'Заказ'
+from book
+where (
+          select max(amount)
+          from book)-amount<>0
+order by author ASC;*/
