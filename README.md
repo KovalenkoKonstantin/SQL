@@ -1,5 +1,5 @@
-# SQL
-Let's begin
+/*        # SQL
+            Let's begin*/
 
 /*CREATE TABLE genre(
     genre_id INT identity (1, 1) primary key,
@@ -279,3 +279,48 @@ order by Стоимость desc;*/
 -- HAVING
 -- SELECT
 -- ORDER BY
+
+/*SELECT title, author, price, amount
+FROM book
+WHERE price = (
+    SELECT MIN(price)
+    FROM book
+);*/
+
+/*select author, title, price
+from book
+where price<=(
+    select avg(price)
+    from book
+)
+order by price desc;*/
+
+/*SELECT title, author, amount
+FROM book
+WHERE ABS(amount - (SELECT AVG(amount) FROM book)) >3;*/
+/*insert into book(title, author, price, amount)
+values ('Евгений Онегин','Пушкин А.С.',610.00,10);*/
+
+/*select author, title, price
+from book
+where (price-(select min(price)
+       from book))<=150
+order by price ASC;*/
+-- select min(price) from book;
+/*SELECT title, author, amount, price
+FROM book
+WHERE author IN (
+    SELECT author
+    FROM book
+    GROUP BY author
+    HAVING SUM(amount) >= 12
+);*/
+-- delete from book where title='Евгений онегин';
+/*select author, title, amount
+from book
+where amount in (
+    select amount
+    from book
+    group by amount
+    having count(amount)=1
+);*/
