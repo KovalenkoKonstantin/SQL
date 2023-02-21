@@ -372,3 +372,331 @@ where (
           select max(amount)
           from book)-amount<>0
 order by author ASC;*/
+/*create table supply(
+    supply_id INT identity (1, 1) primary key,
+--     supply_id INT primary key auto_increment,
+    title VARCHAR(50),
+    author varchar(30),
+    price decimal(8,2),
+    amount int
+);*/
+-- select *from supply;
+/*insert into supply(title, author, price, amount)
+values
+    ('Лирика','Пастернак Б.Л.',518.99,2),
+    ('Черный человек','Есенин С.А.',570.20,6),
+    ('Белая гвардия','Булгаков М.А.',540.50,7),
+    ('Идиот','Достоевский Ф.М.',360.80,3);
+select * from supply;*/
+/*INSERT INTO book (title, author, price, amount)
+SELECT title, author, price, amount
+FROM supply;
+
+SELECT * FROM book;*/
+-- drop table book;
+/*drop table supply;*/
+/*create table book(
+    book_id INT identity (1, 1) primary key,
+--     book_id INT primary key auto_increment,
+    title VARCHAR(50),
+    author varchar(30),
+    price decimal(8,2),
+    amount int
+);*/
+/*create table supply(
+    supply_id INT identity (1, 1) primary key,
+--     supply_id INT primary key auto_increment,
+    title VARCHAR(50),
+    author varchar(30),
+    price decimal(8,2),
+    amount int
+);*/
+/*insert into book (title, author, price, amount)
+values
+    ('Мастер и Маргарита','Булгаков М.А.',670.99,3),
+    ('Белая гвардия','Булгаков М.А.',540.50,5),
+    ('Идиот','Достоевский Ф.М.',460.00,10),
+    ('Братья Карамазовы','Достоевский Ф.М.',799.01,2),
+    ('Стихотворения и поэмы','Есенин С.А.',650.00,15);*/
+/*insert into supply(title, author, price, amount)
+values
+    ('Лирика','Пастернак Б.Л.',518.99,2),
+    ('Черный человек','Есенин С.А.',570.20,6),
+    ('Белая гвардия','Булгаков М.А.',540.50,7),
+    ('Идиот','Достоевский Ф.М.',360.80,3);
+select * from book;
+select * from supply;*/
+
+/*INSERT INTO book (title, author, price, amount)
+SELECT title, author, price, amount
+FROM supply
+where author<>'Булгаков М.А.'and author<>'Достоевский Ф.М.';
+
+SELECT * FROM book;*/
+/*INSERT INTO book (title, author, price, amount)
+SELECT title, author, price, amount
+FROM supply
+WHERE title NOT IN (
+    SELECT title
+    FROM book
+);
+SELECT * FROM book;*/
+
+
+
+/*drop table book;
+create table book(
+    book_id INT identity (1, 1) primary key,
+    title VARCHAR(50),
+    author varchar(30),
+    price decimal(8,2),
+    amount int
+);
+insert into book (title, author, price, amount)
+values
+    ('Мастер и Маргарита','Булгаков М.А.',670.99,3),
+    ('Белая гвардия','Булгаков М.А.',540.50,5),
+    ('Идиот','Достоевский Ф.М.',460.00,10),
+    ('Братья Карамазовы','Достоевский Ф.М.',799.01,2),
+    ('Стихотворения и поэмы','Есенин С.А.',650.00,15);
+select *from book;*/
+
+
+
+/*insert into book(title, author, price, amount)
+select title, author, price, amount
+from supply
+where author not in (
+    select author
+    from book
+    );
+select * from book;*/
+/*UPDATE book
+SET price = 0.7 * price;
+SELECT * FROM book;*/
+/*UPDATE book
+SET price = 0.7 * price
+WHERE amount < 5;
+SELECT * FROM book;*/
+/*update book
+set price=price*0.9
+where amount between 5 and 10;
+select *
+from book;*/
+
+/*drop table book;
+create table book(
+book_id INT identity (1, 1) primary key,
+title VARCHAR(50),
+author varchar(30),
+price decimal(8,2),
+amount int,
+buy int
+);
+insert into book (title, author, price, amount, buy)
+values
+    ('Мастер и Маргарита','Булгаков М.А.',670.99,3,0),
+    ('Белая гвардия','Булгаков М.А.',540.50,5,3),
+    ('Идиот','Достоевский Ф.М.',460.00,10,8),
+    ('Братья Карамазовы','Достоевский Ф.М.',799.01,2,0),
+    ('Стихотворения и поэмы','Есенин С.А.',650.00,15,18);
+UPDATE book
+SET buy = iif(amount-buy>0, buy, amount);
+UPDATE book
+SET price = iif(buy=0, price*0.9, price);
+select *from book;*/
+
+/*drop table book;
+create table book(
+                     book_id INT identity (1, 1) primary key,
+                     title VARCHAR(50),
+                     author varchar(30),
+                     price decimal(8,2),
+                     amount int
+);
+insert into book (title, author, price, amount)
+values
+    ('Мастер и Маргарита','Булгаков М.А.',670.99,3),
+    ('Белая гвардия','Булгаков М.А.',540.50,5),
+    ('Идиот','Достоевский Ф.М.',460.00,10),
+    ('Братья Карамазовы','Достоевский Ф.М.',799.01,2),
+    ('Стихотворения и поэмы','Есенин С.А.',650.00,15);
+select * from book;
+
+
+UPDATE book
+SET book.amount = book.amount + supply.amount
+from supply
+WHERE book.title = supply.title AND book.author = supply.author;
+
+SELECT * FROM book;*/
+/*drop table book;
+drop table supply;
+create table book(
+                     book_id INT identity (1, 1) primary key,
+                     --book_id INT primary key auto_increment,
+                     title VARCHAR(50),
+                     author varchar(30),
+                     price decimal(8,2),
+                     amount int
+);
+create table supply(
+                     supply_id INT identity (1, 1) primary key,
+                     --supply_id INT primary key auto_increment,
+                     title VARCHAR(50),
+                     author varchar(30),
+                     price decimal(8,2),
+                     amount int
+);
+insert into book (title, author, price, amount)
+values
+    ('Мастер и Маргарита','Булгаков М.А.',670.99,3),
+    ('Белая гвардия','Булгаков М.А.',540.50,5),
+    ('Идиот','Достоевский Ф.М.',460.00,10),
+    ('Братья Карамазовы','Достоевский Ф.М.',799.01,2),
+    ('Стихотворения и поэмы','Есенин С.А.',650.00,15);
+insert into supply(title, author, price, amount)
+values
+    ('Лирика','Пастернак Б.Л.',518.99,2),
+    ('Черный человек','Есенин С.А.',570.20,6),
+    ('Белая гвардия','Булгаков М.А.',540.50,7),
+    ('Идиот','Достоевский Ф.М.',360.80,3);
+update book
+set book.amount = book.amount + supply.amount
+from supply
+where book.title = supply.title and book.author = supply.author;
+update book
+set book.price = (book.price + supply.price)/2
+from supply
+where book.title = supply.title and book.author = supply.author;
+select * from book;*/
+/*DELETE FROM supply;
+
+SELECT * FROM supply;*/
+drop table book;
+drop table supply;
+create table book(
+                     book_id INT identity (1, 1) primary key,
+                     title VARCHAR(50),
+                     author varchar(30),
+                     price decimal(8,2),
+                     amount int
+);
+create table supply(
+                       supply_id INT identity (1, 1) primary key,
+                       title VARCHAR(50),
+                       author varchar(30),
+                       price decimal(8,2),
+                       amount int
+);
+insert into book (title, author, price, amount)
+values
+    ('Мастер и Маргарита','Булгаков М.А.',670.99,3),
+    ('Белая гвардия','Булгаков М.А.',540.50,5),
+    ('Идиот','Достоевский Ф.М.',460.00,10),
+    ('Братья Карамазовы','Достоевский Ф.М.',799.01,2),
+    ('Стихотворения и поэмы','Есенин С.А.',650.00,15);
+insert into supply(title, author, price, amount)
+values
+    ('Лирика','Пастернак Б.Л.',518.99,2),
+    ('Черный человек','Есенин С.А.',570.20,6),
+    ('Белая гвардия','Булгаков М.А.',540.50,7),
+    ('Идиот','Достоевский Ф.М.',360.80,3);
+delete from supply
+where author in (
+    select author
+    from book
+    where amount >= 10
+    );
+select * from supply;
+
+--CREATE TABLE ordering as
+    SELECT author, title, 5 AS amount
+    into ordering
+FROM book
+WHERE amount < 4;
+SELECT * FROM ordering;
+
+drop table ordering;
+--create table ordering as
+SELECT author, title,
+       (
+           SELECT AVG(amount)
+           FROM book
+       ) AS amount
+into ordering
+FROM book
+WHERE amount < 4;
+SELECT * FROM ordering;
+
+drop table book;
+create table book(
+                     book_id INT identity (1, 1) primary key,
+                     title VARCHAR(50),
+                     author varchar(30),
+                     price decimal(8,2),
+                     amount int
+);
+insert into book (title, author, price, amount)
+values
+    ('Мастер и Маргарита','Булгаков М.А.',670.99,3),
+    ('Белая гвардия','Булгаков М.А.',540.50,5),
+    ('Идиот','Достоевский Ф.М.',460.00,10),
+    ('Братья Карамазовы','Достоевский Ф.М.',799.01,2),
+    ('Стихотворения и поэмы','Есенин С.А.',650.00,15);
+
+drop table ordering;
+--create table ordering as
+select author,title,
+       (
+        select avg(amount)
+        from book
+        ) as amount
+    into ordering
+from book
+where amount <
+      (select
+      avg(amount)
+       from book);
+select * from ordering;
+
+create table trip
+(
+    trip_id INT PRIMARY KEY Identity(1,1),
+    [name] varchar(30),
+    city varchar(25),
+    per_diem decimal(8,2),
+    date_first date,
+    date_last date
+)
+insert into trip ([name],city,per_diem,date_first,date_last)
+values
+    ('Баранов П.Е.','Москва',700 , '2020-01-12', '2020-01-17'),
+    ('Абрамова К.А.','Владивосток',450 , '2020-01-14', '2020-01-27'),
+    ('Семенов И.В.','Москва',700 , '2020-01-23', '2020-01-31'),
+    ('Ильиных Г.Р.','Владивосток', 450, '2020-01-12', '2020-02-02'),
+    ('Колесов С.П.','Москва',700 , '2020-02-01', '2020-02-06'),
+    ('Баранов П.Е.','Москва', 700, '2020-02-14', '2020-02-22'),
+    ('Абрамова К.А.','Москва', 700, '2020-02-23', '2020-03-01'),
+    ('Лебедев Т.К.','Москва', 700, '2020-03-03', '2020-03-06'),
+    ('Колесов С.П.','Новосибирск',450 , '2020-02-27', '2020-03-12'),
+    ('Семенов И.В.','Санкт-Петербург',700 , '2020-03-29', '2020-04-05'),
+    ('Абрамова К.А.','Москва',700 , '2020-04-06', '2020-04-14'),
+    ('Баранов П.Е.','Новосибирск',450 , '2020-04-18', '2020-05-04'),
+    ('Лебедев Т.К.','Томск',450 , '2020-05-20', '2020-05-31'),
+    ('Семенов И.В.','Санкт-Петербург',700 , '2020-06-01', '2020-06-03'),
+    ('Абрамова К.А.','Санкт-Петербург', 700, '2020-05-28', '2020-06-04'),
+    ('Федорова А.Ю.','Новосибирск',450 , '2020-05-25', '2020-06-04'),
+    ('Колесов С.П.','Новосибирск', 450, '2020-06-03', '2020-06-12'),
+    ('Федорова А.Ю.','Томск', 450, '2020-06-20', '2020-06-26'),
+    ('Абрамова К.А.','Владивосток', 450, '2020-07-02', '2020-07-13'),
+    ('Баранов П.Е.','Воронеж', 450, '2020-07-19', '2020-07-25');
+select * from trip;
+
+1.6.1
+    select [name], city, per_diem, date_first, date_last
+from trip
+where [name] like '%а %'
+order by date_last DESC;
+
+
