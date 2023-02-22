@@ -699,4 +699,32 @@ from trip
 where [name] like '%а %'
 order by date_last DESC;
 
+1.6.2
+    select distinct [name]
+from trip
+where city like 'Москва'
+order by [name]ASC;
 
+1.6.3
+    select city, count(city) as 'Количество'
+from trip
+group by city
+    order by city ASC;
+
+SELECT top 1 *
+FROM trip
+ORDER BY  date_first;
+    --LIMIT 1;
+
+1.6.4
+    select top 2 city, count(city) as 'Количество'
+from trip
+group by city
+order by Количество DESC;
+
+1.6.5
+    select [name], city, datediff(day, date_first, date_last)+1
+        as 'Длительность'
+from trip
+where city not in ('Москва', 'Санкт-Петербург')
+order by Длительность DESC, city DESC;
