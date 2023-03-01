@@ -25,4 +25,19 @@ set NewOne.DeliveryCityID = c.DeliveryCityID
 from Sales.Customers c
     where NewOne.CustomerID = c.CustomerID;
 
+ALTER TABLE NewOne ADD StateProvinceID int;
+ALTER TABLE NewOne ADD StateProvinceName varchar(30);
+
+--заполнение нового столбца на основе совпадения DeliveryCityID в обеих таблицах
+update NewOne
+set NewOne.StateProvinceID = a.StateProvinceID
+from Application.Cities a
+where NewOne.DeliveryCityID = a. CityID;
+
+--заполнение нового столбца на основе совпадения DeliveryCityID в обеих таблицах
+update NewOne
+set NewOne.StateProvinceID = a.StateProvinceID
+from Application.Cities a
+where NewOne.DeliveryCityID = a. CityID;
+
 
