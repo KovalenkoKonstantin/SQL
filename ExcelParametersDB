@@ -9,24 +9,19 @@ drop table NewOne;
 
 --создание таблицы на основе существующей
 select * into dbo.NewOne
-from sales.Orders
-go
-select * from dbo.NewOne;
+from sales.Orders;
 
 -- создание нового столбца в существующей таблице
 ALTER TABLE NewOne ADD DeliveryCityID int;
-
---удаление столбца из существующей таблицы
-alter table NewOne drop column DeliveryCityID;
+ALTER TABLE NewOne ADD StateProvinceID int;
+ALTER TABLE NewOne ADD StateProvinceName varchar(30);
+ALTER TABLE NewOne ADD SPI int;
 
 --заполнение нового столбца на основе совпадения CustomerID в обеих таблицах
 update NewOne
 set NewOne.DeliveryCityID = c.DeliveryCityID
 from Sales.Customers c
     where NewOne.CustomerID = c.CustomerID;
-
-ALTER TABLE NewOne ADD StateProvinceID int;
-ALTER TABLE NewOne ADD StateProvinceName varchar(30);
 
 --заполнение нового столбца на основе совпадения DeliveryCityID в обеих таблицах
 update NewOne
@@ -40,4 +35,23 @@ set NewOne.StateProvinceName = p.StateProvinceName
 from Application.StateProvinces p
 where NewOne.StateProvinceID = p.StateProvinceID;
 
+
+
+update NewOne
+set NewOne.SPI = NewOne.SalespersonPersonID;
+
+sp_rename 'dbo.NewOne.SalespersonPersonID', 'SalespersonPersonID1', 'Column';
+sp_rename 'dbo.NewOne.SPI', 'SalespersonPersonID', 'Column';
+
+ALTER TABLE dbo.NewOne ALTER COLUMN SalespersonPersonID1 varchar(30);
+
+update NewOne
+set NewOne.SalespersonPersonID1 = NewOne.StateProvinceName;
+
+sp_rename 'dbo.NewOne.StateProvinceName', 'StateProvinceName1', 'Column';
+sp_rename 'dbo.NewOne.SalespersonPersonID1', 'StateProvinceName', 'Column';
+
+--удаление столбца из существующей таблицы
+alter table NewOne drop column StateProvinceName1;
 select * from newone;
+
