@@ -32,12 +32,12 @@ ALTER TABLE NewOne ADD StateProvinceName varchar(30);
 update NewOne
 set NewOne.StateProvinceID = a.StateProvinceID
 from Application.Cities a
-where NewOne.DeliveryCityID = a. CityID;
+where NewOne.DeliveryCityID = a.CityID;
 
---заполнение нового столбца на основе совпадения DeliveryCityID в обеих таблицах
+--заполнение нового столбца на основе совпадения StateProvinceID в обеих таблицах
 update NewOne
-set NewOne.StateProvinceID = a.StateProvinceID
-from Application.Cities a
-where NewOne.DeliveryCityID = a. CityID;
+set NewOne.StateProvinceName = p.StateProvinceName
+from Application.StateProvinces p
+where NewOne.StateProvinceID = p.StateProvinceID;
 
-
+select * from newone;
