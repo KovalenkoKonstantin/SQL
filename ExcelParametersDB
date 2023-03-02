@@ -38,20 +38,85 @@ where NewOne.StateProvinceID = p.StateProvinceID;
 
 
 update NewOne
-set NewOne.SPI = NewOne.SalespersonPersonID;
-
-sp_rename 'dbo.NewOne.SalespersonPersonID', 'SalespersonPersonID1', 'Column';
-sp_rename 'dbo.NewOne.SPI', 'SalespersonPersonID', 'Column';
-
-ALTER TABLE dbo.NewOne ALTER COLUMN SalespersonPersonID1 varchar(30);
-
-update NewOne
-set NewOne.SalespersonPersonID1 = NewOne.StateProvinceName;
-
-sp_rename 'dbo.NewOne.StateProvinceName', 'StateProvinceName1', 'Column';
-sp_rename 'dbo.NewOne.SalespersonPersonID1', 'StateProvinceName', 'Column';
-
+set NewOne.SPI = NewOne.SalespersonPersonID
+go
+sp_rename 'dbo.NewOne.SalespersonPersonID', 'SalespersonPersonID1', 'Column'
+    go
+sp_rename 'dbo.NewOne.SPI', 'SalespersonPersonID', 'Column'
+go
+ALTER TABLE dbo.NewOne ALTER COLUMN SalespersonPersonID1 varchar(30);update NewOne
+set NewOne.SalespersonPersonID1 = NewOne.StateProvinceName
+go
+sp_rename 'dbo.NewOne.StateProvinceName', 'StateProvinceName1', 'Column'
+    go
+sp_rename 'dbo.NewOne.SalespersonPersonID1', 'StateProvinceName', 'Column'
+go
 --удаление столбца из существующей таблицы
-alter table NewOne drop column StateProvinceName1;
+alter table NewOne drop column StateProvinceName1
+go
 select * from newone;
 
+
+select distinct NewOne.StateProvinceName
+into State
+from NewOne;
+
+select * from State
+order by State.StateProvinceName;
+
+select * from NewOne;
+select top 100 *
+from NewOne
+where OrderDate between '20130101' and '20130110'
+order by OrderDate;
+
+alter table Application.Cities add StateProvinceName varchar(30);
+update Application.Cities
+set Application.Cities.StateProvinceName = c.StateProvinceName
+    from Application.StateProvinces c
+    where Application.Cities.StateProvinceID = c.StateProvinceID;
+
+alter table Sales.Orders add [Description] varchar(100)
+go
+alter table Sales.Orders add Quantity int
+go
+alter table Sales.Orders add UnitPrice decimal
+go
+update Sales.Orders
+set Sales.Orders.Description = s.Description
+from Sales.OrderLines s
+where Sales.Orders.OrderID = s.OrderID
+go
+go
+update Sales.Orders
+set Sales.Orders.Quantity = s.Quantity
+from Sales.OrderLines s
+where Sales.Orders.OrderID = s.OrderID
+go
+update Sales.Orders
+set Sales.Orders.UnitPrice = s.UnitPrice
+from Sales.OrderLines s
+where Sales.Orders.OrderID = s.OrderID;
+
+select * from sales.Orders;
+select * from Application.Cities;
+select * from Sales.Customers;
+
+select
+    o.OrderID,
+    o.OrderDate,
+    ci.CityName as City,
+    ci.StateProvinceName,
+    cu.CustomerName as Picker,
+    o.Description,
+    o.Quantity,
+    o.UnitPrice
+from Sales.Customers cu
+inner join Application.Cities ci
+on cu.DeliveryCityID = ci.CityID
+inner join Sales.Orders o
+on o.CustomerID = o.CustomerID
+where
+    ci.StateProvinceName = 'Georgia'
+and OrderDate between '2013.01.01' and '2013.01.10'
+order by OrderDate;
