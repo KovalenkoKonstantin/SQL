@@ -1,18 +1,18 @@
 /*        # SQL
             Let's begin*/
 
-/*CREATE TABLE genre(
+CREATE TABLE genre(
     genre_id INT identity (1, 1) primary key,
     name_genre VARCHAR(30)
-);*/
+);
 
-/*CREATE TABLE book(
+CREATE TABLE book(
     book_id INT identity (1, 1) primary key,
     title VARCHAR(50),
     author varchar(30),
     price decimal(8,2),
     amount int
-);*/
+);
 
 /*INSERT INTO genre (name_genre)
 VALUES ('Диман');*/
@@ -728,3 +728,14 @@ order by Количество DESC;
 from trip
 where city not in ('Москва', 'Санкт-Петербург')
 order by Длительность DESC, city DESC;
+
+1.6.6
+select * from trip;
+select name, city, date_first, date_last
+from trip
+where datediff(day, date_first, date_last) =
+      (select min(datediff(day, date_first, date_last)) as dif
+       from trip);
+select name, city, date_first, date_last
+from trip
+where name like 'Семенов И.В.' and date_last like '2020-06-03';
