@@ -745,3 +745,19 @@ where name like 'Семенов И.В.' and date_last like '2020-06-03';
 from trip
 where month(date_first)=month(date_last)
 order by city, name;
+
+1.6.8
+    select Format(date_first, N'MMMM', N'en-EN') as Месяц,
+           count(Format(date_first, N'MMMM', N'en-EN')) as Количество
+from trip
+group by Format(date_first, N'MMMM', N'en-EN')
+order by Количество desc, Месяц;
+
+1.6.9
+    select name, city, date_first, (datediff(day, date_first, date_last)+1)*per_diem as Сумма
+from trip
+where month(date_first) = 2 or month(date_first) = 3
+order by name, Сумма desc;
+select * from trip;
+
+1.6.10
