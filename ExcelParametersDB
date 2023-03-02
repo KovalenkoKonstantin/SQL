@@ -120,3 +120,34 @@ where
     ci.StateProvinceName = 'Georgia'
 and OrderDate between '2013.01.01' and '2013.01.10'
 order by OrderDate;
+
+create procedure dbo.SampleOrderReport
+@OrderState as varchar(100),
+@OrderStartDate as Date, @OrderEndDate as Date
+as
+begin
+--prevent the 1 row affected message from being returned for every operation
+    set nocount on;
+--statement for the procedure
+select
+        o.OrderID,
+        o.OrderDate,
+        ci.CityName as City,
+        ci.StateProvinceName,
+        cu.CustomerName as Picker,
+        o.Description,
+        o.Quantity,
+        o.UnitPrice
+    from Sales.Customers cu
+             inner join Application.Cities ci
+                        on cu.DeliveryCityID = ci.CityID
+             inner join Sales.Orders o
+                        on o.CustomerID = o.CustomerID
+    where
+            ci.StateProvinceName = @OrderState
+      and OrderDate between @OrderStartDate and @OrderEndDate
+    order by OrderDate;
+end
+go
+exec dbo.SampleOrderReport 'Georgia', '01.01.2013', '10.01.2013'
+
