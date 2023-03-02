@@ -761,3 +761,8 @@ order by name, Сумма desc;
 select * from trip;
 
 1.6.10
+select name, sum((datediff(day, date_first, date_last)+1)*per_diem) as Сумма
+from trip
+group by name
+having count(name) >3
+order by Сумма desc;
