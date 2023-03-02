@@ -739,3 +739,9 @@ where datediff(day, date_first, date_last) =
 select name, city, date_first, date_last
 from trip
 where name like 'Семенов И.В.' and date_last like '2020-06-03';
+
+1.6.7
+    select name, city, date_first, date_last
+from trip
+where month(date_first)=month(date_last)
+order by city, name;
