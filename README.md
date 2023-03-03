@@ -693,19 +693,19 @@ values
     ('Баранов П.Е.','Воронеж', 450, '2020-07-19', '2020-07-25');
 select * from trip;
 
-1.6.1
+--1.6.1
     select [name], city, per_diem, date_first, date_last
 from trip
 where [name] like '%а %'
 order by date_last DESC;
 
-1.6.2
+--1.6.2
     select distinct [name]
 from trip
 where city like 'Москва'
 order by [name]ASC;
 
-1.6.3
+--1.6.3
     select city, count(city) as 'Количество'
 from trip
 group by city
@@ -716,20 +716,20 @@ FROM trip
 ORDER BY  date_first;
     --LIMIT 1;
 
-1.6.4
+--1.6.4
     select top 2 city, count(city) as 'Количество'
 from trip
 group by city
 order by Количество DESC;
 
-1.6.5
+--1.6.5
     select [name], city, datediff(day, date_first, date_last)+1
         as 'Длительность'
 from trip
 where city not in ('Москва', 'Санкт-Петербург')
 order by Длительность DESC, city DESC;
 
-1.6.6
+--1.6.6
 select * from trip;
 select name, city, date_first, date_last
 from trip
@@ -740,27 +740,27 @@ select name, city, date_first, date_last
 from trip
 where name like 'Семенов И.В.' and date_last like '2020-06-03';
 
-1.6.7
+--1.6.7
     select name, city, date_first, date_last
 from trip
 where month(date_first)=month(date_last)
 order by city, name;
 
-1.6.8
+--1.6.8
     select Format(date_first, N'MMMM', N'en-EN') as Месяц,
            count(Format(date_first, N'MMMM', N'en-EN')) as Количество
 from trip
 group by Format(date_first, N'MMMM', N'en-EN')
 order by Количество desc, Месяц;
 
-1.6.9
+--1.6.9
     select name, city, date_first, (datediff(day, date_first, date_last)+1)*per_diem as Сумма
 from trip
 where month(date_first) = 2 or month(date_first) = 3
 order by name, Сумма desc;
 select * from trip;
 
-1.6.10
+--1.6.10
 select name, sum((datediff(day, date_first, date_last)+1)*per_diem) as Сумма
 from trip
 group by name
@@ -815,7 +815,7 @@ iif(
 select * from fine;
 select * from traffic_violation;
 
-1.7.4
+--1.7.4
 update fine
 set fine.sum_fine = t.sum_fine
 from traffic_violation t
@@ -826,14 +826,14 @@ SELECT name, number_plate, violation, count(*)
 FROM fine
 GROUP BY name, number_plate, violation;
 
-1.7.5
+--1.7.5
     select name, number_plate, violation
 from fine
 group by name, number_plate, violation
 having count(violation)>1
 order by name, number_plate, violation;
 
-1.7.6
+--1.7.6
 --recreate fine table
 drop table fine
 go
@@ -902,3 +902,9 @@ where fine.date_payment is null and
         fine.name = p.name and
         fine.number_plate = p.number_plate and
         fine.violation = p.violation;
+
+--1.7.8
+--create back_payment table
+select [name], number_plate, violation, sum_fine, date_violation into back_payment
+from fine
+where date_payment is null;
