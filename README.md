@@ -878,3 +878,27 @@ drop table temp_table;
 --check
 select * from fine;
 select * from temp_table;
+--create payment table
+create table payment(
+    payment_id int primary key identity (1,1),
+    [name]           varchar(30)   null,
+    number_plate   varchar(6)    null,
+    violation      varchar(50)   null,
+    date_violation date          null,
+    date_payment   date          null
+)
+go
+INSERT INTO payment([name], number_plate, violation, date_violation, date_payment)
+VALUES
+    ('Яковлев Г.Р.', 'М701АА', 'Превышение скорости(от 20 до 40)', '2020-01-12', '2020-01-22'),
+    ('Баранов П.Е.', 'Р523ВТ', 'Превышение скорости(от 40 до 60)', '2020-02-14', '2020-03-06'),
+    ('Яковлев Г.Р.', 'Т330ТТ', 'Проезд на запрещающий сигнал', '2020-03-03', '2020-03-23');
+--1.7.7
+update fine
+set sum_fine = iif(datediff(day, p.date_violation, p.date_payment)<=20, sum_fine/2, sum_fine),
+    fine.date_payment = p.date_payment
+from payment p
+where fine.date_payment is null and
+        fine.name = p.name and
+        fine.number_plate = p.number_plate and
+        fine.violation = p.violation;
