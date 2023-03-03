@@ -766,3 +766,115 @@ from trip
 group by name
 having count(name) >3
 order by Сумма desc;
+
+drop table fine, traffic_violation
+go
+create table fine(
+    fine_id int primary key identity (1, 1),
+    [name] VARCHAR(30),
+    number_plate VARCHAR(6),
+    violation VARCHAR(50),
+    sum_fine DECIMAL(8,2),
+    date_violation date,
+    date_payment date)
+go
+insert into fine ([name], number_plate, violation, sum_fine, date_violation, date_payment)
+VALUES ('Баранов П.Е.', 'Р523ВТ', 'Превышение скорости(от 40 до 60)', 500.00, '2020-01-12', '2020-01-17'),
+       ('Абрамова К.А.', 'О111АВ', 'Проезд на запрещающий сигнал', 1000.00, '2020-01-14', '2020-02-27'),
+       ('Яковлев Г.Р.', 'Т330ТТ', 'Превышение скорости(от 20 до 40)', 500.00, '2020-01-23', '2020-02-23'),
+       ('Яковлев Г.Р.', 'М701АА', 'Превышение скорости(от 20 до 40)', NULL, '2020-01-12', NULL),
+       ('Колесов С.П.', 'К892АХ', 'Превышение скорости(от 20 до 40)', NULL, '2020-02-01', NULL),
+       ('Баранов П.Е.', 'Р523ВТ', 'Превышение скорости(от 40 до 60)', NULL, '2020-02-14', NULL),
+       ('Абрамова К.А.', 'О111АВ', 'Проезд на запрещающий сигнал', NULL, '2020-02-23', NULL),
+       ('Яковлев Г.Р.', 'Т330ТТ', 'Проезд на запрещающий сигнал', NULL, '2020-03-03', NULL)
+go
+CREATE TABLE traffic_violation(
+    violation_id int PRIMARY KEY identity (1, 1),
+    violation varchar(50),
+    sum_fine decimal(8, 2)
+)
+go
+INSERT INTO traffic_violation (violation, sum_fine)
+VALUES ('Превышение скорости(от 20 до 40)', 500),
+       ('Превышение скорости(от 40 до 60)', 1000),
+       ('Проезд на запрещающий сигнал', 1000);
+
+select * from fine;
+select * from traffic_violation;
+
+SELECT  f.name, f.number_plate, f.violation,
+iif(
+       f.sum_fine = tv.sum_fine, 'Стандартная сумма штрафа',
+    iif(
+           f.sum_fine < tv.sum_fine, 'Уменьшенная сумма штрафа', 'Увеличенная сумма штрафа'
+        )
+        ) AS description
+           FROM  fine f, traffic_violation tv
+           WHERE tv.violation = f.violation and f.sum_fine IS NOT Null;
+
+select * from fine;
+select * from traffic_violation;
+
+1.7.4
+update fine
+set fine.sum_fine = t.sum_fine
+from traffic_violation t
+where fine.sum_fine is null and fine.violation = t.violation;
+select * from fine;
+
+SELECT name, number_plate, violation, count(*)
+FROM fine
+GROUP BY name, number_plate, violation;
+
+1.7.5
+    select name, number_plate, violation
+from fine
+group by name, number_plate, violation
+having count(violation)>1
+order by name, number_plate, violation;
+
+1.7.6
+--recreate fine table
+drop table fine
+go
+create table fine(
+    fine_id int primary key identity (1, 1),
+    [name] VARCHAR(30),
+    number_plate VARCHAR(6),
+    violation VARCHAR(50),
+    sum_fine DECIMAL(8,2),
+    date_violation date,
+    date_payment date)
+go
+insert into fine ([name], number_plate, violation, sum_fine, date_violation, date_payment)
+VALUES ('Баранов П.Е.', 'Р523ВТ', 'Превышение скорости(от 40 до 60)', 500.00, '2020-01-12', '2020-01-17'),
+       ('Абрамова К.А.', 'О111АВ', 'Проезд на запрещающий сигнал', 1000.00, '2020-01-14', '2020-02-27'),
+       ('Яковлев Г.Р.', 'Т330ТТ', 'Превышение скорости(от 20 до 40)', 500.00, '2020-01-23', '2020-02-23'),
+       ('Яковлев Г.Р.', 'М701АА', 'Превышение скорости(от 20 до 40)', NULL, '2020-01-12', NULL),
+       ('Колесов С.П.', 'К892АХ', 'Превышение скорости(от 20 до 40)', NULL, '2020-02-01', NULL),
+       ('Баранов П.Е.', 'Р523ВТ', 'Превышение скорости(от 40 до 60)', NULL, '2020-02-14', NULL),
+       ('Абрамова К.А.', 'О111АВ', 'Проезд на запрещающий сигнал', NULL, '2020-02-23', NULL),
+       ('Яковлев Г.Р.', 'Т330ТТ', 'Проезд на запрещающий сигнал', NULL, '2020-03-03', NULL)
+go
+update fine
+set fine.sum_fine = t.sum_fine
+from traffic_violation t
+where fine.sum_fine is null and fine.violation = t.violation;
+--create temporary table
+select [name], number_plate, violation into temp_table from fine group by name, number_plate, violation
+having count(*)>1
+order by name, number_plate, violation;
+--update fine table with temporary table values
+update fine
+set sum_fine=sum_fine*2
+from temp_table t
+where
+    date_payment is null and
+    fine.name = t.name and
+    fine.number_plate = t.number_plate and
+    fine.violation = t.violation;
+--get rid of temp table
+drop table temp_table;
+--check
+select * from fine;
+select * from temp_table;
