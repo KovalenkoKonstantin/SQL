@@ -976,3 +976,17 @@ create table author(
 --2.1.7
 INSERT INTO author (name_author)
 VALUES ('Булгаков М.А.'), ('Достоевский Ф.М.'), ('Есенин С.А.'), ('Пастернак Б.Л.');
+
+--2.1.8
+drop table book
+go
+create table book (
+    book_id INT PRIMARY KEY identity (1,1),
+    title varchar(50),
+    author_id int not null ,
+    genre_id int not null ,
+    price decimal(8,2),
+    amount int,
+    foreign key (author_id)  references author (author_id),
+    foreign key (genre_id)  references genre (genre_id)
+);
