@@ -990,3 +990,67 @@ create table book (
     foreign key (author_id)  references author (author_id),
     foreign key (genre_id)  references genre (genre_id)
 );
+
+select * from author;
+drop table book;
+CREATE TABLE book (
+                      book_id INT PRIMARY KEY identity (1,1),
+                      title VARCHAR(50),
+                      author_id INT NOT NULL,
+                      price DECIMAL(8,2),
+                      amount INT,
+                      FOREIGN KEY (author_id)  REFERENCES author (author_id) ON DELETE CASCADE
+);
+select * from book;
+
+--2.1.9
+drop table book
+go
+create table book (
+    book_id INT PRIMARY KEY identity (1,1),
+    title varchar(50),
+    author_id int not null ,
+    genre_id int,
+    price decimal(8,2),
+    amount int,
+    foreign key (author_id)  references author (author_id) on delete cascade,
+    foreign key (genre_id)  references genre (genre_id) on delete set null
+);
+select * from author;
+select * from genre;
+select * from book;
+insert into genre(name_genre)
+values ('Роман'),
+        ('Поэзия');
+--2.1.10
+insert into book(title, author_id, genre_id, price, amount)
+values ('Мастер и Маргарита',1,1,670.99,3),
+       ('Белая гвардия',1,1,540.50,5),
+       ('Идиот',2,1,460.00,10),
+       ('Братья Карамазовы',2,1,799.01,3),
+       ('Игрок',2,1,480.50,10),
+       ('Стихотворения и поэмы',3,2,650.00,15);
+select * from book;
+--2.1.11
+drop table book
+go
+create table book (
+    book_id INT PRIMARY KEY identity (1,1),
+    title varchar(50),
+    author_id int not null ,
+    genre_id int,
+    price decimal(8,2),
+    amount int,
+    foreign key (author_id)  references author (author_id) on delete cascade,
+    foreign key (genre_id)  references genre (genre_id) on delete set null
+)go
+insert into book(title, author_id, genre_id, price, amount)
+values ('Мастер и Маргарита',1,1,670.99,3),
+       ('Белая гвардия',1,1,540.50,5),
+       ('Идиот',2,1,460.00,10),
+       ('Братья Карамазовы',2,1,799.01,3),
+       ('Игрок',2,1,480.50,10),
+       ('Стихотворения и поэмы',3,2,650.00,15),
+       ('Черный человек',3,2,570.20,6),
+       ('Лирика',4,2,518.99,2);
+select * from book;
