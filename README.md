@@ -967,3 +967,12 @@ where date_violation < '2020-02-01'
 DBCC CHECKIDENT (fine, RESEED, 0);
 
 select * from fine;
+
+--2.1.6
+create table author(
+    author_id int primary key identity (1, 1),
+    name_author varchar(50)
+);
+--2.1.7
+INSERT INTO author (name_author)
+VALUES ('Булгаков М.А.'), ('Достоевский Ф.М.'), ('Есенин С.А.'), ('Пастернак Б.Л.');
