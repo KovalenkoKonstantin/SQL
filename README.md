@@ -1119,8 +1119,8 @@ order by name_city, Дата desc;
 SELECT title, name_author, name_genre, price, amount
 FROM
     author
-        INNER JOIN  book ON author.author_id = book.author_id
-        INNER JOIN genre ON genre.genre_id = book.genre_id
+        INNER JOIN  book b ON author.author_id = b.author_id
+        INNER JOIN genre g ON g.genre_id = b.genre_id
 WHERE price BETWEEN 500 AND 700;
 
 select name_genre, title, name_author
@@ -1132,14 +1132,14 @@ order by title;
 --2.2.5
 SELECT name_author, count(title) AS Количество
 FROM
-    author INNER JOIN book
-                      on author.author_id = book.author_id
+    author INNER JOIN book b
+                      on author.author_id = b.author_id
 GROUP BY name_author
 ORDER BY name_author;
 SELECT name_author, count(title) AS Количество
 FROM
-    author LEFT JOIN book
-                     on author.author_id = book.author_id
+    author LEFT JOIN book b
+                     on author.author_id = b.author_id
 GROUP BY name_author
 ORDER BY name_author;
 --2.2.6
@@ -1151,5 +1151,60 @@ having sum(amount)<10 or sum(amount) is null
 order by Количество;
 select * from book;
 --2.2.7
-
+SELECT b.author_id, SUM(amount) AS sum_amount FROM book b GROUP BY b.author_id;
+SELECT MAX(sum_amount) AS max_sum_amount
+FROM
+    (
+        SELECT b.author_id, SUM(amount) AS sum_amount
+        FROM book b
+        GROUP BY b.author_id
+    ) query_in;
+SELECT name_author, SUM(amount) as Количество
+FROM
+    author a INNER JOIN book b
+                      on a.author_id = b.author_id
+GROUP BY name_author;
+SELECT name_author, SUM(amount) as Количество
+FROM
+    author a INNER JOIN book b
+                      on a.author_id = b.author_id
+GROUP BY name_author
+HAVING SUM(amount) =
+       (/* вычисляем максимальное из общего количества книг каждого автора */
+           SELECT MAX(sum_amount) AS max_sum_amount
+           FROM
+               (/* считаем количество книг каждого автора */
+                   SELECT author_id, SUM(amount) AS sum_amount
+                   FROM book GROUP BY author_id
+               ) query_in --обязательно задать имя, в противном случае не работает
+       );
+select * from genre;
+select * from author;
+select * from book;
+update book
+set genre_id = 3
+where book_id = 2
+go
+update book
+set genre_id = 1
+where book_id = 7;
+--отбираем только тех авторов у которых количество жанров не превышает 1
+select name_author
+from
+       (--вычисляем общее количество жанров каждого автора
+           select name_author, count(name_author) AS Количество_Жанров
+           from
+               (--объединяем книги одинаковых жанров по авторам
+                   select a.name_author, count(name_genre) AS book_same_genre
+                   from genre g
+                       inner join book b on g.genre_id = b.genre_id
+                       inner join author a on b.author_id = a.author_id
+                   group by a.name_author, name_genre
+               ) one
+           group by name_author
+       ) two
+group by name_author, Количество_Жанров
+having Количество_Жанров = 1;
+select * from book;
+--2.2.8
 
