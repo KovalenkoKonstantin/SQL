@@ -1116,6 +1116,40 @@ select name_city,name_author, dateadd(day, floor(rand()*365), '2020-01-01') as �
 from  city, author
 order by name_city, Дата desc;
 --2.2.4
+SELECT title, name_author, name_genre, price, amount
+FROM
+    author
+        INNER JOIN  book ON author.author_id = book.author_id
+        INNER JOIN genre ON genre.genre_id = book.genre_id
+WHERE price BETWEEN 500 AND 700;
 
+select name_genre, title, name_author
+from genre g
+inner join book b on g.genre_id = b.genre_id
+inner join author a on b.author_id = a.author_id
+where name_genre like 'Роман'
+order by title;
+--2.2.5
+SELECT name_author, count(title) AS Количество
+FROM
+    author INNER JOIN book
+                      on author.author_id = book.author_id
+GROUP BY name_author
+ORDER BY name_author;
+SELECT name_author, count(title) AS Количество
+FROM
+    author LEFT JOIN book
+                     on author.author_id = book.author_id
+GROUP BY name_author
+ORDER BY name_author;
+--2.2.6
+select name_author, sum(amount) as Количество
+from author a left join book b
+    on a.author_id = b.author_id
+group by name_author
+having sum(amount)<10 or sum(amount) is null
+order by Количество;
+select * from book;
+--2.2.7
 
 
