@@ -1433,3 +1433,24 @@ select * from author;
 select * from genre;
 select * from book;
 select * from supply;
+--2.3.2☺☻♥♦♣♠•◘○
+update b
+set b.amount = b.amount + s.amount--,
+    --s.amount = 0
+from book b
+    inner join author a ON a.author_id = b.author_id
+    inner join supply s ON b.title = s.title
+        and s.author = a.name_author
+where b.price = s.price
+go
+update s
+set --b.amount = b.amount + s.amount--,
+    s.amount = 0
+from book b--только для MSSQL
+         inner join author a ON a.author_id = b.author_id--только в MSSQL join после set, from
+         inner join supply s ON b.title = s.title
+    and s.author = a.name_author
+where b.price = s.price;
+
+SELECT * FROM book;
+SELECT * FROM supply;
