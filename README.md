@@ -1499,26 +1499,30 @@ create table book (book_id INT PRIMARY KEY identity (1,1),title varchar(50),auth
 create procedure GenreInsertion as begin
 insert into genre(name_genre)
 values ('Роман'), ('Поэзия'), ('Приключения') end;
+drop procedure AuthorInsertion
 create procedure AuthorInsertion as begin
 insert into author (name_author)
-values ('Булгаков М.А.'), ('Достоевский Ф.М.'), ('Есенин С.А.'), ('Пастернак Б.Л.'), ('Лермонтов М.Ю.') end;
+values ('Булгаков М.А.'), ('Достоевский Ф.М.'), ('Есенин С.А.'),
+       ('Пастернак Б.Л.'), ('Лермонтов М.Ю.'),('Стивенсон Р.Л.') end;
+drop procedure SupplyInsertion
 create procedure SupplyInsertion as begin
 insert into supply(title, author, price, amount)
 values ('Доктор Живаго','Пастернак Б.Л.', 380.80,4),
-       ('Черный человек','Есенин С.А.', 570.20,6),
-       ('Белая гвардия','Булгаков М.А.', 540.50,7),
-       ('Идиот','Достоевский Ф.М.', 360.80,3),
+       ('Черный человек','Есенин С.А.', 570.20,0),
+       ('Белая гвардия','Булгаков М.А.', 540.50,0),
+       ('Идиот','Достоевский Ф.М.', 360.80,0),
        ('Стихотворения и поэмы','Лермонтов М.Ю.', 255.90,4),
        ('Остров сокровищ','Стивенсон Р.Л.', 599.99,5)end;
+drop procedure BookInsertion
 create procedure BookInsertion as begin
 insert into book(title, author_id, genre_id, price, amount)
 values ('Мастер и Маргарита',1,1,670.99,3),
-       ('Белая гвардия',1,1,540.50,5),
-       ('Идиот',2,1,460.00,10),
+       ('Белая гвардия',1,1,540.50,12),
+       ('Идиот',2,1,437.11,13),
        ('Братья Карамазовы',2,1,799.01,3),
        ('Игрок',2,1,480.50,10),
        ('Стихотворения и поэмы',3,2,650.00,15),
-       ('Черный человек',3,2,570.20,6),
+       ('Черный человек',3,2,570.20,12),
        ('Лирика',4,2,518.99,2)
 end;
 exec ClearTables go
@@ -1535,3 +1539,19 @@ select * from genre;
 select * from book;
 select * from supply;
 
+SELECT title, author_id, price, amount
+FROM
+    author
+        INNER JOIN supply ON author.name_author = supply.author;
+SELECT title, author_id, price, amount
+FROM
+    author
+        INNER JOIN supply ON author.name_author = supply.author
+WHERE amount <> 0;
+
+insert into book(title, author_id, price, amount)
+select title, author_id, price, amount
+from author inner join supply
+    on author.name_author = supply.author
+where amount <> 0;
+select * from book;
