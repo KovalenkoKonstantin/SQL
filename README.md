@@ -1450,7 +1450,16 @@ from book b--только для MSSQL
          inner join author a ON a.author_id = b.author_id--только в MSSQL join после set, from
          inner join supply s ON b.title = s.title
     and s.author = a.name_author
-where b.price = s.price;
+where b.price = s.price
+go
+update b
+set b.price = (b.price*b.amount +
+                  s.price*s.amount)/(b.amount + s.amount)
+from book b
+         inner join author a ON a.author_id = b.author_id
+         inner join supply s ON b.title = s.title
+    and s.author = a.name_author
+where b.price <> s.price;
 
 SELECT * FROM book;
 SELECT * FROM supply;
