@@ -1463,3 +1463,25 @@ where b.price <> s.price;
 
 SELECT * FROM book;
 SELECT * FROM supply;
+SELECT * FROM author;
+--2.3.3
+SELECT name_author, supply.author
+FROM
+    author
+        RIGHT JOIN supply ON author.name_author = supply.author;
+
+SELECT supply.author
+FROM
+    author
+        RIGHT JOIN supply on author.name_author = supply.author
+WHERE name_author IS Null;
+
+insert into author(name_author)
+SELECT supply.author
+FROM
+    author
+        RIGHT JOIN supply on author.name_author = supply.author
+WHERE name_author IS Null;
+select * from author;
+
+
