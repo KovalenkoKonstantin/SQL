@@ -1630,3 +1630,20 @@ group by b.genre_id
 having count(b.title)<=2);
 select * from genre;
 select * from book;
+--2.3.8
+DELETE FROM author
+    USING
+    author
+    INNER JOIN book ON author.author_id = book.author_id
+WHERE book.amount < 3;
+SELECT * FROM author;
+SELECT * FROM book;
+SELECT * FROM supply;
+SELECT * FROM genre;
+
+DELETE FROM author
+    USING
+    author
+    INNER JOIN book ON author.author_id = book.author_id
+    INNER JOIN genre ON genre.genre_id = book.genre_id
+WHERE name_genre = 'Поэзия';
