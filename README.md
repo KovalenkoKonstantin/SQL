@@ -1508,9 +1508,9 @@ drop procedure SupplyInsertion
 create procedure SupplyInsertion as begin
 insert into supply(title, author, price, amount)
 values ('Доктор Живаго','Пастернак Б.Л.', 380.80,4),
-       ('Черный человек','Есенин С.А.', 570.20,0),
-       ('Белая гвардия','Булгаков М.А.', 540.50,0),
-       ('Идиот','Достоевский Ф.М.', 360.80,0),
+       ('Черный человек','Есенин С.А.', 570.20,6),
+       ('Белая гвардия','Булгаков М.А.', 540.50,7),
+       ('Идиот','Достоевский Ф.М.', 360.80,3),
        ('Стихотворения и поэмы','Лермонтов М.Ю.', 255.90,4),
        ('Остров сокровищ','Стивенсон Р.Л.', 599.99,5)end;
 drop procedure BookInsertion
@@ -1523,7 +1523,10 @@ values ('Мастер и Маргарита',1,1,670.99,3),
        ('Игрок',2,1,480.50,10),
        ('Стихотворения и поэмы',3,2,650.00,15),
        ('Черный человек',3,2,570.20,12),
-       ('Лирика',4,2,518.99,2)
+       ('Лирика',4,2,518.99,2),
+       ('Доктор Живаго',4,1,380.80,4),
+       ('Стихотворения и поэмы',5,2,255.90,4),
+       ('Остров сокровищ',6,3,599.99,5)
 end;
 exec ClearTables go
 exec GenreCreation go
@@ -1613,3 +1616,17 @@ select b.author_id
 from book b
 group by b.author_id
 having sum(amount)<20);
+--2.3.7
+DELETE FROM genre
+WHERE name_genre LIKE '%я';
+SELECT * FROM genre;
+SELECT * FROM book;
+
+delete from genre
+where genre_id=(
+select distinct b.genre_id
+from book b
+group by b.genre_id
+having count(b.title)<=2);
+select * from genre;
+select * from book;
