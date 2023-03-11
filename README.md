@@ -1876,12 +1876,12 @@ from genre;
 select *
 from book;
 --2.3.8
-DELETE
+/*DELETE
 FROM author USING
     author
     INNER JOIN book
 ON author.author_id = book.author_id
-WHERE book.amount < 3;
+WHERE book.amount < 3;*/
 SELECT *
 FROM author;
 SELECT *
@@ -1891,13 +1891,13 @@ FROM supply;
 SELECT *
 FROM genre;
 
-DELETE
+/*DELETE
 FROM author USING
     author
     INNER JOIN book
 ON author.author_id = book.author_id
     INNER JOIN genre ON genre.genre_id = book.genre_id
-WHERE name_genre = 'Поэзия';
+WHERE name_genre = 'Поэзия';*/
 --2.3.9
 select *
 from book;
@@ -1911,7 +1911,7 @@ go
 --delete tables
 create procedure ClearTables24 as
 begin
-drop table if exists genre,author, book, city, client, buy, step, buy_book, buy_step
+drop table if exists buy_book,buy_step,book, genre,author, buy,client,city, step
 end go
 
 --genre
@@ -2091,6 +2091,7 @@ begin
 insert into buy_book(buy_id, book_id, amount)
 values (1, 1, 1),
        (1, 7, 2),
+       (1, 3, 1),
        (2, 8, 2),
        (3, 3, 2),
        (3, 2, 1),
@@ -2142,3 +2143,29 @@ go exec Buy_bookCreation24 go exec Buy_stepCreation24 go exec GenreInsertion24 g
 AuthorInsertion24 go exec BookInsertion24 go exec CityInsertion24 go exec ClientInsertion24
 go exec BuyInsertion24 go exec StepInsertion24 go exec Buy_bookInsertion24 go exec
 Buy_stepInsertion24;
+--2.4.5
+SELECT DISTINCT name_client
+FROM
+    client
+        INNER JOIN buy ON client.client_id = buy.client_id
+        INNER JOIN buy_book ON buy_book.buy_id = buy.buy_id
+        INNER JOIN book b ON buy_book.book_id=b.book_id
+WHERE title ='Мастер и Маргарита' and b.author_id = 1;
+
+select bb.buy_id, bk.title, bk.price, bb.amount
+from client c
+inner join buy b on b.client_id=c.client_id
+inner join buy_book bb on b.buy_id=bb.buy_id
+inner join book bk on bk.book_id=bb.book_id
+where c.name_client like 'Баранов Павел'
+order by bb.buy_id, bk.title;
+
+select * from genre;
+select * from author;
+select * from city;
+select * from client;
+select * from book;
+select * from step;
+select * from buy;
+select * from buy_step;
+select * from buy_book;
