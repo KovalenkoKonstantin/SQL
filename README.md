@@ -1,17 +1,19 @@
 /*        # SQL
             Let's begin*/
 
-CREATE TABLE genre(
-    genre_id INT identity (1, 1) primary key,
+CREATE TABLE genre
+(
+    genre_id   INT identity (1, 1) primary key,
     name_genre VARCHAR(30)
 );
 
-CREATE TABLE book(
+CREATE TABLE book
+(
     book_id INT identity (1, 1) primary key,
-    title VARCHAR(50),
-    author varchar(30),
-    price decimal(8,2),
-    amount int
+    title   VARCHAR(50),
+    author  varchar(30),
+    price   decimal(8, 2),
+    amount  int
 );
 
 /*INSERT INTO genre (name_genre)
@@ -443,7 +445,6 @@ WHERE title NOT IN (
 SELECT * FROM book;*/
 
 
-
 /*drop table book;
 create table book(
     book_id INT identity (1, 1) primary key,
@@ -460,7 +461,6 @@ values
     ('Братья Карамазовы','Достоевский Ф.М.',799.01,2),
     ('Стихотворения и поэмы','Есенин С.А.',650.00,15);
 select *from book;*/
-
 
 
 /*insert into book(title, author, price, amount)
@@ -575,162 +575,165 @@ select * from book;*/
 SELECT * FROM supply;*/
 drop table book;
 drop table supply;
-create table book(
-                     book_id INT identity (1, 1) primary key,
-                     title VARCHAR(50),
-                     author varchar(30),
-                     price decimal(8,2),
-                     amount int
+create table book
+(
+    book_id INT identity (1, 1) primary key,
+    title   VARCHAR(50),
+    author  varchar(30),
+    price   decimal(8, 2),
+    amount  int
 );
-create table supply(
-                       supply_id INT identity (1, 1) primary key,
-                       title VARCHAR(50),
-                       author varchar(30),
-                       price decimal(8,2),
-                       amount int
+create table supply
+(
+    supply_id INT identity (1, 1) primary key,
+    title     VARCHAR(50),
+    author    varchar(30),
+    price     decimal(8, 2),
+    amount    int
 );
 insert into book (title, author, price, amount)
-values
-    ('Мастер и Маргарита','Булгаков М.А.',670.99,3),
-    ('Белая гвардия','Булгаков М.А.',540.50,5),
-    ('Идиот','Достоевский Ф.М.',460.00,10),
-    ('Братья Карамазовы','Достоевский Ф.М.',799.01,2),
-    ('Стихотворения и поэмы','Есенин С.А.',650.00,15);
+values ('Мастер и Маргарита', 'Булгаков М.А.', 670.99, 3),
+       ('Белая гвардия', 'Булгаков М.А.', 540.50, 5),
+       ('Идиот', 'Достоевский Ф.М.', 460.00, 10),
+       ('Братья Карамазовы', 'Достоевский Ф.М.', 799.01, 2),
+       ('Стихотворения и поэмы', 'Есенин С.А.', 650.00, 15);
 insert into supply(title, author, price, amount)
-values
-    ('Лирика','Пастернак Б.Л.',518.99,2),
-    ('Черный человек','Есенин С.А.',570.20,6),
-    ('Белая гвардия','Булгаков М.А.',540.50,7),
-    ('Идиот','Достоевский Ф.М.',360.80,3);
-delete from supply
-where author in (
-    select author
-    from book
-    where amount >= 10
-    );
-select * from supply;
+values ('Лирика', 'Пастернак Б.Л.', 518.99, 2),
+       ('Черный человек', 'Есенин С.А.', 570.20, 6),
+       ('Белая гвардия', 'Булгаков М.А.', 540.50, 7),
+       ('Идиот', 'Достоевский Ф.М.', 360.80, 3);
+delete
+from supply
+where author in (select author
+                 from book
+                 where amount >= 10);
+select *
+from supply;
 
 --CREATE TABLE ordering as
-    SELECT author, title, 5 AS amount
-    into ordering
-FROM book
-WHERE amount < 4;
-SELECT * FROM ordering;
-
-drop table ordering;
---create table ordering as
-SELECT author, title,
-       (
-           SELECT AVG(amount)
-           FROM book
-       ) AS amount
+SELECT author, title, 5 AS amount
 into ordering
 FROM book
 WHERE amount < 4;
-SELECT * FROM ordering;
-
-drop table book;
-create table book(
-                     book_id INT identity (1, 1) primary key,
-                     title VARCHAR(50),
-                     author varchar(30),
-                     price decimal(8,2),
-                     amount int
-);
-insert into book (title, author, price, amount)
-values
-    ('Мастер и Маргарита','Булгаков М.А.',670.99,3),
-    ('Белая гвардия','Булгаков М.А.',540.50,5),
-    ('Идиот','Достоевский Ф.М.',460.00,10),
-    ('Братья Карамазовы','Достоевский Ф.М.',799.01,2),
-    ('Стихотворения и поэмы','Есенин С.А.',650.00,15);
+SELECT *
+FROM ordering;
 
 drop table ordering;
 --create table ordering as
-select author,title,
-       (
-        select avg(amount)
-        from book
-        ) as amount
-    into ordering
+SELECT author,
+       title,
+       (SELECT AVG(amount)
+        FROM book) AS amount
+into ordering
+FROM book
+WHERE amount < 4;
+SELECT *
+FROM ordering;
+
+drop table book;
+create table book
+(
+    book_id INT identity (1, 1) primary key,
+    title   VARCHAR(50),
+    author  varchar(30),
+    price   decimal(8, 2),
+    amount  int
+);
+insert into book (title, author, price, amount)
+values ('Мастер и Маргарита', 'Булгаков М.А.', 670.99, 3),
+       ('Белая гвардия', 'Булгаков М.А.', 540.50, 5),
+       ('Идиот', 'Достоевский Ф.М.', 460.00, 10),
+       ('Братья Карамазовы', 'Достоевский Ф.М.', 799.01, 2),
+       ('Стихотворения и поэмы', 'Есенин С.А.', 650.00, 15);
+
+drop table ordering;
+--create table ordering as
+select author,
+       title,
+       (select avg(amount)
+        from book) as amount
+into ordering
 from book
 where amount <
-      (select
-      avg(amount)
+      (select avg(amount)
        from book);
-select * from ordering;
+select *
+from ordering;
 
 create table trip
 (
-    trip_id INT PRIMARY KEY Identity(1,1),
-    [name] varchar(30),
-    city varchar(25),
-    per_diem decimal(8,2),
+    trip_id    INT PRIMARY KEY Identity (1,1),
+    [name]     varchar(30),
+    city       varchar(25),
+    per_diem   decimal(8, 2),
     date_first date,
-    date_last date
+    date_last  date
 )
-insert into trip ([name],city,per_diem,date_first,date_last)
-values
-    ('Баранов П.Е.','Москва',700 , '2020-01-12', '2020-01-17'),
-    ('Абрамова К.А.','Владивосток',450 , '2020-01-14', '2020-01-27'),
-    ('Семенов И.В.','Москва',700 , '2020-01-23', '2020-01-31'),
-    ('Ильиных Г.Р.','Владивосток', 450, '2020-01-12', '2020-02-02'),
-    ('Колесов С.П.','Москва',700 , '2020-02-01', '2020-02-06'),
-    ('Баранов П.Е.','Москва', 700, '2020-02-14', '2020-02-22'),
-    ('Абрамова К.А.','Москва', 700, '2020-02-23', '2020-03-01'),
-    ('Лебедев Т.К.','Москва', 700, '2020-03-03', '2020-03-06'),
-    ('Колесов С.П.','Новосибирск',450 , '2020-02-27', '2020-03-12'),
-    ('Семенов И.В.','Санкт-Петербург',700 , '2020-03-29', '2020-04-05'),
-    ('Абрамова К.А.','Москва',700 , '2020-04-06', '2020-04-14'),
-    ('Баранов П.Е.','Новосибирск',450 , '2020-04-18', '2020-05-04'),
-    ('Лебедев Т.К.','Томск',450 , '2020-05-20', '2020-05-31'),
-    ('Семенов И.В.','Санкт-Петербург',700 , '2020-06-01', '2020-06-03'),
-    ('Абрамова К.А.','Санкт-Петербург', 700, '2020-05-28', '2020-06-04'),
-    ('Федорова А.Ю.','Новосибирск',450 , '2020-05-25', '2020-06-04'),
-    ('Колесов С.П.','Новосибирск', 450, '2020-06-03', '2020-06-12'),
-    ('Федорова А.Ю.','Томск', 450, '2020-06-20', '2020-06-26'),
-    ('Абрамова К.А.','Владивосток', 450, '2020-07-02', '2020-07-13'),
-    ('Баранов П.Е.','Воронеж', 450, '2020-07-19', '2020-07-25');
-select * from trip;
+insert into trip ([name], city, per_diem, date_first, date_last)
+values ('Баранов П.Е.', 'Москва', 700, '2020-01-12', '2020-01-17'),
+       ('Абрамова К.А.', 'Владивосток', 450, '2020-01-14', '2020-01-27'),
+       ('Семенов И.В.', 'Москва', 700, '2020-01-23', '2020-01-31'),
+       ('Ильиных Г.Р.', 'Владивосток', 450, '2020-01-12', '2020-02-02'),
+       ('Колесов С.П.', 'Москва', 700, '2020-02-01', '2020-02-06'),
+       ('Баранов П.Е.', 'Москва', 700, '2020-02-14', '2020-02-22'),
+       ('Абрамова К.А.', 'Москва', 700, '2020-02-23', '2020-03-01'),
+       ('Лебедев Т.К.', 'Москва', 700, '2020-03-03', '2020-03-06'),
+       ('Колесов С.П.', 'Новосибирск', 450, '2020-02-27', '2020-03-12'),
+       ('Семенов И.В.', 'Санкт-Петербург', 700, '2020-03-29', '2020-04-05'),
+       ('Абрамова К.А.', 'Москва', 700, '2020-04-06', '2020-04-14'),
+       ('Баранов П.Е.', 'Новосибирск', 450, '2020-04-18', '2020-05-04'),
+       ('Лебедев Т.К.', 'Томск', 450, '2020-05-20', '2020-05-31'),
+       ('Семенов И.В.', 'Санкт-Петербург', 700, '2020-06-01', '2020-06-03'),
+       ('Абрамова К.А.', 'Санкт-Петербург', 700, '2020-05-28', '2020-06-04'),
+       ('Федорова А.Ю.', 'Новосибирск', 450, '2020-05-25', '2020-06-04'),
+       ('Колесов С.П.', 'Новосибирск', 450, '2020-06-03', '2020-06-12'),
+       ('Федорова А.Ю.', 'Томск', 450, '2020-06-20', '2020-06-26'),
+       ('Абрамова К.А.', 'Владивосток', 450, '2020-07-02', '2020-07-13'),
+       ('Баранов П.Е.', 'Воронеж', 450, '2020-07-19', '2020-07-25');
+select *
+from trip;
 
 --1.6.1
-    select [name], city, per_diem, date_first, date_last
+select [name], city, per_diem, date_first, date_last
 from trip
 where [name] like '%а %'
 order by date_last DESC;
 
 --1.6.2
-    select distinct [name]
+select distinct [name]
 from trip
 where city like 'Москва'
-order by [name]ASC;
+order by [name] ASC;
 
 --1.6.3
-    select city, count(city) as 'Количество'
+select city, count(city) as 'Количество'
 from trip
 group by city
-    order by city ASC;
+order by city ASC;
 
 SELECT top 1 *
 FROM trip
-ORDER BY  date_first;
-    --LIMIT 1;
+ORDER BY date_first;
+--LIMIT 1;
 
 --1.6.4
-    select top 2 city, count(city) as 'Количество'
+select top 2 city, count(city) as 'Количество'
 from trip
 group by city
 order by Количество DESC;
 
 --1.6.5
-    select [name], city, datediff(day, date_first, date_last)+1
-        as 'Длительность'
+select [name],
+       city,
+       datediff(day, date_first, date_last) + 1
+           as 'Длительность'
 from trip
 where city not in ('Москва', 'Санкт-Петербург')
 order by Длительность DESC, city DESC;
 
 --1.6.6
-select * from trip;
+select *
+from trip;
 select name, city, date_first, date_last
 from trip
 where datediff(day, date_first, date_last) =
@@ -738,45 +741,50 @@ where datediff(day, date_first, date_last) =
        from trip);
 select name, city, date_first, date_last
 from trip
-where name like 'Семенов И.В.' and date_last like '2020-06-03';
+where name like 'Семенов И.В.'
+  and date_last like '2020-06-03';
 
 --1.6.7
-    select name, city, date_first, date_last
+select name, city, date_first, date_last
 from trip
-where month(date_first)=month(date_last)
+where month(date_first) = month(date_last)
 order by city, name;
 
 --1.6.8
-    select Format(date_first, N'MMMM', N'en-EN') as Месяц,
-           count(Format(date_first, N'MMMM', N'en-EN')) as Количество
+select Format(date_first, N'MMMM', N'en-EN')        as Месяц,
+       count(Format(date_first, N'MMMM', N'en-EN')) as Количество
 from trip
 group by Format(date_first, N'MMMM', N'en-EN')
 order by Количество desc, Месяц;
 
 --1.6.9
-    select name, city, date_first, (datediff(day, date_first, date_last)+1)*per_diem as Сумма
+select name, city, date_first, (datediff(day, date_first, date_last) + 1) * per_diem as Сумма
 from trip
-where month(date_first) = 2 or month(date_first) = 3
+where month(date_first) = 2
+   or month(date_first) = 3
 order by name, Сумма desc;
-select * from trip;
+select *
+from trip;
 
 --1.6.10
-select name, sum((datediff(day, date_first, date_last)+1)*per_diem) as Сумма
+select name, sum((datediff(day, date_first, date_last) + 1) * per_diem) as Сумма
 from trip
 group by name
-having count(name) >3
+having count(name) > 3
 order by Сумма desc;
 
 drop table fine, traffic_violation
 go
-create table fine(
-    fine_id int primary key identity (1, 1),
-    [name] VARCHAR(30),
-    number_plate VARCHAR(6),
-    violation VARCHAR(50),
-    sum_fine DECIMAL(8,2),
+create table fine
+(
+    fine_id        int primary key identity (1, 1),
+    [name]         VARCHAR(30),
+    number_plate   VARCHAR(6),
+    violation      VARCHAR(50),
+    sum_fine       DECIMAL(8, 2),
     date_violation date,
-    date_payment date)
+    date_payment   date
+)
 go
 insert into fine ([name], number_plate, violation, sum_fine, date_violation, date_payment)
 VALUES ('Баранов П.Е.', 'Р523ВТ', 'Превышение скорости(от 40 до 60)', 500.00, '2020-01-12', '2020-01-17'),
@@ -788,10 +796,11 @@ VALUES ('Баранов П.Е.', 'Р523ВТ', 'Превышение скорос
        ('Абрамова К.А.', 'О111АВ', 'Проезд на запрещающий сигнал', NULL, '2020-02-23', NULL),
        ('Яковлев Г.Р.', 'Т330ТТ', 'Проезд на запрещающий сигнал', NULL, '2020-03-03', NULL)
 go
-CREATE TABLE traffic_violation(
+CREATE TABLE traffic_violation
+(
     violation_id int PRIMARY KEY identity (1, 1),
-    violation varchar(50),
-    sum_fine decimal(8, 2)
+    violation    varchar(50),
+    sum_fine     decimal(8, 2)
 )
 go
 INSERT INTO traffic_violation (violation, sum_fine)
@@ -799,52 +808,64 @@ VALUES ('Превышение скорости(от 20 до 40)', 500),
        ('Превышение скорости(от 40 до 60)', 1000),
        ('Проезд на запрещающий сигнал', 1000);
 
-select * from fine;
-select * from traffic_violation;
+select *
+from fine;
+select *
+from traffic_violation;
 
-SELECT  f.name, f.number_plate, f.violation,
-iif(
-       f.sum_fine = tv.sum_fine, 'Стандартная сумма штрафа',
-    iif(
-           f.sum_fine < tv.sum_fine, 'Уменьшенная сумма штрафа', 'Увеличенная сумма штрафа'
-        )
-        ) AS description
-           FROM  fine f, traffic_violation tv
-           WHERE tv.violation = f.violation and f.sum_fine IS NOT Null;
+SELECT f.name,
+       f.number_plate,
+       f.violation,
+       iif(
+                   f.sum_fine = tv.sum_fine, 'Стандартная сумма штрафа',
+                   iif(
+                               f.sum_fine < tv.sum_fine, 'Уменьшенная сумма штрафа', 'Увеличенная сумма штрафа'
+                       )
+           ) AS description
+FROM fine f,
+     traffic_violation tv
+WHERE tv.violation = f.violation
+  and f.sum_fine IS NOT Null;
 
-select * from fine;
-select * from traffic_violation;
+select *
+from fine;
+select *
+from traffic_violation;
 
 --1.7.4
 update fine
 set fine.sum_fine = t.sum_fine
 from traffic_violation t
-where fine.sum_fine is null and fine.violation = t.violation;
-select * from fine;
+where fine.sum_fine is null
+  and fine.violation = t.violation;
+select *
+from fine;
 
 SELECT name, number_plate, violation, count(*)
 FROM fine
 GROUP BY name, number_plate, violation;
 
 --1.7.5
-    select name, number_plate, violation
+select name, number_plate, violation
 from fine
 group by name, number_plate, violation
-having count(violation)>1
+having count(violation) > 1
 order by name, number_plate, violation;
 
 --1.7.6
 --recreate fine table
 drop table fine
 go
-create table fine(
-    fine_id int primary key identity (1, 1),
-    [name] VARCHAR(30),
-    number_plate VARCHAR(6),
-    violation VARCHAR(50),
-    sum_fine DECIMAL(8,2),
+create table fine
+(
+    fine_id        int primary key identity (1, 1),
+    [name]         VARCHAR(30),
+    number_plate   VARCHAR(6),
+    violation      VARCHAR(50),
+    sum_fine       DECIMAL(8, 2),
     date_violation date,
-    date_payment date)
+    date_payment   date
+)
 go
 insert into fine ([name], number_plate, violation, sum_fine, date_violation, date_payment)
 VALUES ('Баранов П.Е.', 'Р523ВТ', 'Превышение скорости(от 40 до 60)', 500.00, '2020-01-12', '2020-01-17'),
@@ -859,67 +880,75 @@ go
 update fine
 set fine.sum_fine = t.sum_fine
 from traffic_violation t
-where fine.sum_fine is null and fine.violation = t.violation;
+where fine.sum_fine is null
+  and fine.violation = t.violation;
 --create temporary table
-select [name], number_plate, violation into temp_table from fine group by name, number_plate, violation
-having count(*)>1
+select [name], number_plate, violation
+into temp_table
+from fine
+group by name, number_plate, violation
+having count(*) > 1
 order by name, number_plate, violation;
 --update fine table with temporary table values
 update fine
-set sum_fine=sum_fine*2
+set sum_fine=sum_fine * 2
 from temp_table t
-where
-    date_payment is null and
-    fine.name = t.name and
-    fine.number_plate = t.number_plate and
-    fine.violation = t.violation;
+where date_payment is null
+  and fine.name = t.name
+  and fine.number_plate = t.number_plate
+  and fine.violation = t.violation;
 --get rid of temp table
 drop table temp_table;
 --check
-select * from fine;
-select * from temp_table;
+select *
+from fine;
+select *
+from temp_table;
 --create payment table
-create table payment(
-    payment_id int primary key identity (1,1),
-    [name]           varchar(30)   null,
-    number_plate   varchar(6)    null,
-    violation      varchar(50)   null,
-    date_violation date          null,
-    date_payment   date          null
+create table payment
+(
+    payment_id     int primary key identity (1,1),
+    [name]         varchar(30) null,
+    number_plate   varchar(6)  null,
+    violation      varchar(50) null,
+    date_violation date        null,
+    date_payment   date        null
 )
 go
 INSERT INTO payment([name], number_plate, violation, date_violation, date_payment)
-VALUES
-    ('Яковлев Г.Р.', 'М701АА', 'Превышение скорости(от 20 до 40)', '2020-01-12', '2020-01-22'),
-    ('Баранов П.Е.', 'Р523ВТ', 'Превышение скорости(от 40 до 60)', '2020-02-14', '2020-03-06'),
-    ('Яковлев Г.Р.', 'Т330ТТ', 'Проезд на запрещающий сигнал', '2020-03-03', '2020-03-23');
+VALUES ('Яковлев Г.Р.', 'М701АА', 'Превышение скорости(от 20 до 40)', '2020-01-12', '2020-01-22'),
+       ('Баранов П.Е.', 'Р523ВТ', 'Превышение скорости(от 40 до 60)', '2020-02-14', '2020-03-06'),
+       ('Яковлев Г.Р.', 'Т330ТТ', 'Проезд на запрещающий сигнал', '2020-03-03', '2020-03-23');
 --1.7.7
 update fine
-set sum_fine = iif(datediff(day, p.date_violation, p.date_payment)<=20, sum_fine/2, sum_fine),
+set sum_fine          = iif(datediff(day, p.date_violation, p.date_payment) <= 20, sum_fine / 2, sum_fine),
     fine.date_payment = p.date_payment
 from payment p
-where fine.date_payment is null and
-        fine.name = p.name and
-        fine.number_plate = p.number_plate and
-        fine.violation = p.violation;
+where fine.date_payment is null
+  and fine.name = p.name
+  and fine.number_plate = p.number_plate
+  and fine.violation = p.violation;
 
 --1.7.8
 --create back_payment table
-select [name], number_plate, violation, sum_fine, date_violation into back_payment
+select [name], number_plate, violation, sum_fine, date_violation
+into back_payment
 from fine
 where date_payment is null;
 
 --pre steps
 drop table fine
 go
-create table fine(
-    fine_id int primary key identity (1, 1),
-    [name] VARCHAR(30),
-    number_plate VARCHAR(6),
-    violation VARCHAR(50),
-    sum_fine DECIMAL(8,2),
+create table fine
+(
+    fine_id        int primary key identity (1, 1),
+    [name]         VARCHAR(30),
+    number_plate   VARCHAR(6),
+    violation      VARCHAR(50),
+    sum_fine       DECIMAL(8, 2),
     date_violation date,
-    date_payment date)
+    date_payment   date
+)
 go
 insert into fine ([name], number_plate, violation, sum_fine, date_violation, date_payment)
 VALUES ('Баранов П.Е.', 'Р523ВТ', 'Превышение скорости(от 40 до 60)', 500.00, '2020-01-12', '2020-01-17'),
@@ -934,253 +963,314 @@ go
 update fine
 set fine.sum_fine = t.sum_fine
 from traffic_violation t
-where fine.sum_fine is null and fine.violation = t.violation
+where fine.sum_fine is null
+  and fine.violation = t.violation
 go
 --create temporary table
-select [name], number_plate, violation into temp_table from fine group by name, number_plate, violation
-having count(*)>1
+select [name], number_plate, violation
+into temp_table
+from fine
+group by name, number_plate, violation
+having count(*) > 1
 order by name, number_plate, violation;
 --update fine table with temporary table values
 update fine
-set sum_fine=sum_fine*2
+set sum_fine=sum_fine * 2
 from temp_table t
-where
-    date_payment is null and
-        fine.name = t.name and
-        fine.number_plate = t.number_plate and
-        fine.violation = t.violation;
+where date_payment is null
+  and fine.name = t.name
+  and fine.number_plate = t.number_plate
+  and fine.violation = t.violation;
 --get rid of temp table
 drop table temp_table
 go
 --decrease fines
 update fine
-set sum_fine = iif(datediff(day, p.date_violation, p.date_payment)<=20, sum_fine/2, sum_fine),
+set sum_fine          = iif(datediff(day, p.date_violation, p.date_payment) <= 20, sum_fine / 2, sum_fine),
     fine.date_payment = p.date_payment
 from payment p
-where fine.date_payment is null and
-        fine.name = p.name and
-        fine.number_plate = p.number_plate and
-        fine.violation = p.violation;
+where fine.date_payment is null
+  and fine.name = p.name
+  and fine.number_plate = p.number_plate
+  and fine.violation = p.violation;
 --1.7.9
-delete from fine
+delete
+from fine
 where date_violation < '2020-02-01'
 DBCC CHECKIDENT (fine, RESEED, 0);
 
-select * from fine;
+select *
+from fine;
 
 --2.1.6
-create table author(
-    author_id int primary key identity (1, 1),
+create table author
+(
+    author_id   int primary key identity (1, 1),
     name_author varchar(50)
 );
 --2.1.7
 INSERT INTO author (name_author)
-VALUES ('Булгаков М.А.'), ('Достоевский Ф.М.'), ('Есенин С.А.'), ('Пастернак Б.Л.');
+VALUES ('Булгаков М.А.'),
+       ('Достоевский Ф.М.'),
+       ('Есенин С.А.'),
+       ('Пастернак Б.Л.');
 
 --2.1.8
 drop table book
 go
-create table book (
-    book_id INT PRIMARY KEY identity (1,1),
-    title varchar(50),
-    author_id int not null ,
-    genre_id int not null ,
-    price decimal(8,2),
-    amount int,
-    foreign key (author_id)  references author (author_id),
-    foreign key (genre_id)  references genre (genre_id)
+create table book
+(
+    book_id   INT PRIMARY KEY identity (1,1),
+    title     varchar(50),
+    author_id int not null,
+    genre_id  int not null,
+    price     decimal(8, 2),
+    amount    int,
+    foreign key (author_id) references author (author_id),
+    foreign key (genre_id) references genre (genre_id)
 );
 
-select * from author;
+select *
+from author;
 drop table book;
-CREATE TABLE book (
-                      book_id INT PRIMARY KEY identity (1,1),
-                      title VARCHAR(50),
-                      author_id INT NOT NULL,
-                      price DECIMAL(8,2),
-                      amount INT,
-                      FOREIGN KEY (author_id)  REFERENCES author (author_id) ON DELETE CASCADE
+CREATE TABLE book
+(
+    book_id   INT PRIMARY KEY identity (1,1),
+    title     VARCHAR(50),
+    author_id INT NOT NULL,
+    price     DECIMAL(8, 2),
+    amount    INT,
+    FOREIGN KEY (author_id) REFERENCES author (author_id) ON DELETE CASCADE
 );
-select * from book;
+select *
+from book;
 
 --2.1.9
 drop table book
 go
-create table book (
-    book_id INT PRIMARY KEY identity (1,1),
-    title varchar(50),
-    author_id int not null ,
-    genre_id int,
-    price decimal(8,2),
-    amount int,
-    foreign key (author_id)  references author (author_id) on delete cascade,
-    foreign key (genre_id)  references genre (genre_id) on delete set null
+create table book
+(
+    book_id   INT PRIMARY KEY identity (1,1),
+    title     varchar(50),
+    author_id int not null,
+    genre_id  int,
+    price     decimal(8, 2),
+    amount    int,
+    foreign key (author_id) references author (author_id) on delete cascade,
+    foreign key (genre_id) references genre (genre_id) on delete set null
 );
-select * from author;
-select * from genre;
-select * from book;
+select *
+from author;
+select *
+from genre;
+select *
+from book;
 insert into genre(name_genre)
 values ('Роман'),
-        ('Поэзия');
+       ('Поэзия');
 --2.1.10
 insert into book(title, author_id, genre_id, price, amount)
-values ('Мастер и Маргарита',1,1,670.99,3),
-       ('Белая гвардия',1,1,540.50,5),
-       ('Идиот',2,1,460.00,10),
-       ('Братья Карамазовы',2,1,799.01,3),
-       ('Игрок',2,1,480.50,10),
-       ('Стихотворения и поэмы',3,2,650.00,15);
-select * from book;
+values ('Мастер и Маргарита', 1, 1, 670.99, 3),
+       ('Белая гвардия', 1, 1, 540.50, 5),
+       ('Идиот', 2, 1, 460.00, 10),
+       ('Братья Карамазовы', 2, 1, 799.01, 3),
+       ('Игрок', 2, 1, 480.50, 10),
+       ('Стихотворения и поэмы', 3, 2, 650.00, 15);
+select *
+from book;
 --2.1.11
 drop table book
 go
-create table book (
-    book_id INT PRIMARY KEY identity (1,1),
-    title varchar(50),
-    author_id int not null ,
-    genre_id int,
-    price decimal(8,2),
-    amount int,
-    foreign key (author_id)  references author (author_id) on delete cascade,
-    foreign key (genre_id)  references genre (genre_id) on delete set null
-)go
+create table book
+(
+    book_id   INT PRIMARY KEY identity (1,1),
+    title     varchar(50),
+    author_id int not null,
+    genre_id  int,
+    price     decimal(8, 2),
+    amount    int,
+    foreign key (author_id) references author (author_id) on delete cascade,
+    foreign key (genre_id) references genre (genre_id) on delete set null
+)
+go
 insert into book(title, author_id, genre_id, price, amount)
-values ('Мастер и Маргарита',1,1,670.99,3),
-       ('Белая гвардия',1,1,540.50,5),
-       ('Идиот',2,1,460.00,10),
-       ('Братья Карамазовы',2,1,799.01,3),
-       ('Игрок',2,1,480.50,10),
-       ('Стихотворения и поэмы',3,2,650.00,15),
-       ('Черный человек',3,2,570.20,6),
-       ('Лирика',4,2,518.99,2);
-select * from book;
+values ('Мастер и Маргарита', 1, 1, 670.99, 3),
+       ('Белая гвардия', 1, 1, 540.50, 5),
+       ('Идиот', 2, 1, 460.00, 10),
+       ('Братья Карамазовы', 2, 1, 799.01, 3),
+       ('Игрок', 2, 1, 480.50, 10),
+       ('Стихотворения и поэмы', 3, 2, 650.00, 15),
+       ('Черный человек', 3, 2, 570.20, 6),
+       ('Лирика', 4, 2, 518.99, 2);
+select *
+from book;
 --2.2
-drop table book, genre, author go
-create table genre(genre_id int primary key identity (1, 1), name_genre varchar(30)) go
-create table author(author_id int primary key identity (1, 1), name_author varchar(50)) go
+drop table book, genre, author
+go
+create table genre
+(
+    genre_id   int primary key identity (1, 1),
+    name_genre varchar(30)
+)
+go
+create table author
+(
+    author_id   int primary key identity (1, 1),
+    name_author varchar(50)
+)
+go
 insert into genre(name_genre)
-values ('Роман'), ('Поэзия'), ('Приключения') go
+values ('Роман'),
+       ('Поэзия'),
+       ('Приключения')
+go
 insert into author (name_author)
-values ('Булгаков М.А.'), ('Достоевский Ф.М.'), ('Есенин С.А.'), ('Пастернак Б.Л.'), ('Лермонтов М.Ю.') go
-create table book (
-book_id INT PRIMARY KEY identity (1,1),
-title varchar(50),
-author_id int not null ,
-genre_id int,
-price decimal(8,2),
-amount int,
-foreign key (author_id)  references author (author_id) on delete cascade,
-foreign key (genre_id)  references genre (genre_id) on delete set null) go
+values ('Булгаков М.А.'),
+       ('Достоевский Ф.М.'),
+       ('Есенин С.А.'),
+       ('Пастернак Б.Л.'),
+       ('Лермонтов М.Ю.')
+go
+create table book
+(
+    book_id   INT PRIMARY KEY identity (1,1),
+    title     varchar(50),
+    author_id int not null,
+    genre_id  int,
+    price     decimal(8, 2),
+    amount    int,
+    foreign key (author_id) references author (author_id) on delete cascade,
+    foreign key (genre_id) references genre (genre_id) on delete set null
+)
+go
 insert into book(title, author_id, genre_id, price, amount)
-values ('Мастер и Маргарита',1,1,670.99,3),
-       ('Белая гвардия',1,1,540.50,5),
-       ('Идиот',2,1,460.00,10),
-       ('Братья Карамазовы',2,1,799.01,3),
-       ('Игрок',2,1,480.50,10),
-       ('Стихотворения и поэмы',3,2,650.00,15),
-       ('Черный человек',3,2,570.20,6),
-       ('Лирика',4,2,518.99,2);
+values ('Мастер и Маргарита', 1, 1, 670.99, 3),
+       ('Белая гвардия', 1, 1, 540.50, 5),
+       ('Идиот', 2, 1, 460.00, 10),
+       ('Братья Карамазовы', 2, 1, 799.01, 3),
+       ('Игрок', 2, 1, 480.50, 10),
+       ('Стихотворения и поэмы', 3, 2, 650.00, 15),
+       ('Черный человек', 3, 2, 570.20, 6),
+       ('Лирика', 4, 2, 518.99, 2);
 --2.2.1
 SELECT title, name_author
-FROM
-    author a INNER JOIN book b
-                      ON a.author_id = b.author_id;
-select * from book;
+FROM author a
+         INNER JOIN book b
+                    ON a.author_id = b.author_id;
+select *
+from book;
 
-select title,name_genre,price
+select title, name_genre, price
 from book b
-inner join genre g on b.genre_id = g.genre_id
-where amount>8
+         inner join genre g on b.genre_id = g.genre_id
+where amount > 8
 order by price desc;
 --2.2.2
 SELECT name_author, title
-FROM author a LEFT JOIN book b
-                      ON a.author_id = b.author_id
+FROM author a
+         LEFT JOIN book b
+                   ON a.author_id = b.author_id
 ORDER BY name_author;
 
 select name_genre
-from book b right join genre g on b.genre_id = g.genre_id
+from book b
+         right join genre g on b.genre_id = g.genre_id
 where title is null
 select name_genre
-from genre g  left join book b on g.genre_id = b.genre_id
+from genre g
+         left join book b on g.genre_id = b.genre_id
 where title is null
 --2.2.3
 SELECT name_author, name_genre
-FROM
-    author, genre;
-create table city (city_id int primary key identity (1,1),name_city varchar(30))go
-insert into city(name_city) values ('Москва'), ('Санкт-Петербург'), ('Владивосток')go
-select * from city;
+FROM author,
+     genre;
+create table city
+(
+    city_id   int primary key identity (1,1),
+    name_city varchar(30)
+)
+go
+insert into city(name_city)
+values ('Москва'),
+       ('Санкт-Петербург'),
+       ('Владивосток')
+go
+select *
+from city;
 
-select name_city,name_author, dateadd(day, floor(rand()*365), '2020-01-01') as Дата
-from  city, author
+select name_city, name_author, dateadd(day, floor(rand() * 365), '2020-01-01') as Дата
+from city,
+     author
 order by name_city, Дата desc;
 --2.2.4
 SELECT title, name_author, name_genre, price, amount
-FROM
-    author
-        INNER JOIN  book b ON author.author_id = b.author_id
-        INNER JOIN genre g ON g.genre_id = b.genre_id
+FROM author
+         INNER JOIN book b ON author.author_id = b.author_id
+         INNER JOIN genre g ON g.genre_id = b.genre_id
 WHERE price BETWEEN 500 AND 700;
 
 select name_genre, title, name_author
 from genre g
-inner join book b on g.genre_id = b.genre_id
-inner join author a on b.author_id = a.author_id
+         inner join book b on g.genre_id = b.genre_id
+         inner join author a on b.author_id = a.author_id
 where name_genre like 'Роман'
 order by title;
 --2.2.5
 SELECT name_author, count(title) AS Количество
-FROM
-    author INNER JOIN book b
-                      on author.author_id = b.author_id
+FROM author
+         INNER JOIN book b
+                    on author.author_id = b.author_id
 GROUP BY name_author
 ORDER BY name_author;
 SELECT name_author, count(title) AS Количество
-FROM
-    author LEFT JOIN book b
-                     on author.author_id = b.author_id
+FROM author
+         LEFT JOIN book b
+                   on author.author_id = b.author_id
 GROUP BY name_author
 ORDER BY name_author;
 --2.2.6
 select name_author, sum(amount) as Количество
-from author a left join book b
-    on a.author_id = b.author_id
+from author a
+         left join book b
+                   on a.author_id = b.author_id
 group by name_author
-having sum(amount)<10 or sum(amount) is null
+having sum(amount) < 10
+    or sum(amount) is null
 order by Количество;
-select * from book;
+select *
+from book;
 --2.2.7
-SELECT b.author_id, SUM(amount) AS sum_amount FROM book b GROUP BY b.author_id;
+SELECT b.author_id, SUM(amount) AS sum_amount
+FROM book b
+GROUP BY b.author_id;
 SELECT MAX(sum_amount) AS max_sum_amount
-FROM
-    (
-        SELECT b.author_id, SUM(amount) AS sum_amount
-        FROM book b
-        GROUP BY b.author_id
-    ) query_in;
+FROM (SELECT b.author_id, SUM(amount) AS sum_amount
+      FROM book b
+      GROUP BY b.author_id) query_in;
 SELECT name_author, SUM(amount) as Количество
-FROM
-    author a INNER JOIN book b
-                      on a.author_id = b.author_id
+FROM author a
+         INNER JOIN book b
+                    on a.author_id = b.author_id
 GROUP BY name_author;
 SELECT name_author, SUM(amount) as Количество
-FROM
-    author a INNER JOIN book b
-                      on a.author_id = b.author_id
+FROM author a
+         INNER JOIN book b
+                    on a.author_id = b.author_id
 GROUP BY name_author
 HAVING SUM(amount) =
        (/* вычисляем максимальное из общего количества книг каждого автора */
            SELECT MAX(sum_amount) AS max_sum_amount
-           FROM
-               (/* считаем количество книг каждого автора */
-                   SELECT author_id, SUM(amount) AS sum_amount
-                   FROM book GROUP BY author_id
-               ) query_in --обязательно задать имя, в противном случае не работает
+           FROM (/* считаем количество книг каждого автора */
+                    SELECT author_id, SUM(amount) AS sum_amount
+                    FROM book
+                    GROUP BY author_id) query_in --обязательно задать имя, в противном случае не работает
        );
-select * from genre;
-select * from author;
-select * from book;
+select *
+from genre;
+select *
+from author;
+select *
+from book;
 update book
 set genre_id = 3
 where book_id = 2
@@ -1190,257 +1280,334 @@ set genre_id = 1
 where book_id = 7;
 --отбираем только тех авторов у которых количество жанров не превышает 1
 select name_author
-from
-       (--вычисляем общее количество жанров каждого автора
-           select name_author, count(name_author) AS Количество_Жанров
-           from
-               (--объединяем книги одинаковых жанров по авторам
-                   select a.name_author, count(name_genre) AS book_same_genre
-                   from genre g
-                       inner join book b on g.genre_id = b.genre_id
-                       inner join author a on b.author_id = a.author_id
-                   group by a.name_author, name_genre
-               ) one
-           group by name_author
-       ) two
+from (--вычисляем общее количество жанров каждого автора
+         select name_author, count(name_author) AS Количество_Жанров
+         from (--объединяем книги одинаковых жанров по авторам
+                  select a.name_author, count(name_genre) AS book_same_genre
+                  from genre g
+                           inner join book b on g.genre_id = b.genre_id
+                           inner join author a on b.author_id = a.author_id
+                  group by a.name_author, name_genre) one
+         group by name_author) two
 group by name_author, Количество_Жанров
 having Количество_Жанров = 1;
-select * from book;
+select *
+from book;
 --2.2.8
 update book
 set amount = 10
-where book_id=8 go
-select * from book;
+where book_id = 8
+go
+select *
+from book;
 insert into book (title, author_id, genre_id, price, amount)
-values ('Герой нашего времени', 5,3,570.59,2),
-       ('Доктор Живаго', 4,3,740.5,5) go
-select * from book;
+values ('Герой нашего времени', 5, 3, 570.59, 2),
+       ('Доктор Живаго', 4, 3, 740.5, 5)
+go
+select *
+from book;
 SELECT top 1 b.genre_id, SUM(amount) AS sum_amount
 FROM book b
 GROUP BY b.genre_id
 ORDER BY sum_amount DESC;
-select * from genre;
-select * from author;
-select * from book;
+select *
+from genre;
+select *
+from author;
+select *
+from book;
 SELECT query_in_1.genre_id
-FROM
-    (/* выбираем код жанра и количество произведений, относящихся к нему */
-        SELECT b.genre_id, SUM(amount) AS sum_amount
-        FROM book b
-        GROUP BY b.genre_id
-    )query_in_1
-        INNER JOIN
-    (/* выбираем запись, в которой указан код жанр с максимальным количеством книг */
-        SELECT top 1 b.genre_id, SUM(amount) AS sum_amount
-        FROM book b
-        GROUP BY b.genre_id
-        ORDER BY sum_amount DESC
-    ) query_in_2
-    ON query_in_1.sum_amount= query_in_2.sum_amount;
-SELECT  name_author, name_genre
-FROM
-    author
-        INNER JOIN book b ON author.author_id = b.author_id
-        INNER JOIN genre ON  b.genre_id = genre.genre_id
-GROUP BY name_author,name_genre, genre.genre_id
+FROM (/* выбираем код жанра и количество произведений, относящихся к нему */
+         SELECT b.genre_id, SUM(amount) AS sum_amount
+         FROM book b
+         GROUP BY b.genre_id) query_in_1
+         INNER JOIN
+     (/* выбираем запись, в которой указан код жанр с максимальным количеством книг */
+         SELECT top 1 b.genre_id, SUM(amount) AS sum_amount
+         FROM book b
+         GROUP BY b.genre_id
+         ORDER BY sum_amount DESC) query_in_2
+     ON query_in_1.sum_amount = query_in_2.sum_amount;
+SELECT name_author, name_genre
+FROM author
+         INNER JOIN book b ON author.author_id = b.author_id
+         INNER JOIN genre ON b.genre_id = genre.genre_id
+GROUP BY name_author, name_genre, genre.genre_id
 HAVING genre.genre_id IN
        (/* выбираем автора, если он пишет книги в самых популярных жанрах*/
            SELECT query_in_1.genre_id
-           FROM
-               ( /* выбираем код жанра и количество произведений, относящихся к нему */
-                   SELECT genre_id, SUM(amount) AS sum_amount
-                   FROM book
-                   GROUP BY genre_id
-               )query_in_1
-                   INNER JOIN
-               ( /* выбираем запись, в которой указан код жанр с максимальным количеством книг */
-                   SELECT top 1 genre_id, SUM(amount) AS sum_amount
-                   FROM book
-                   GROUP BY genre_id
-                   ORDER BY sum_amount DESC
-               ) query_in_2
-               ON query_in_1.sum_amount= query_in_2.sum_amount
-       );
+           FROM ( /* выбираем код жанра и количество произведений, относящихся к нему */
+                    SELECT genre_id, SUM(amount) AS sum_amount
+                    FROM book
+                    GROUP BY genre_id) query_in_1
+                    INNER JOIN
+                ( /* выбираем запись, в которой указан код жанр с максимальным количеством книг */
+                    SELECT top 1 genre_id, SUM(amount) AS sum_amount
+                    FROM book
+                    GROUP BY genre_id
+                    ORDER BY sum_amount DESC) query_in_2
+                ON query_in_1.sum_amount = query_in_2.sum_amount);
 
-select * from genre;
-select * from author;
-select * from book;
-drop table book, genre, author go
-create table genre(genre_id int primary key identity (1, 1), name_genre varchar(30)) go
-create table author(author_id int primary key identity (1, 1), name_author varchar(50)) go
+select *
+from genre;
+select *
+from author;
+select *
+from book;
+drop table book, genre, author
+go
+create table genre
+(
+    genre_id   int primary key identity (1, 1),
+    name_genre varchar(30)
+)
+go
+create table author
+(
+    author_id   int primary key identity (1, 1),
+    name_author varchar(50)
+)
+go
 insert into genre(name_genre)
-values ('Роман'), ('Поэзия'), ('Приключения') go
+values ('Роман'),
+       ('Поэзия'),
+       ('Приключения')
+go
 insert into author (name_author)
-values ('Булгаков М.А.'), ('Достоевский Ф.М.'), ('Есенин С.А.'), ('Пастернак Б.Л.'), ('Лермонтов М.Ю.') go
-create table book (
-                      book_id INT PRIMARY KEY identity (1,1),
-                      title varchar(50),
-                      author_id int not null ,
-                      genre_id int,
-                      price decimal(8,2),
-                      amount int,
-                      foreign key (author_id)  references author (author_id) on delete cascade,
-                      foreign key (genre_id)  references genre (genre_id) on delete set null) go
+values ('Булгаков М.А.'),
+       ('Достоевский Ф.М.'),
+       ('Есенин С.А.'),
+       ('Пастернак Б.Л.'),
+       ('Лермонтов М.Ю.')
+go
+create table book
+(
+    book_id   INT PRIMARY KEY identity (1,1),
+    title     varchar(50),
+    author_id int not null,
+    genre_id  int,
+    price     decimal(8, 2),
+    amount    int,
+    foreign key (author_id) references author (author_id) on delete cascade,
+    foreign key (genre_id) references genre (genre_id) on delete set null
+)
+go
 insert into book(title, author_id, genre_id, price, amount)
-values ('Мастер и Маргарита',1,1,670.99,3),
-       ('Белая гвардия',1,1,540.50,5),
-       ('Братья Карамазовы',2,1,799.01,3),
-       ('Игрок',2,1,480.50,10),
-       ('Стихотворения и поэмы',3,2,650.00,15),
-       ('Черный человек',3,2,570.20,6),
-       ('Лирика',4,2,518.99,10),
-       ('Идиот',2,1,460.00,10),
-       ('Герой нашего времени',5,3,570.59,2),
-       ('Доктор Живаго',4,3,740.50,5)go
-select * from book;
+values ('Мастер и Маргарита', 1, 1, 670.99, 3),
+       ('Белая гвардия', 1, 1, 540.50, 5),
+       ('Братья Карамазовы', 2, 1, 799.01, 3),
+       ('Игрок', 2, 1, 480.50, 10),
+       ('Стихотворения и поэмы', 3, 2, 650.00, 15),
+       ('Черный человек', 3, 2, 570.20, 6),
+       ('Лирика', 4, 2, 518.99, 10),
+       ('Идиот', 2, 1, 460.00, 10),
+       ('Герой нашего времени', 5, 3, 570.59, 2),
+       ('Доктор Живаго', 4, 3, 740.50, 5)
+go
+select *
+from book;
 
 select title, name_author, name_genre, price, amount
 from book b
-    inner join genre g on b.genre_id = g.genre_id
-    inner join author a on b.author_id = a.author_id
+         inner join genre g on b.genre_id = g.genre_id
+         inner join author a on b.author_id = a.author_id
 group by title, name_author, name_genre, price, amount, g.genre_id
 having g.genre_id in
-(
-select one.genre_id
-    from
-(SELECT b.genre_id, SUM(amount) AS sum_amount
-FROM book b
-GROUP BY b.genre_id) one
-inner join
-(SELECT top 1 SUM(amount) AS sum_amount
-FROM book b
-GROUP BY b.genre_id
-order by b.genre_id) two
-on one.sum_amount=two.sum_amount
-)
+       (select one.genre_id
+        from (SELECT b.genre_id, SUM(amount) AS sum_amount
+              FROM book b
+              GROUP BY b.genre_id) one
+                 inner join
+             (SELECT top 1 SUM(amount) AS sum_amount
+              FROM book b
+              GROUP BY b.genre_id
+              order by b.genre_id) two
+             on one.sum_amount = two.sum_amount)
 order by title;
 --2.2.9
 SELECT title, name_author, a.author_id /* явно указать таблицу - обязательно */
-FROM
-    author a INNER JOIN book b
-                      ON a.author_id = b.author_id;
+FROM author a
+         INNER JOIN book b
+                    ON a.author_id = b.author_id;
 /*SELECT title, name_author, author_id /* имя таблицы, из которой берется author_id, указывать не обязательно*/
 FROM
     author INNER JOIN book
         USING(author_id);*/ -- в MS SQL не работает
-select * from supply;
-select * from book;
+select *
+from supply;
+select *
+from book;
 
 drop table book, genre, author
 go
-create table supply (
-supply_id INT PRIMARY KEY identity (1,1),
-title varchar(50),
-author varchar(50),
-price decimal(8,2),
-amount int)
+create table supply
+(
+    supply_id INT PRIMARY KEY identity (1,1),
+    title     varchar(50),
+    author    varchar(50),
+    price     decimal(8, 2),
+    amount    int
+)
 go
 insert into supply(title, author, price, amount)
-values ('Доктор Живаго','Пастернак Б.Л.', 618.99,3),
-       ('Черный человек',' Есенин С.А.', 570.20,6),
-       ('Евгений Онегин','Пушкин А.С.', 440.80,5),
-       ('Идиот','Достоевский Ф.М.', 360.80,3)
+values ('Доктор Живаго', 'Пастернак Б.Л.', 618.99, 3),
+       ('Черный человек', ' Есенин С.А.', 570.20, 6),
+       ('Евгений Онегин', 'Пушкин А.С.', 440.80, 5),
+       ('Идиот', 'Достоевский Ф.М.', 360.80, 3)
 go
-create table author(author_id int primary key identity (1, 1), name_author varchar(50))
+create table author
+(
+    author_id   int primary key identity (1, 1),
+    name_author varchar(50)
+)
 go
 insert into author (name_author)
-values ('Булгаков М.А.'), ('Достоевский Ф.М.'), ('Есенин С.А.'), ('Пастернак Б.Л.'), ('Лермонтов М.Ю.')
+values ('Булгаков М.А.'),
+       ('Достоевский Ф.М.'),
+       ('Есенин С.А.'),
+       ('Пастернак Б.Л.'),
+       ('Лермонтов М.Ю.')
 go
-create table book (
-book_id INT PRIMARY KEY identity (1,1),
-title varchar(50),
-author_id int not null ,
-genre_id int,
-price decimal(8,2),
-amount int,
-foreign key (author_id)  references author (author_id) on delete cascade)
+create table book
+(
+    book_id   INT PRIMARY KEY identity (1,1),
+    title     varchar(50),
+    author_id int not null,
+    genre_id  int,
+    price     decimal(8, 2),
+    amount    int,
+    foreign key (author_id) references author (author_id) on delete cascade
+)
 go
 insert into book(title, author_id, genre_id, price, amount)
-values ('Мастер и Маргарита',1,1,670.99,3),
-       ('Белая гвардия',1,1,540.50,5),
-       ('Идиот',2,1,460.00,10),
-       ('Братья Карамазовы',2,1,799.01,3),
-       ('Игрок',2,1,480.50,10),
-       ('Стихотворения и поэмы',3,2,650.00,15),
-       ('Черный человек',3,2,570.20,6),
-       ('Лирика',4,2,518.99,10)
+values ('Мастер и Маргарита', 1, 1, 670.99, 3),
+       ('Белая гвардия', 1, 1, 540.50, 5),
+       ('Идиот', 2, 1, 460.00, 10),
+       ('Братья Карамазовы', 2, 1, 799.01, 3),
+       ('Игрок', 2, 1, 480.50, 10),
+       ('Стихотворения и поэмы', 3, 2, 650.00, 15),
+       ('Черный человек', 3, 2, 570.20, 6),
+       ('Лирика', 4, 2, 518.99, 10)
 go
-select * from supply;
-select * from author;
-select * from book;
+select *
+from supply;
+select *
+from author;
+select *
+from book;
 
-select b.title as Название, a.name_author as Автор, (b.amount)+(s.amount) as Количество
+select b.title as Название, a.name_author as Автор, (b.amount) + (s.amount) as Количество
 from book b
-inner join author a
-on b.author_id=a.author_id
-inner join supply s
-on b.title=s.title
+         inner join author a
+                    on b.author_id = a.author_id
+         inner join supply s
+                    on b.title = s.title
 group by b.title, a.name_author, b.amount, s.amount
 having b.title in
-(
-select one.title from
-(
-select s.title, s.price
-from supply s
-    inner join book b
-        on s.title = b.title
-group by s.title, s.price
-) one
-    inner join
-(
-select b.title, b.price
-from book b
-    inner join supply s
-        on b.price = s.price
-group by b.title, b.price
-) two
-      on one.title=two.title
-)
+       (select one.title
+        from (select s.title, s.price
+              from supply s
+                       inner join book b
+                                  on s.title = b.title
+              group by s.title, s.price) one
+                 inner join
+             (select b.title, b.price
+              from book b
+                       inner join supply s
+                                  on b.price = s.price
+              group by b.title, b.price) two
+             on one.title = two.title)
 order by b.title;
 --2.3.1
-select * from author;
-select * from genre;
-select * from book;
-select * from supply;
+select *
+from author;
+select *
+from genre;
+select *
+from book;
+select *
+from supply;
 drop table if exists book,genre,author,supply
 go
-create table genre(genre_id int primary key identity (1, 1), name_genre varchar(30)) go
-create table author(author_id int primary key identity (1, 1), name_author varchar(50)) go
-create table supply (supply_id INT PRIMARY KEY identity (1,1),title varchar(50),author varchar(50),price decimal(8,2),amount int)go
-create table book (book_id INT PRIMARY KEY identity (1,1),title varchar(50),author_id int not null,genre_id int,price decimal(8,2),amount int,foreign key (author_id)  references author (author_id) on delete cascade,foreign key (genre_id)  references genre (genre_id) on delete set null)
+create table genre
+(
+    genre_id   int primary key identity (1, 1),
+    name_genre varchar(30)
+)
+go
+create table author
+(
+    author_id   int primary key identity (1, 1),
+    name_author varchar(50)
+)
+go
+create table supply
+(
+    supply_id INT PRIMARY KEY identity (1,1),
+    title     varchar(50),
+    author    varchar(50),
+    price     decimal(8, 2),
+    amount    int
+)
+go
+create table book
+(
+    book_id   INT PRIMARY KEY identity (1,1),
+    title     varchar(50),
+    author_id int not null,
+    genre_id  int,
+    price     decimal(8, 2),
+    amount    int,
+    foreign key (author_id) references author (author_id) on delete cascade,
+    foreign key (genre_id) references genre (genre_id) on delete set null
+)
 go
 insert into genre(name_genre)
-values ('Роман'), ('Поэзия'), ('Приключения') go
+values ('Роман'),
+       ('Поэзия'),
+       ('Приключения')
+go
 insert into author (name_author)
-values ('Булгаков М.А.'), ('Достоевский Ф.М.'), ('Есенин С.А.'), ('Пастернак Б.Л.'), ('Лермонтов М.Ю.') go
+values ('Булгаков М.А.'),
+       ('Достоевский Ф.М.'),
+       ('Есенин С.А.'),
+       ('Пастернак Б.Л.'),
+       ('Лермонтов М.Ю.')
+go
 insert into supply(title, author, price, amount)
-values ('Доктор Живаго','Пастернак Б.Л.', 380.80,4),
-       ('Черный человек','Есенин С.А.', 570.20,6),
-       ('Белая гвардия','Булгаков М.А.', 540.50,7),
-       ('Идиот','Достоевский Ф.М.', 360.80,3),
-       ('Стихотворения и поэмы','Лермонтов М.Ю.', 255.90,4),
-       ('Остров сокровищ','Стивенсон Р.Л.', 599.99,5)go
+values ('Доктор Живаго', 'Пастернак Б.Л.', 380.80, 4),
+       ('Черный человек', 'Есенин С.А.', 570.20, 6),
+       ('Белая гвардия', 'Булгаков М.А.', 540.50, 7),
+       ('Идиот', 'Достоевский Ф.М.', 360.80, 3),
+       ('Стихотворения и поэмы', 'Лермонтов М.Ю.', 255.90, 4),
+       ('Остров сокровищ', 'Стивенсон Р.Л.', 599.99, 5)
+go
 insert into book(title, author_id, genre_id, price, amount)
-values ('Мастер и Маргарита',1,1,670.99,3),
-       ('Белая гвардия',1,1,540.50,5),
-       ('Идиот',2,1,460.00,10),
-       ('Братья Карамазовы',2,1,799.01,3),
-       ('Игрок',2,1,480.50,10),
-       ('Стихотворения и поэмы',3,2,650.00,15),
-       ('Черный человек',3,2,570.20,6),
-       ('Лирика',4,2,518.99,2)go
-select * from author;
-select * from genre;
-select * from book;
-select * from supply;
+values ('Мастер и Маргарита', 1, 1, 670.99, 3),
+       ('Белая гвардия', 1, 1, 540.50, 5),
+       ('Идиот', 2, 1, 460.00, 10),
+       ('Братья Карамазовы', 2, 1, 799.01, 3),
+       ('Игрок', 2, 1, 480.50, 10),
+       ('Стихотворения и поэмы', 3, 2, 650.00, 15),
+       ('Черный человек', 3, 2, 570.20, 6),
+       ('Лирика', 4, 2, 518.99, 2)
+go
+select *
+from author;
+select *
+from genre;
+select *
+from book;
+select *
+from supply;
 --2.3.2☺☻♥♦♣♠•◘○
 update b
 set b.amount = b.amount + s.amount--,
     --s.amount = 0
 from book b
-    inner join author a ON a.author_id = b.author_id
-    inner join supply s ON b.title = s.title
-        and s.author = a.name_author
+         inner join author a ON a.author_id = b.author_id
+         inner join supply s ON b.title = s.title
+    and s.author = a.name_author
 where b.price = s.price
 go
 update s
@@ -1453,200 +1620,478 @@ from book b--только для MSSQL
 where b.price = s.price
 go
 update b
-set b.price = (b.price*b.amount +
-                  s.price*s.amount)/(b.amount + s.amount)
+set b.price = (b.price * b.amount +
+               s.price * s.amount) / (b.amount + s.amount)
 from book b
          inner join author a ON a.author_id = b.author_id
          inner join supply s ON b.title = s.title
     and s.author = a.name_author
 where b.price <> s.price;
 
-SELECT * FROM book;
-SELECT * FROM supply;
-SELECT * FROM author;
+SELECT *
+FROM book;
+SELECT *
+FROM supply;
+SELECT *
+FROM author;
 --2.3.3
 SELECT name_author, supply.author
-FROM
-    author
-        RIGHT JOIN supply ON author.name_author = supply.author;
+FROM author
+         RIGHT JOIN supply ON author.name_author = supply.author;
 
 SELECT supply.author
-FROM
-    author
-        RIGHT JOIN supply on author.name_author = supply.author
+FROM author
+         RIGHT JOIN supply on author.name_author = supply.author
 WHERE name_author IS Null;
 
 insert into author(name_author)
 SELECT supply.author
-FROM
-    author
-        RIGHT JOIN supply on author.name_author = supply.author
+FROM author
+         RIGHT JOIN supply on author.name_author = supply.author
 WHERE name_author IS Null;
-select * from author;
+select *
+from author;
 --2.3.4
 create procedure ClearTables as
 begin
-drop table if exists book,genre,author,supply
+    drop table if exists book,genre,author,supply
 end;
-create procedure GenreCreation as begin
-create table genre(genre_id int primary key identity (1, 1), name_genre varchar(30)) end;
-create procedure AuthorCreation as begin
-create table author(author_id int primary key identity (1, 1), name_author varchar(50)) end;
-create procedure SupplyCreation as begin
-create table supply (supply_id INT PRIMARY KEY identity (1,1),title varchar(50),author varchar(50),price decimal(8,2),amount int) end;
-create procedure BookCreation as begin
-create table book (book_id INT PRIMARY KEY identity (1,1),title varchar(50),author_id int not null,genre_id int,price decimal(8,2),amount int,foreign key (author_id)  references author (author_id) on delete cascade,foreign key (genre_id)  references genre (genre_id) on delete set null) end;
-create procedure GenreInsertion as begin
-insert into genre(name_genre)
-values ('Роман'), ('Поэзия'), ('Приключения') end;
-drop procedure AuthorInsertion
-create procedure AuthorInsertion as begin
-insert into author (name_author)
-values ('Булгаков М.А.'), ('Достоевский Ф.М.'), ('Есенин С.А.'),
-       ('Пастернак Б.Л.'), ('Лермонтов М.Ю.'),('Стивенсон Р.Л.') end;
-drop procedure SupplyInsertion
-create procedure SupplyInsertion as begin
-insert into supply(title, author, price, amount)
-values ('Доктор Живаго','Пастернак Б.Л.', 380.80,4),
-       ('Черный человек','Есенин С.А.', 570.20,6),
-       ('Белая гвардия','Булгаков М.А.', 540.50,7),
-       ('Идиот','Достоевский Ф.М.', 360.80,3),
-       ('Стихотворения и поэмы','Лермонтов М.Ю.', 255.90,4),
-       ('Остров сокровищ','Стивенсон Р.Л.', 599.99,5)end;
-drop procedure BookInsertion
-create procedure BookInsertion as begin
-insert into book(title, author_id, genre_id, price, amount)
-values ('Мастер и Маргарита',1,1,670.99,3),
-       ('Белая гвардия',1,1,540.50,12),
-       ('Идиот',2,1,437.11,13),
-       ('Братья Карамазовы',2,1,799.01,3),
-       ('Игрок',2,1,480.50,10),
-       ('Стихотворения и поэмы',3,2,650.00,15),
-       ('Черный человек',3,2,570.20,12),
-       ('Лирика',4,2,518.99,2),
-       ('Доктор Живаго',4,1,380.80,4),
-       ('Стихотворения и поэмы',5,2,255.90,4),
-       ('Остров сокровищ',6,3,599.99,5)
-end;
-exec ClearTables go
-exec GenreCreation go
-exec AuthorCreation go
-exec SupplyCreation go
-exec BookCreation go
-exec GenreInsertion go
-exec AuthorInsertion go
-exec SupplyInsertion go
+    create procedure GenreCreation as
+    begin
+        create table genre
+        (
+            genre_id   int primary key identity (1, 1),
+            name_genre varchar(30)
+        )
+    end;
+        create procedure AuthorCreation as
+        begin
+            create table author
+            (
+                author_id   int primary key identity (1, 1),
+                name_author varchar(50)
+            )
+        end;
+            create procedure SupplyCreation as
+            begin
+                create table supply
+                (
+                    supply_id INT PRIMARY KEY identity (1,1),
+                    title     varchar(50),
+                    author    varchar(50),
+                    price     decimal(8, 2),
+                    amount    int
+                )
+            end;
+                create procedure BookCreation as
+                begin
+                    create table book
+                    (
+                        book_id   INT PRIMARY KEY identity (1,1),
+                        title     varchar(50),
+                        author_id int not null,
+                        genre_id  int,
+                        price     decimal(8, 2),
+                        amount    int,
+                        foreign key (author_id) references author (author_id) on delete cascade,
+                        foreign key (genre_id) references genre (genre_id) on delete set null
+                    )
+                end;
+                    create procedure GenreInsertion as
+                    begin
+                        insert into genre(name_genre)
+                        values ('Роман'),
+                               ('Поэзия'),
+                               ('Приключения')
+                    end;
+                        drop procedure AuthorInsertion
+                        create procedure AuthorInsertion as
+                        begin
+                            insert into author (name_author)
+                            values ('Булгаков М.А.'),
+                                   ('Достоевский Ф.М.'),
+                                   ('Есенин С.А.'),
+                                   ('Пастернак Б.Л.'),
+                                   ('Лермонтов М.Ю.'),
+                                   ('Стивенсон Р.Л.')
+                        end;
+                            drop procedure SupplyInsertion
+                            create procedure SupplyInsertion as
+                            begin
+                                insert into supply(title, author, price, amount)
+                                values ('Доктор Живаго', 'Пастернак Б.Л.', 380.80, 4),
+                                       ('Черный человек', 'Есенин С.А.', 570.20, 6),
+                                       ('Белая гвардия', 'Булгаков М.А.', 540.50, 7),
+                                       ('Идиот', 'Достоевский Ф.М.', 360.80, 3),
+                                       ('Стихотворения и поэмы', 'Лермонтов М.Ю.', 255.90, 4),
+                                       ('Остров сокровищ', 'Стивенсон Р.Л.', 599.99, 5)
+                            end;
+                                drop procedure BookInsertion
+                                create procedure BookInsertion as
+                                begin
+                                    insert into book(title, author_id, genre_id, price, amount)
+                                    values ('Мастер и Маргарита', 1, 1, 670.99, 3),
+                                           ('Белая гвардия', 1, 1, 540.50, 12),
+                                           ('Идиот', 2, 1, 437.11, 13),
+                                           ('Братья Карамазовы', 2, 1, 799.01, 3),
+                                           ('Игрок', 2, 1, 480.50, 10),
+                                           ('Стихотворения и поэмы', 3, 2, 650.00, 15),
+                                           ('Черный человек', 3, 2, 570.20, 12),
+                                           ('Лирика', 4, 2, 518.99, 2),
+                                           ('Доктор Живаго', 4, 1, 380.80, 4),
+                                           ('Стихотворения и поэмы', 5, 2, 255.90, 4),
+                                           ('Остров сокровищ', 6, 3, 599.99, 5)
+                                end;
+                                    exec ClearTables
+go
+exec GenreCreation
+go
+exec AuthorCreation
+go
+exec SupplyCreation
+go
+exec BookCreation
+go
+exec GenreInsertion
+go
+exec AuthorInsertion
+go
+exec SupplyInsertion
+go
 exec BookInsertion;
-select * from author;
-select * from genre;
-select * from book;
-select * from supply;
+select *
+from author;
+select *
+from genre;
+select *
+from book;
+select *
+from supply;
 
 SELECT title, author_id, price, amount
-FROM
-    author
-        INNER JOIN supply ON author.name_author = supply.author;
+FROM author
+         INNER JOIN supply ON author.name_author = supply.author;
 SELECT title, author_id, price, amount
-FROM
-    author
-        INNER JOIN supply ON author.name_author = supply.author
+FROM author
+         INNER JOIN supply ON author.name_author = supply.author
 WHERE amount <> 0;
 
 insert into book(title, author_id, price, amount)
 select title, author_id, price, amount
-from author inner join supply
-    on author.name_author = supply.author
+from author
+         inner join supply
+                    on author.name_author = supply.author
 where amount <> 0;
-select * from book;
+select *
+from book;
 --2.3.5
 UPDATE book
 SET genre_id = 1
 WHERE book_id = 9;
 
-SELECT * FROM book;
+SELECT *
+FROM book;
 UPDATE book
 SET genre_id =
-        (
-            SELECT genre_id
-            FROM genre
-            WHERE name_genre = 'Роман'
-        )
+        (SELECT genre_id
+         FROM genre
+         WHERE name_genre = 'Роман')
 WHERE book_id = 9;
 
-SELECT * FROM book;
+SELECT *
+FROM book;
 
 update book
-set genre_id = (
-select genre_id
-from genre
-where name_genre = 'Поэзия')
+set genre_id = (select genre_id
+                from genre
+                where name_genre = 'Поэзия')
 where title like 'Стихотворения и поэмы';
 update book
-set genre_id = (
-select genre_id
-from genre
-where name_genre = 'Приключения')
+set genre_id = (select genre_id
+                from genre
+                where name_genre = 'Приключения')
 where title like 'Остров сокровищ';
 --2.3.6
-DELETE FROM author
+DELETE
+FROM author
 WHERE name_author LIKE 'Д%';
-SELECT * FROM author;
-SELECT * FROM book;
+SELECT *
+FROM author;
+SELECT *
+FROM book;
 
-exec ClearTables go
-exec GenreCreation go
-exec AuthorCreation go
-exec SupplyCreation go
-exec BookCreation go
-exec GenreInsertion go
-exec AuthorInsertion go
-exec SupplyInsertion go
+exec ClearTables
+go
+exec GenreCreation
+go
+exec AuthorCreation
+go
+exec SupplyCreation
+go
+exec BookCreation
+go
+exec GenreInsertion
+go
+exec AuthorInsertion
+go
+exec SupplyInsertion
+go
 exec BookInsertion;
-select * from author;
-select * from genre;
-select * from book;
-select * from supply;
+select *
+from author;
+select *
+from genre;
+select *
+from book;
+select *
+from supply;
 
-delete from book
-where amount<20;
+delete
+from book
+where amount < 20;
 
-delete from author
-where author_id in (
-select b.author_id
-from book b
-group by b.author_id
-having sum(amount)<20);
+delete
+from author
+where author_id in (select b.author_id
+                    from book b
+                    group by b.author_id
+                    having sum(amount) < 20);
 --2.3.7
-DELETE FROM genre
+DELETE
+FROM genre
 WHERE name_genre LIKE '%я';
-SELECT * FROM genre;
-SELECT * FROM book;
+SELECT *
+FROM genre;
+SELECT *
+FROM book;
 
-delete from genre
-where genre_id=(
-select distinct b.genre_id
-from book b
-group by b.genre_id
-having count(b.title)<=2);
-select * from genre;
-select * from book;
+delete
+from genre
+where genre_id = (select distinct b.genre_id
+                  from book b
+                  group by b.genre_id
+                  having count(b.title) <= 2);
+select *
+from genre;
+select *
+from book;
 --2.3.8
-DELETE FROM author
-    USING
+DELETE
+FROM author USING
     author
-    INNER JOIN book ON author.author_id = book.author_id
+    INNER JOIN book
+ON author.author_id = book.author_id
 WHERE book.amount < 3;
-SELECT * FROM author;
-SELECT * FROM book;
-SELECT * FROM supply;
-SELECT * FROM genre;
+SELECT *
+FROM author;
+SELECT *
+FROM book;
+SELECT *
+FROM supply;
+SELECT *
+FROM genre;
 
-DELETE FROM author
-    USING
+DELETE
+FROM author USING
     author
-    INNER JOIN book ON author.author_id = book.author_id
+    INNER JOIN book
+ON author.author_id = book.author_id
     INNER JOIN genre ON genre.genre_id = book.genre_id
 WHERE name_genre = 'Поэзия';
 --2.3.9
 select *
 from book;
+--2.4.4
+--delete tables
+drop procedure if exists ClearTables;
+create procedure ClearTables as
+begin
+drop table if exists book,genre,author
+end;
+--genre
+drop procedure if exists GenreCreation;
+create procedure GenreCreation as
+begin
+create table genre
+(
+    genre_id   int primary key identity,
+    name_genre varchar(30)
+)
+end;
+drop procedure if exists GenreInsertion;
+create procedure GenreInsertion as
+begin
+insert into genre(name_genre)
+values ('Роман'),
+       ('Поэзия'),
+       ('Приключения')
+end;
+--author
+drop procedure if exists AuthorCreation;
+create procedure AuthorCreation as
+begin
+create table author
+(
+    author_id   int primary key identity,
+    name_author varchar(50)
+)
+end;
+drop procedure if exists AuthorInsertion;
+create procedure AuthorInsertion as
+begin
+    insert into author(name_author)
+    values ('Булгаков М.А.'),
+           ('Достоевский Ф.М.'),
+           ('Есенин С.А.'),
+           ('Пастернак Б.Л.'),
+           ('Лермонтов М.Ю.')
+end;
+--book
+drop procedure if exists BookCreation;
+create procedure BookCreation as
+begin
+create table book
+(
+    book_id   int primary key identity,
+    title     varchar(50),
+    author_id int not null,
+    genre_id  int,
+    price     decimal(8, 2),
+    amount    int,
+    --constraint "FK_book_author"
+        foreign key (author_id) references author (author_id) on delete cascade,
+    --constraint "FK_book_genre"
+        foreign key (genre_id) REFERENCES genre (genre_id) on delete set null
+)
+end;
+drop procedure if exists BookInsertion;
+create procedure BookInsertion as
+begin
+insert into book(title, author_id, genre_id, price, amount)
+values ('Мастер и Маргарита', 1, 1, 670.99, 3),
+       ('Белая гвардия', 1, 1, 540.50, 5),
+       ('Идиот', 2, 1, 460.00, 10),
+       ('Братья Карамазовы', 2, 1, 799.01, 2),
+       ('Игрок', 2, 1, 480.50, 10),
+       ('Стихотворения и поэмы', 3, 2, 650.00, 15),
+       ('Черный человек', 3, 2, 570.20, 6),
+       ('Лирика', 4, 2, 518.99, 2)
+end;
+
+
+---CITY
+
+                            CREATE TABLE city
+                            (
+                                city_id       BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+                                name_city     TEXT,
+                                days_delivery INT
+                            );
+                        INSERT INTO city(name_city, days_delivery)
+                        VALUES ('Москва', 5),
+                               ('Санкт-Петербург', 3),
+                               ('Владивосток', 12);
+
+
+---CLIENT
+                        CREATE EXTENSION IF NOT EXISTS citext;
+                            DROP DOMAIN IF EXISTS email;
+                        CREATE DOMAIN email AS citext
+		CHECK ( value ~
+		        '^[a-zA-Z0-9.!#$%&''*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$' ); CREATE TABLE client
+                                                                                                                                                           (
+                                                                                                                                                               client_id   BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+                                                                                                                                                               name_client TEXT,
+                                                                                                                                                               city_id     BIGINT,
+                                                                                                                                                               email       email,
+                                                                                                                                                               CONSTRAINT "FK_client_city"
+                                                                                                                                                                   FOREIGN KEY (city_id) REFERENCES city (city_id)
+                                                                                                                                                           );
+                        INSERT INTO client(name_client, city_id, email)
+                        VALUES ('Баранов Павел', 3, 'baranov@test'),
+                               ('Абрамова Катя', 1, 'abramova@test'),
+                               ('Семенонов Иван', 2, 'semenov@test'),
+                               ('Яковлева Галина', 1, 'yakovleva@test');
+
+---BUY
+                            CREATE TABLE buy
+                            (
+                                buy_id          BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+                                buy_description TEXT,
+                                client_id       BIGINT DEFAULT (NULL),
+                                CONSTRAINT "FK_buy_client"
+                                    FOREIGN KEY (client_id) REFERENCES client (client_id)
+                            );
+                        INSERT INTO buy (buy_description, client_id)
+                        VALUES ('Доставка только вечером', 1),
+                               (NULL, 3),
+                               ('Упаковать каждую книгу по отдельности', 2),
+                               (NULL, 1);
+
+
+---BUY_BOOK
+                            CREATE TABLE buy_book
+                            (
+                                buy_book_id BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+                                buy_id      BIGINT,
+                                book_id     BIGINT,
+                                amount      INT,
+                                CONSTRAINT "FK_buy_book_buy"
+                                    FOREIGN KEY (buy_id) REFERENCES buy (buy_id),
+                                CONSTRAINT "FK_buy_book_book"
+                                    FOREIGN KEY (book_id) REFERENCES book (book_id)
+                            );
+                        INSERT INTO buy_book(buy_id, book_id, amount)
+                        VALUES (1, 1, 1),
+                               (1, 7, 2),
+                               (2, 8, 2),
+                               (3, 3, 2),
+                               (3, 2, 1),
+                               (3, 1, 1),
+                               (4, 5, 1);
+
+
+---STEP
+
+                            CREATE TABLE step
+                            (
+                                step_id   BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+                                name_step TEXT
+                            );
+                        INSERT INTO step(name_step)
+                        VALUES ('Оплата'),
+                               ('Упаковка'),
+                               ('Транспортировка'),
+                               ('Доставка');
+
+
+---BUY_STEP
+                            CREATE TABLE buy_step
+                            (
+                                buy_step_id   BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+                                buy_id        INT,
+                                step_id       INT,
+                                date_step_beg DATE,
+                                date_step_end DATE,
+                                CONSTRAINT "FK_buy_step_buy"
+                                    FOREIGN KEY (buy_id) REFERENCES stepik.buy (buy_id),
+                                CONSTRAINT "FK_buy_step_step"
+                                    FOREIGN KEY (step_id) REFERENCES stepik.step (step_id)
+                            );
+                        INSERT INTO buy_step(buy_id, step_id, date_step_beg, date_step_end)
+                        VALUES (1, 1, '2020-02-20', '2020-02-20'),
+                               (1, 2, '2020-02-20', '2020-02-21'),
+                               (1, 3, '2020-02-22', '2020-03-07'),
+                               (1, 4, '2020-03-08', '2020-03-08'),
+                               (2, 1, '2020-02-28', '2020-02-28'),
+                               (2, 2, '2020-02-29', '2020-03-01'),
+                               (2, 3, '2020-03-02', NULL),
+                               (2, 4, NULL, NULL),
+                               (3, 1, '2020-03-05', '2020-03-05'),
+                               (3, 2, '2020-03-05', '2020-03-06'),
+                               (3, 3, '2020-03-06', '2020-03-10'),
+                               (3, 4, '2020-03-11', NULL),
+                               (4, 1, '2020-03-20', NULL),
+                               (4, 2, NULL, NULL),
+                               (4, 3, NULL, NULL),
+                               (4, 4, NULL, NULL);
