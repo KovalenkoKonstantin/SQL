@@ -1902,70 +1902,75 @@ WHERE name_genre = 'Поэзия';
 select *
 from book;
 --2.4.4
+--delete procedures
+drop procedure if exists ClearTables24, GenreCreation24, GenreInsertion24, AuthorCreation24, AuthorInsertion24,
+    BookCreation24, BookInsertion24, CityCreation24, CityInsertion24, ClientCreation24, ClientInsertion24,
+    StepCreation24, StepInsertion24, BuyCreation24, BuyInsertion24, Buy_stepCreation24,
+    Buy_stepInsertion24, Buy_bookCreation24, Buy_bookInsertion24
+go
 --delete tables
-drop procedure if exists ClearTables;
-create procedure ClearTables as
+create procedure ClearTables24 as
 begin
-drop table if exists book,genre,author
-end;
+drop table if exists genre,author, book, city, client, buy, step, buy_book, buy_step
+end go
+
 --genre
-drop procedure if exists GenreCreation;
-create procedure GenreCreation as
+create procedure GenreCreation24 as
 begin
 create table genre
 (
     genre_id   int primary key identity,
     name_genre varchar(30)
 )
-end;
-drop procedure if exists GenreInsertion;
-create procedure GenreInsertion as
+end go
+
+create procedure GenreInsertion24 as
 begin
 insert into genre(name_genre)
 values ('Роман'),
        ('Поэзия'),
        ('Приключения')
-end;
+end go
+
 --author
-drop procedure if exists AuthorCreation;
-create procedure AuthorCreation as
+create procedure AuthorCreation24 as
 begin
 create table author
 (
     author_id   int primary key identity,
     name_author varchar(50)
 )
-end;
-drop procedure if exists AuthorInsertion;
-create procedure AuthorInsertion as
+end go
+
+create procedure AuthorInsertion24 as
 begin
-    insert into author(name_author)
-    values ('Булгаков М.А.'),
-           ('Достоевский Ф.М.'),
-           ('Есенин С.А.'),
-           ('Пастернак Б.Л.'),
-           ('Лермонтов М.Ю.')
-end;
+insert into author(name_author)
+values ('Булгаков М.А.'),
+       ('Достоевский Ф.М.'),
+       ('Есенин С.А.'),
+       ('Пастернак Б.Л.'),
+       ('Лермонтов М.Ю.')
+end go
+
 --book
-drop procedure if exists BookCreation;
-create procedure BookCreation as
+create procedure BookCreation24 as
 begin
 create table book
-(
-    book_id   int primary key identity,
-    title     varchar(50),
-    author_id int not null,
-    genre_id  int,
-    price     decimal(8, 2),
-    amount    int,
-    --constraint "FK_book_author"
+        (
+        book_id   int primary key identity,
+        title     varchar(50),
+        author_id int not null,
+        genre_id  int,
+        price     decimal(8, 2),
+        amount    int,
+        --constraint "FK_book_author"
         foreign key (author_id) references author (author_id) on delete cascade,
-    --constraint "FK_book_genre"
+        --constraint "FK_book_genre"
         foreign key (genre_id) REFERENCES genre (genre_id) on delete set null
-)
-end;
-drop procedure if exists BookInsertion;
-create procedure BookInsertion as
+        )
+end go
+
+create procedure BookInsertion24 as
 begin
 insert into book(title, author_id, genre_id, price, amount)
 values ('Мастер и Маргарита', 1, 1, 670.99, 3),
@@ -1976,122 +1981,164 @@ values ('Мастер и Маргарита', 1, 1, 670.99, 3),
        ('Стихотворения и поэмы', 3, 2, 650.00, 15),
        ('Черный человек', 3, 2, 570.20, 6),
        ('Лирика', 4, 2, 518.99, 2)
+end go
+
+--city
+create procedure CityCreation24 as
+begin
+create table city
+        (
+        city_id       int primary key identity,
+        name_city     varchar(30),
+        days_delivery int
+        )
+end go
+create procedure CityInsertion24 as
+begin
+insert into city(name_city,days_delivery)
+values ('Москва', 5),
+       ('Санкт-Петербург', 3),
+       ('Владивосток', 12)
+end go
+
+--client
+/*CREATE EXTENSION IF NOT EXISTS citext;
+DROP DOMAIN IF EXISTS email;
+CREATE DOMAIN email AS citext
+CHECK ( value ~
+'^[a-zA-Z0-9.!#$%&''*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$' );*/
+create procedure ClientCreation24 as
+begin
+create table client
+       (
+       client_id   int primary key identity,
+       name_client varchar(50),
+       city_id     int,
+       email       varchar(30),
+       --CONSTRAINT "FK_client_city"
+       foreign key (city_id) references city (city_id)
+       )
+end go
+
+create procedure ClientInsertion24 as
+begin
+insert into client(name_client, city_id, email)
+values ('Баранов Павел', 3, 'baranov@test'),
+       ('Абрамова Катя', 1, 'abramova@test'),
+       ('Семенонов Иван', 2, 'semenov@test'),
+       ('Яковлева Галина', 1, 'yakovleva@test')
+end go
+
+--buy
+create procedure BuyCreation24 as
+begin
+create table buy
+        (
+        buy_id          int primary key identity,
+        buy_description varchar(100),
+        client_id       int default (null),
+        --CONSTRAINT "FK_buy_client"
+        foreign key (client_id) references client (client_id)
+        )
+end go
+
+create procedure BuyInsertion24 as
+begin
+insert into buy (buy_description, client_id)
+values ('Доставка только вечером', 1),
+       (NULL, 3),
+       ('Упаковать каждую книгу по отдельности', 2),
+       (NULL, 1)
+end go
+
+---step
+create procedure StepCreation24 as
+begin
+create table step
+        (
+        step_id   int primary key identity,
+        name_step varchar(30)
+        )
+end go
+
+create procedure StepInsertion24 as
+begin
+insert into step(name_step)
+values ('Оплата'),
+       ('Упаковка'),
+       ('Транспортировка'),
+       ('Доставка')
+end go
+
+--buy_book
+create procedure Buy_bookCreation24 as
+begin
+create table buy_book
+        (
+        buy_book_id int primary key identity,
+        buy_id      int,
+        book_id     int,
+        amount      int,
+        --CONSTRAINT "FK_buy_book_buy"
+        foreign key (buy_id) references buy (buy_id),
+        --CONSTRAINT "FK_buy_book_book"
+        foreign key (book_id) references book (book_id)
+        )
+end go
+
+create procedure Buy_bookInsertion24 as
+begin
+insert into buy_book(buy_id, book_id, amount)
+values (1, 1, 1),
+       (1, 7, 2),
+       (2, 8, 2),
+       (3, 3, 2),
+       (3, 2, 1),
+       (3, 1, 1),
+       (4, 5, 1)
+end go
+
+--buy_step
+create procedure Buy_stepCreation24 as
+begin
+create table buy_step
+        (
+        buy_step_id   int primary key identity,
+        buy_id        int,
+        step_id       int,
+        date_step_beg date,
+        date_step_end date,
+        --CONSTRAINT "FK_buy_step_buy"
+        foreign key (buy_id) references buy (buy_id),
+        --CONSTRAINT "FK_buy_step_step"
+        foreign key (step_id) references step (step_id)
+        )
+end go
+
+create procedure Buy_stepInsertion24 as
+begin
+insert into buy_step(buy_id, step_id, date_step_beg, date_step_end)
+values (1, 1, '2020-02-20', '2020-02-20'),
+       (1, 2, '2020-02-20', '2020-02-21'),
+       (1, 3, '2020-02-22', '2020-03-07'),
+       (1, 4, '2020-03-08', '2020-03-08'),
+       (2, 1, '2020-02-28', '2020-02-28'),
+       (2, 2, '2020-02-29', '2020-03-01'),
+       (2, 3, '2020-03-02', null),
+       (2, 4, null, null),
+       (3, 1, '2020-03-05', '2020-03-05'),
+       (3, 2, '2020-03-05', '2020-03-06'),
+       (3, 3, '2020-03-06', '2020-03-10'),
+       (3, 4, '2020-03-11', null),
+       (4, 1, '2020-03-20', null),
+       (4, 2, null, null),
+       (4, 3, null, null),
+       (4, 4, null, null)
 end;
 
-
----CITY
-
-                            CREATE TABLE city
-                            (
-                                city_id       BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
-                                name_city     TEXT,
-                                days_delivery INT
-                            );
-                        INSERT INTO city(name_city, days_delivery)
-                        VALUES ('Москва', 5),
-                               ('Санкт-Петербург', 3),
-                               ('Владивосток', 12);
-
-
----CLIENT
-                        CREATE EXTENSION IF NOT EXISTS citext;
-                            DROP DOMAIN IF EXISTS email;
-                        CREATE DOMAIN email AS citext
-		CHECK ( value ~
-		        '^[a-zA-Z0-9.!#$%&''*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$' ); CREATE TABLE client
-                                                                                                                                                           (
-                                                                                                                                                               client_id   BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
-                                                                                                                                                               name_client TEXT,
-                                                                                                                                                               city_id     BIGINT,
-                                                                                                                                                               email       email,
-                                                                                                                                                               CONSTRAINT "FK_client_city"
-                                                                                                                                                                   FOREIGN KEY (city_id) REFERENCES city (city_id)
-                                                                                                                                                           );
-                        INSERT INTO client(name_client, city_id, email)
-                        VALUES ('Баранов Павел', 3, 'baranov@test'),
-                               ('Абрамова Катя', 1, 'abramova@test'),
-                               ('Семенонов Иван', 2, 'semenov@test'),
-                               ('Яковлева Галина', 1, 'yakovleva@test');
-
----BUY
-                            CREATE TABLE buy
-                            (
-                                buy_id          BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
-                                buy_description TEXT,
-                                client_id       BIGINT DEFAULT (NULL),
-                                CONSTRAINT "FK_buy_client"
-                                    FOREIGN KEY (client_id) REFERENCES client (client_id)
-                            );
-                        INSERT INTO buy (buy_description, client_id)
-                        VALUES ('Доставка только вечером', 1),
-                               (NULL, 3),
-                               ('Упаковать каждую книгу по отдельности', 2),
-                               (NULL, 1);
-
-
----BUY_BOOK
-                            CREATE TABLE buy_book
-                            (
-                                buy_book_id BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
-                                buy_id      BIGINT,
-                                book_id     BIGINT,
-                                amount      INT,
-                                CONSTRAINT "FK_buy_book_buy"
-                                    FOREIGN KEY (buy_id) REFERENCES buy (buy_id),
-                                CONSTRAINT "FK_buy_book_book"
-                                    FOREIGN KEY (book_id) REFERENCES book (book_id)
-                            );
-                        INSERT INTO buy_book(buy_id, book_id, amount)
-                        VALUES (1, 1, 1),
-                               (1, 7, 2),
-                               (2, 8, 2),
-                               (3, 3, 2),
-                               (3, 2, 1),
-                               (3, 1, 1),
-                               (4, 5, 1);
-
-
----STEP
-
-                            CREATE TABLE step
-                            (
-                                step_id   BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
-                                name_step TEXT
-                            );
-                        INSERT INTO step(name_step)
-                        VALUES ('Оплата'),
-                               ('Упаковка'),
-                               ('Транспортировка'),
-                               ('Доставка');
-
-
----BUY_STEP
-                            CREATE TABLE buy_step
-                            (
-                                buy_step_id   BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
-                                buy_id        INT,
-                                step_id       INT,
-                                date_step_beg DATE,
-                                date_step_end DATE,
-                                CONSTRAINT "FK_buy_step_buy"
-                                    FOREIGN KEY (buy_id) REFERENCES stepik.buy (buy_id),
-                                CONSTRAINT "FK_buy_step_step"
-                                    FOREIGN KEY (step_id) REFERENCES stepik.step (step_id)
-                            );
-                        INSERT INTO buy_step(buy_id, step_id, date_step_beg, date_step_end)
-                        VALUES (1, 1, '2020-02-20', '2020-02-20'),
-                               (1, 2, '2020-02-20', '2020-02-21'),
-                               (1, 3, '2020-02-22', '2020-03-07'),
-                               (1, 4, '2020-03-08', '2020-03-08'),
-                               (2, 1, '2020-02-28', '2020-02-28'),
-                               (2, 2, '2020-02-29', '2020-03-01'),
-                               (2, 3, '2020-03-02', NULL),
-                               (2, 4, NULL, NULL),
-                               (3, 1, '2020-03-05', '2020-03-05'),
-                               (3, 2, '2020-03-05', '2020-03-06'),
-                               (3, 3, '2020-03-06', '2020-03-10'),
-                               (3, 4, '2020-03-11', NULL),
-                               (4, 1, '2020-03-20', NULL),
-                               (4, 2, NULL, NULL),
-                               (4, 3, NULL, NULL),
-                               (4, 4, NULL, NULL);
+exec ClearTables24 go exec GenreCreation24 go exec AuthorCreation24 go exec BookCreation24
+go exec CityCreation24 go exec ClientCreation24 go exec BuyCreation24 go exec StepCreation24
+go exec Buy_bookCreation24 go exec Buy_stepCreation24 go exec GenreInsertion24 go exec
+AuthorInsertion24 go exec BookInsertion24 go exec CityInsertion24 go exec ClientInsertion24
+go exec BuyInsertion24 go exec StepInsertion24 go exec Buy_bookInsertion24 go exec
+Buy_stepInsertion24;
