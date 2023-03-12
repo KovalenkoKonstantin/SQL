@@ -2177,3 +2177,10 @@ full join buy_book bb on b.book_id = bb.book_id
 group by title, name_author
 order by name_author, title;
 --2.4.7
+select name_city, count(b.client_id) as Количество
+from city
+join client c on city.city_id = c.city_id
+full join buy b on c.client_id = b.client_id
+group by name_city
+order by Количество desc, name_city;
+select * from buy;
