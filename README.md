@@ -2192,3 +2192,11 @@ select buy_id, date_step_end
 from buy_step b
 inner join step s on s.step_id = b.step_id
 where b.step_id = 1 and date_step_beg is not null and date_step_end is not null;
+--2.4.9
+select b.buy_id,c.name_client, sum(bb.amount*b2.price) as Стоимость
+from client c
+inner join buy b on c.client_id = b.client_id
+inner join buy_book bb on b.buy_id = bb.buy_id
+inner join book b2 on bb.book_id = b2.book_id
+group by b.buy_id, c.name_client
+order by b.buy_id;
