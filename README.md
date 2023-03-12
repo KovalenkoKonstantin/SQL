@@ -2169,3 +2169,11 @@ select * from step;
 select * from buy;
 select * from buy_step;
 select * from buy_book;
+--2.4.6
+select name_author, title, count(bb.amount) as Количество
+from author
+inner join book b on author.author_id = b.author_id
+full join buy_book bb on b.book_id = bb.book_id
+group by title, name_author
+order by name_author, title;
+--2.4.7
