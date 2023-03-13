@@ -1996,9 +1996,9 @@ end go
 create procedure CityInsertion24 as
 begin
 insert into city(name_city,days_delivery)
-values ('Москва', 5),
-       ('Санкт-Петербург', 3),
-       ('Владивосток', 12)
+values (N'Москва', 5),
+       (N'Санкт-Петербург', 3),
+       (N'Владивосток', 12)
 end go
 
 --client
@@ -2023,10 +2023,10 @@ end go
 create procedure ClientInsertion24 as
 begin
 insert into client(name_client, city_id, email)
-values ('Баранов Павел', 3, 'baranov@test'),
-       ('Абрамова Катя', 1, 'abramova@test'),
-       ('Семенонов Иван', 2, 'semenov@test'),
-       ('Яковлева Галина', 1, 'yakovleva@test')
+values (N'Баранов Павел', 3, 'baranov@test'),
+       (N'Абрамова Катя', 1, 'abramova@test'),
+       (N'Семенонов Иван', 2, 'semenov@test'),
+       (N'Яковлева Галина', 1, 'yakovleva@test')
 end go
 
 --buy
@@ -2045,9 +2045,9 @@ end go
 create procedure BuyInsertion24 as
 begin
 insert into buy (buy_description, client_id)
-values ('Доставка только вечером', 1),
+values (N'Доставка только вечером', 1),
        (NULL, 3),
-       ('Упаковать каждую книгу по отдельности', 2),
+       (N'Упаковать каждую книгу по отдельности', 2),
        (NULL, 1)
 end go
 
@@ -2064,10 +2064,10 @@ end go
 create procedure StepInsertion24 as
 begin
 insert into step(name_step)
-values ('Оплата'),
-       ('Упаковка'),
-       ('Транспортировка'),
-       ('Доставка')
+values (N'Оплата'),
+       (N'Упаковка'),
+       (N'Транспортировка'),
+       (N'Доставка')
 end go
 
 --buy_book
@@ -2141,7 +2141,7 @@ exec ClearTables24 go exec GenreCreation24 go exec AuthorCreation24 go exec Book
 go exec CityCreation24 go exec ClientCreation24 go exec BuyCreation24 go exec StepCreation24
 go exec Buy_bookCreation24 go exec Buy_stepCreation24 go exec GenreInsertion24 go exec
 AuthorInsertion24 go exec BookInsertion24 go exec CityInsertion24 go exec ClientInsertion24
-go exec BuyInsertion24 go exec StepInsertion24 go exec Buy_bookInsertion24 go exec
+go exec BuyInsertion24 go exec StepInsertion24 go exec Buy_bookInsertion24; go exec
 Buy_stepInsertion24;
 --2.4.5
 SELECT DISTINCT name_client
@@ -2150,14 +2150,14 @@ FROM
         INNER JOIN buy ON client.client_id = buy.client_id
         INNER JOIN buy_book ON buy_book.buy_id = buy.buy_id
         INNER JOIN book b ON buy_book.book_id=b.book_id
-WHERE title ='Мастер и Маргарита' and b.author_id = 1;
+WHERE title =N'Мастер и Маргарита' and b.author_id = 1;
 
 select bb.buy_id, bk.title, bk.price, bb.amount
 from client c
 inner join buy b on b.client_id=c.client_id
 inner join buy_book bb on b.buy_id=bb.buy_id
 inner join book bk on bk.book_id=bb.book_id
-where c.name_client like 'Баранов Павел'
+where c.name_client like N'Баранов Павел'
 order by bb.buy_id, bk.title;
 
 select * from genre;
@@ -2210,3 +2210,5 @@ order by buy_id;
 select * from buy_book;
 select * from buy_step;
 select * from step;
+--2.4.11
+select * from city;
