@@ -15,8 +15,9 @@ set amount = amount -
 where book_id in (8, 2);
 select * from book;
 
-update bk
-set amount = amount - bb.amount
-from book bk
-inner join buy_book bb on bb.book_id = bk.book_id
+update book
+set book.amount = book.amount - bb.amount
+from book
+inner join buy_book bb on bb.book_id = book.book_id
 where bb.buy_id = 5;
+select * from book;
