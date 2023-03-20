@@ -6,17 +6,13 @@ drop table if exists buy_pay
 go
 select buy_id, Количество, Итого
 into buy_pay
-from(
-    select buy_id, sum(Количество) as Количество, sum(Итого) as Итого
-    from
-        (
-            select buy_id, sum(bb.amount) as Количество, sum(bb.amount)*b.price as Итого
-            from buy_book bb
-            inner join book b on bb.book_id = b.book_id
-            where  buy_id = 5
-            group by buy_id, b.price
-        ) as temp
-    group by buy_id
-) as temp2
+from
+    (
+        select buy_id, sum(bb.amount) as Количество, sum(bb.amount*b.price) as Итого
+        from buy_book bb
+        inner join book b on bb.book_id = b.book_id
+        where  buy_id = 5
+        group by buy_id
+    ) as temp
 go
 select * from buy_pay;
