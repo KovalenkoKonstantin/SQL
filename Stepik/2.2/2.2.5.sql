@@ -1,7 +1,6 @@
 --2.2.5
-/*Посчитать количество экземпляров  книг каждого автора из таблицы author.
-  Вывести тех авторов,  количество книг которых меньше 10, в отсортированном по возрастанию
-  количества виде. Последний столбец назвать Количество.*/
+/*Вывести информацию о книгах (жанр, книга, автор), относящихся к жанру,
+  включающему слово «роман» в отсортированном по названиям книг виде*/
 SELECT name_author, count(title) AS Количество
 FROM author
          INNER JOIN book b
@@ -14,3 +13,10 @@ FROM author
                    on author.author_id = b.author_id
 GROUP BY name_author
 ORDER BY name_author;
+
+select name_genre, title, name_author
+from genre g
+         inner join book b on g.genre_id = b.genre_id
+         inner join author a on b.author_id = a.author_id
+where name_genre like 'Роман'
+order by title;
