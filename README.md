@@ -2194,3 +2194,4 @@ inner join step s on s.step_id = b.step_id
 where b.step_id = 1 and date_step_beg is not null and date_step_end is not null;
 
 
+
