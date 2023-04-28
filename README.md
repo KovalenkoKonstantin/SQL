@@ -1,4 +1,4 @@
-/*        # SQL
+Дзертинский/*        # SQL
             Let's begin*/
 
 CREATE TABLE genre
@@ -15,6 +15,7 @@ CREATE TABLE book
     price   decimal(8, 2),
     amount  int
 );
+
 
 /*INSERT INTO genre (name_genre)
 VALUES ('Диман');*/
