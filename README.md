@@ -1,4 +1,4 @@
-Дзертинский/*        # SQL
+/*        # SQL
             Let's begin*/
 
 CREATE TABLE genre
