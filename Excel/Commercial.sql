@@ -27,5 +27,4 @@ values
 end;
 exec CommercialInsertion;
 
-drop table Commercial;
-select * from GOZ;
+select * from Commercial;
