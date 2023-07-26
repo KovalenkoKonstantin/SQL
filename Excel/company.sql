@@ -37,6 +37,11 @@ end;
 
     drop table if exists company;
 
+select * from expenditures;
+select * from Commercial;
+select * from GOZ;
+select * from cipher;
+
 
 
 

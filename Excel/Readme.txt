@@ -1,9 +1,11 @@
-File-DataSources-Drivers-Microsoft DQL Server-Drivers files
+File-DataSources-Drivers-Microsoft SQL Server-Drivers files
 Удалить все.
 Добавить нажав на +
 Custom JARs
 Выбрать расположение
-d:\WorkDB\mssql-jdbc-7.4.1.jre8.jar
+c:\Users\Kovalenko.Kon\Downloads\Telegram Desktop\DataGrip2020.1.zip\DataGrip2020.1\
+скопировать в 
+c:\Users\Kovalenko.Kon\AppData\Roaming\JetBrains\DataGrip2020.1\
 
 После, создавать подключение к БД на основе обновлённого шаблона.
 
