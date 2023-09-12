@@ -482,7 +482,7 @@ drop procedure if exists GOZ_Insertion;
 drop procedure if exists Enterprise_GOZ_Insertion;
 create procedure Enterprise_GOZ_Insertion as
 begin
-insert into enterprise (company_id, year_id, expenditures_id, enterprise_value_GOZ)
+insert into enterprise (organization_id, year_id, expenditures_id, enterprise_value_GOZ)
 values (1, 1, 1, 1308647000.00),
        (1, 1, 2, 115781400.00),
        (1, 1, 3, 0.00),
@@ -797,7 +797,7 @@ select year_number, expenditures_name, enterprise_value_GOZ
 from enterprise
 inner join year y2 on enterprise.year_id = y2.year_id
 inner join expenditures e2 on enterprise.expenditures_id = e2.expenditures_id
-inner join company c2 on enterprise.company_id = c2.company_id
+inner join company c2 on enterprise.organization_id = c2.company_id
 order by 1;
 
 update expenditures

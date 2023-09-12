@@ -22,7 +22,7 @@ execute EnterpriseCreation;
 drop procedure if exists EnterpriseInsertion;
 create procedure EnterpriseInsertion as
 begin
-insert into Enterprise(financing_id, company_id, year_id, expenditures_id, enterprise_value)
+insert into Enterprise(financing_id, organization_id, year_id, expenditures_id, enterprise_value)
 values
 end;
 exec EnterpriseInsertion;
