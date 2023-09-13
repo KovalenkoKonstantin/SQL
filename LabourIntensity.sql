@@ -188,6 +188,10 @@ from LabourIntensity l
 inner join DecimalNumbers DN on l.decimal_number_id = DN.decimal_number_id
 inner join Operations O on l.operation_id = O.operation_id
 inner join Project P on l.project_id = P.project_id
-where project_cipher like '%50 %';
+where project_cipher = 'Программно-аппаратный комплекс ViPNet Coordinator HW50 A 4.x (+3G)(+unlim)';
 
+select sum(labour_intensity_month_value) as sum
+from LabourIntensity l
+inner join DecimalNumbers DN on l.decimal_number_id = DN.decimal_number_id
+where decimal_number = 'ФРКЕ.00130-03-00-02';
 
