@@ -195,3 +195,11 @@ from LabourIntensity l
 inner join DecimalNumbers DN on l.decimal_number_id = DN.decimal_number_id
 where decimal_number = 'ФРКЕ.00130-03-00-02';
 
+select operation_name, labour_intensity_month_value
+from LabourIntensity l
+inner join Operations O on l.operation_id = O.operation_id
+inner join Project P on l.project_id = P.project_id
+where project_cipher like
+      'Программно-аппаратный комплекс ViPNet Coordinator HW50 A 4.x (+3G)(+u%';
+
+
