@@ -202,4 +202,45 @@ inner join Project P on l.project_id = P.project_id
 where project_cipher like
       'Программно-аппаратный комплекс ViPNet Coordinator HW50 A 4.x (+3G)(+u%';
 
+drop procedure if exists LabourRefresh;
+create procedure LabourRefresh
+@cipher as nvarchar(150)
+as
+begin
+--prevent the "1 row affected" message from being returned for every operation
+    set nocount on
+--statement for the procedure
+select operation_name, labour_intensity_month_value
+from LabourIntensity l
+inner join Operations O on l.operation_id = O.operation_id
+inner join Project P on l.project_id = P.project_id
+where project_cipher like
+--       'Программно-аппаратный комплекс ViPNet Coordinator HW50 A 4.x (+3G)(+u%';
+      @cipher;
+end
+go
 
+exec LabourRefresh 'Программно-аппаратный комплекс ViPNet Coordinator HW50 A 4.x (+3G)(+u%'
+
+drop procedure if exists LabourRefreshAlt;
+create procedure LabourRefreshAlt
+@cipher as nvarchar(150)
+
+as
+declare @SQLString nvarchar(1000)
+
+set @SQLString =
+N'select operation_name, labour_intensity_month_value
+from LabourIntensity l
+inner join Operations O on l.operation_id = O.operation_id
+inner join Project P on l.project_id = P.project_id
+where project_cipher like
+      @cipher'
+
+exec LabourRefresh @SQLString,
+N'@cipher as Nvarchar(150)',
+@cipher
+
+go
+
+exec LabourRefreshAlt 'Программно-аппаратный комплекс ViPNet Coordinator HW50 A 4.x (+3G)(+u%'
