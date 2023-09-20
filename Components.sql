@@ -120,3 +120,9 @@ end
 go
 
 exec ComponentsRefresh 'Программно-аппаратный комплекс ViPNet Coordinator HW50 A 4.x (+3G)(+u%';
+
+insert into Components
+(genuine_project_id, component_name, component_quantity,
+ component_unit, component_price, component_document,
+ component_document_number, component_document_date, contractor_id)
+values (1072, 'Сервер Аквариус T41 S102DF-V R50 (V06) (HW 2000 Q5)', 1, 'шт.', 442736.79, 'УПД № Z1708230001 от 17.08.2023 г.', 'Z1708230001', '2023-08-17', 1);
