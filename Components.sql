@@ -122,3 +122,8 @@ end
 go
 
 exec ComponentsRefresh 'Программно-аппаратный комплекс ViPNet Coordinator HW100 C 4.x (+unlim%';
+
+
+update Components
+set component_price = 368947.33
+where components_id = 11;
