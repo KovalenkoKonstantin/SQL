@@ -1,2 +1,2 @@
-select * from Employee
-where employee_name like 'Авраменко%';
+select tab_N from Employee
+where employee_name = 'Авраменко Юрий Вячеславович';

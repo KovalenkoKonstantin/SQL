@@ -41,3 +41,7 @@ insert into Project(project_id, project_cipher, start_date, end_date, tab_N)
 
         select * from Project
 where project_id = '00-00-00100';
+
+update Project
+set tab_N = '000000001'
+where project_id = '00-00-00100';
