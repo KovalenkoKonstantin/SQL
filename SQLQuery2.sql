@@ -1,0 +1,3 @@
+exec LabourRefreshAlt 'Программно-аппаратный комплекс ViPNet Coordinator HW50 A 4.x (+3G)(+u%';
+
+select * from Tax;
