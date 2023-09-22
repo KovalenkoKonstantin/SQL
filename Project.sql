@@ -40,4 +40,4 @@ insert into Project(project_id, project_cipher, start_date, end_date, tab_N)
         values ('00-00-00086', 'ПАК ViPNet Coordinator HW2000 4.x с предустановленным ПО ViPNet Administrator 4.x (KC2)', '2023-01-01', '2023-12-31', '000000762');
 
         select * from Project
-where project_id = '00-00-00086';
+where project_id = '00-00-00100';
