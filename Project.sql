@@ -45,3 +45,18 @@ where project_id = '00-00-00100';
 update Project
 set tab_N = '000000001'
 where project_id = '00-00-00100';
+
+select project_id, project_cipher, genuine_project_id from Project;
+
+drop procedure if exists GetProjectRefresh;
+create procedure GetProjectRefresh
+as
+begin
+--prevent the "1 row affected" message from being returned for every operation
+    set nocount on
+--statement for the procedure
+select project_id, project_cipher, genuine_project_id from Project
+end
+go
+
+exec GetProjectRefresh;
