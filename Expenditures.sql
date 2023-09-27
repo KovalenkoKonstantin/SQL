@@ -1,7 +1,7 @@
 drop table if exists Expenditures;
 create table Expenditures
 (
-    expenditures_id   int primary key identity (1,1)
+    expenditures_id   int identity (1,1)
         constraint PK_Expenditures_expenditures_id
             primary key nonclustered,
     expenditures_name varchar(100)
@@ -70,3 +70,18 @@ values ('Сырьё, материалы и вспомогательные мат
        ('Основная заработная плата административно-управленческого персонала'),
        ('Дополнительная заработная плата административно-управленческого персонала'),
        ('Социальные выплаты административно-управленческого персонала');
+
+select expenditures_name, expenditures_id from Expenditures;
+
+drop procedure if exists GetExpendituresRefresh;
+create procedure GetExpendituresRefresh
+as
+begin
+--prevent the "1 row affected" message from being returned for every operation
+    set nocount on
+--statement for the procedure
+select expenditures_name, expenditures_id from Expenditures
+end
+go
+
+exec GetExpendituresRefresh;
