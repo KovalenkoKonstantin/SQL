@@ -360,7 +360,7 @@ where project_cipher like
       'Программно-аппаратный комплекс ViPNet Coordinator HW50 A 4.x (+3G)(+u%';
 
 drop procedure if exists GOZInsertion;
-create procedure GOZInsertion @cipher as nvarchar(150)
+create procedure GOZInsertion @value1 as nvarchar(50)
 as
 begin
     --prevent the "1 row affected" message from being returned for every operation
@@ -372,7 +372,7 @@ begin
              inner join Project P on l.project_id = P.project_id
     where project_cipher like
 --       'Программно-аппаратный комплекс ViPNet Coordinator HW50 A 4.x (+3G)(+u%';
-          @cipher;
+          @value1;
 end
 go
 
