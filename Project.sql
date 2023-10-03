@@ -60,3 +60,16 @@ end
 go
 
 exec GetProjectRefresh;
+
+insert into Project(project_id, project_cipher, start_date, end_date, tab_N)
+values ('00-00-00045', 'Улей-23', '2023-07-27', '2023-10-31','000000001');
+
+SELECT tab_N from Employee
+where employee_name like 'Авраменко%ч';
+
+select project_id, project_cipher, start_date, end_date, tab_N from Project
+where tab_N = '000000001 ';
+
+update Project
+set tab_N = '000000001 '
+where tab_N = '000000001';
