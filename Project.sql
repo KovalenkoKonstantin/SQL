@@ -92,3 +92,9 @@ values ('00-00-00055', N'Поставка программно-аппаратн�
 
 select * from Project
 where project_id = '00-00-00055';
+
+insert into Project(project_id, project_cipher, start_date, end_date, tab_N)
+values ('00-00-00093', N'ПАК ViPNet Coordinator HW1000 4.x с проведением СПиСИ', '2023-01-01', '2023-12-31','000000001 ');
+
+insert into Project(project_id, project_cipher, start_date, end_date, tab_N)
+values ('00-00-00090', N'ПАК ViPNet Coordinator HW100 C 4.x (+unlim) с проведением СПиСИ', '2023-01-01', '2023-12-31','000000001 ');
