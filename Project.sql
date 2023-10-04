@@ -78,4 +78,7 @@ select tab_N, employee_name from Employee
 where employee_name like 'Стенечкина%';
 
 insert into Project(project_id, project_cipher, start_date, end_date, tab_N)
-values ('00-00-00101', N'Улей-23', '2023-01-01', '2023-12-31','000000762 ');
+values ('00-00-00101', N'Поставка программно-аппаратного комплекса Network-VPN', '2023-01-01', '2023-12-31','000000762 ');
+
+select * from Project
+where project_id = '00-00-00101';
