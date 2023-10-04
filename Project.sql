@@ -82,3 +82,13 @@ values ('00-00-00101', N'Поставка программно-аппаратн�
 
 select * from Project
 where project_id = '00-00-00101';
+
+update Project
+set project_cipher = N'Поставка программно-аппаратного комплекса ViPNetwork, шифр "Дружба"'
+where project_id = '00-00-00101'
+
+insert into Project(project_id, project_cipher, start_date, end_date, tab_N)
+values ('00-00-00055', N'Поставка программно-аппаратного комплекса Network-VPN', '2023-01-01', '2023-12-31','000000762 ');
+
+select * from Project
+where project_id = '00-00-00055';
