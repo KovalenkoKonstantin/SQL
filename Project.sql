@@ -119,3 +119,5 @@ alter table Project
 		primary key nonclustered (project_id);
 
 exec sp_rename 'Project_pk', PK_Project_project_id, 'OBJECT';
+
+select * from Project;
