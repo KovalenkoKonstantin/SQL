@@ -258,3 +258,28 @@ values (3, '00-00-00086', 14, 11, 1.93),
 (3, '00-00-00086', 14, 8, 5.30),
 (3, '00-00-00086', 14, 9, 0.23),
 (3, '00-00-00086', 14, 14, 0.13);
+
+alter table LabourIntensity
+	add genuine_project_id int;
+
+alter table LabourIntensity
+	add constraint FK_LabourIntensity_genuine_project_id
+		foreign key (project_id) references Project (genuine_project_id);
+
+update LabourIntensity
+set project_id =
+        (
+            select project_id
+            from Project
+            where LabourIntensity.project_id = Project.project_id
+        );
+
+select * from LabourIntensity;
+
+alter table LabourIntensity
+    drop constraint FK_LabourIntensity_project_id;
+
+alter table LabourIntensity
+    drop column project_id;
+
+exec sp_rename 'LabourIntensity.genuine_project_id', project_id, 'COLUMN';
