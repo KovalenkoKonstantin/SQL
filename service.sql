@@ -2,7 +2,7 @@ select employee_position as "Должность", schedule_description as "Гр�
 from EmployeeChanges
 inner join Employee E on EmployeeChanges.tab_N = E.tab_N;
 
-select project_id, project_cipher from Project
+select [1C_kod_project], project_cipher from Project
 where project_cipher like 'Улей-23 Этап%';
 
 insert into AccrualType(accrual_type)

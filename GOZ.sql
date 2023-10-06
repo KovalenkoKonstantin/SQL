@@ -56,7 +56,7 @@ create table GOZ
             references GozAttribute,
     genuine_project_id           int
             constraint FK_GOZ_genuine_project_id
-            references Project(genuine_project_id),
+            references Project(project_id),
     year_number                  int
             constraint FK_GOZ_year_number
             references Year,
@@ -69,7 +69,7 @@ end;
 
 exec GOZCreation;
 
-insert into GOZ (organization_id, goz_attribute_id, genuine_project_id, year_number, expenditures_id,
+insert into GOZ (organization_id, goz_attribute_id, project_id, year_number, expenditures_id,
                  labour_intensity_month_value)
 values (3, 2, 1077, 2021, 1, 0.0),
        (3, 2, 1077, 2021, 2, 0.0),
@@ -344,7 +344,7 @@ select project_cipher,
 from LabourIntensity l
          inner join DecimalNumbers DN on l.decimal_number_id = DN.decimal_number_id
          inner join Operations O on l.operation_id = O.operation_id
-         inner join Project P on l.project_id = P.project_id
+         inner join Project P on l.project_id = P.[1C_kod_project]
 where project_cipher = 'Программно-аппаратный комплекс ViPNet Coordinator HW50 A 4.x (+3G)(+unlim)';
 
 select sum(labour_intensity_month_value) as sum
@@ -355,7 +355,7 @@ where decimal_number = 'ФРКЕ.00130-03-00-02';
 select operation_name, labour_intensity_month_value
 from LabourIntensity l
          inner join Operations O on l.operation_id = O.operation_id
-         inner join Project P on l.project_id = P.project_id
+         inner join Project P on l.project_id = P.[1C_kod_project]
 where project_cipher like
       'Программно-аппаратный комплекс ViPNet Coordinator HW50 A 4.x (+3G)(+u%';
 
@@ -369,7 +369,7 @@ begin
     select operation_name, labour_intensity_month_value
     from LabourIntensity l
              inner join Operations O on l.operation_id = O.operation_id
-             inner join Project P on l.project_id = P.project_id
+             inner join Project P on l.project_id = P.[1C_kod_project]
     where project_cipher like
 --       'Программно-аппаратный комплекс ViPNet Coordinator HW50 A 4.x (+3G)(+u%';
           @value1;
@@ -411,3 +411,14 @@ values (3, '00-00-00086', 14, 11, 1.93),
        (3, '00-00-00086', 14, 8, 5.30),
        (3, '00-00-00086', 14, 9, 0.23),
        (3, '00-00-00086', 14, 14, 0.13);
+
+exec sp_rename 'FK_GOZ_genuine_project_id', FK_GOZ_project_id, 'OBJECT';
+
+exec sp_rename 'GOZ.genuine_project_id', project_id, 'COLUMN';
+
+alter table GOZ
+    drop constraint FK_GOZ_project_id;
+
+alter table GOZ
+	add constraint FK_GOZ_project_id
+		foreign key (project_id) references Project (project_id);

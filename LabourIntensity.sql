@@ -8,7 +8,7 @@ create table LabourIntensity
     operation_id                 int,
     labour_intensity_month_value decimal(10, 2)
         foreign key (organization_id) references Organization (organization_id) on delete no action,
-    foreign key (project_id) references Project (project_id) on delete no action,
+    foreign key (project_id) references Project ([1C_kod_project]) on delete no action,
     foreign key (decimal_number_id) references DecimalNumbers (decimal_number_id) on delete no action,
     foreign key (operation_id) references Operations (operation_id) on delete no action
 );
@@ -187,7 +187,7 @@ select project_cipher, decimal_number, operation_name,
 from LabourIntensity l
 inner join DecimalNumbers DN on l.decimal_number_id = DN.decimal_number_id
 inner join Operations O on l.operation_id = O.operation_id
-inner join Project P on l.project_id = P.project_id
+inner join Project P on l.project_id = P.[1C_kod_project]
 where project_cipher = 'Программно-аппаратный комплекс ViPNet Coordinator HW50 A 4.x (+3G)(+unlim)';
 
 select sum(labour_intensity_month_value) as sum
@@ -198,7 +198,7 @@ where decimal_number = 'ФРКЕ.00130-03-00-02';
 select operation_name, labour_intensity_month_value
 from LabourIntensity l
 inner join Operations O on l.operation_id = O.operation_id
-inner join Project P on l.project_id = P.project_id
+inner join Project P on l.project_id = P.[1C_kod_project]
 where project_cipher like
       'Программно-аппаратный комплекс ViPNet Coordinator HW50 A 4.x (+3G)(+u%';
 
@@ -213,7 +213,7 @@ begin
 select operation_name, labour_intensity_month_value
 from LabourIntensity l
 inner join Operations O on l.operation_id = O.operation_id
-inner join Project P on l.project_id = P.project_id
+inner join Project P on l.project_id = P.[1C_kod_project]
 where project_cipher like
 --       'Программно-аппаратный комплекс ViPNet Coordinator HW50 A 4.x (+3G)(+u%';
       @cipher;
@@ -264,14 +264,14 @@ alter table LabourIntensity
 
 alter table LabourIntensity
 	add constraint FK_LabourIntensity_genuine_project_id
-		foreign key (project_id) references Project (genuine_project_id);
+		foreign key (project_id) references Project (project_id);
 
 update LabourIntensity
 set project_id =
         (
-            select project_id
+            select [1C_kod_project]
             from Project
-            where LabourIntensity.project_id = Project.project_id
+            where LabourIntensity.project_id = Project.[1C_kod_project]
         );
 
 select * from LabourIntensity;
@@ -283,3 +283,12 @@ alter table LabourIntensity
     drop column project_id;
 
 exec sp_rename 'LabourIntensity.genuine_project_id', project_id, 'COLUMN';
+
+exec sp_rename 'FK_LabourIntensity_genuine_project_id', FK_LabourIntensity_project_id, 'OBJECT';
+
+alter table LabourIntensity
+    drop constraint FK_LabourIntensity_project_id;
+
+alter table LabourIntensity
+	add constraint FK_LabourIntensity_project_id
+		foreign key (project_id) references Project (project_id);

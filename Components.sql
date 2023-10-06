@@ -13,11 +13,11 @@ create table Components
     contractor_id             int,
 
     foreign key (contractor_id) references Contractors (contractor_id) on delete no action,
-    foreign key (genuine_project_id) references Project (genuine_project_id) on delete no action,
+    foreign key (genuine_project_id) references Project (project_id) on delete no action,
 );
 
 insert into Components
-(genuine_project_id, component_name, component_quantity,
+(project_id, component_name, component_quantity,
  component_unit, component_price, component_document,
  component_document_number, component_document_date, contractor_id)
 values (68, 'Компактный компьютер Lanner NCA-1010 Intel Atom E3815/2 Gb DDR3L/ 2 Gb/ (HW50N1) L1010-01', 1, 'шт.',
@@ -94,7 +94,7 @@ select component_name,
        contractor_inn
 from Components
          inner join Contractors C on Components.contractor_id = C.contractor_id
-         inner join Project P on Components.genuine_project_id = P.genuine_project_id
+         inner join Project P on Components.genuine_project_id = P.project_id
 where project_cipher like
       'Программно-аппаратный комплекс ViPNet Coordinator HW50 A 4.x (+3G)(+unlim%';
 
@@ -114,7 +114,7 @@ begin
            contractor_inn
     from Components
              inner join Contractors C on Components.contractor_id = C.contractor_id
-             inner join Project P on Components.genuine_project_id = P.genuine_project_id
+             inner join Project P on Components.genuine_project_id = P.project_id
     where project_cipher like
               --'Программно-аппаратный комплекс ViPNet Coordinator HW50 A 4.x (+3G)(+unlim%';
           @cipher;
@@ -127,3 +127,18 @@ exec ComponentsRefresh 'Программно-аппаратный комплек
 update Components
 set component_price = 368947.33
 where components_id = 11;
+
+exec sp_rename 'PK__Componen__82E2D349A75C5B12', PK_Components_components_id, 'OBJECT';
+
+exec sp_rename 'FK__Component__contr__214BF109', FK_Components_contractor_id, 'OBJECT';
+
+exec sp_rename 'FK__Component__genui__22401542', FK_Components_project_id, 'OBJECT';
+
+exec sp_rename 'Components.genuine_project_id', project_id, 'COLUMN';
+
+alter table Components
+    drop constraint FK_Components_project_id;
+
+alter table Components
+	add constraint FK_Components_project_id
+		foreign key (project_id) references Project (project_id);
