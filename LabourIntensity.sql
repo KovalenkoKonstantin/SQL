@@ -292,3 +292,12 @@ alter table LabourIntensity
 alter table LabourIntensity
 	add constraint FK_LabourIntensity_project_id
 		foreign key (project_id) references Project (project_id);
+
+alter table LabourIntensity
+    drop constraint FK_LabourIntensity_organization_id;
+
+alter table LabourIntensity
+	add constraint FK_LabourIntensity_organization_id
+		foreign key (organization_id) references Organization (organization_id);
+
+select * from LabourIntensity;

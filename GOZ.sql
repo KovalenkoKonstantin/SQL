@@ -69,7 +69,7 @@ end;
 
 exec GOZCreation;
 
-insert into GOZ (organization_id, goz_attribute_id, project_id, year_number, expenditures_id,
+insert into GOZ (organization_id, goz_attribute_id, project_id, year_id, expenditures_id,
                  labour_intensity_month_value)
 values (3, 2, 1077, 2021, 1, 0.0),
        (3, 2, 1077, 2021, 2, 0.0),
@@ -422,3 +422,12 @@ alter table GOZ
 alter table GOZ
 	add constraint FK_GOZ_project_id
 		foreign key (project_id) references Project (project_id);
+
+alter table GOZ
+    drop constraint FK_GOZ_organization_id;
+
+alter table GOZ
+	add constraint FK_GOZ_organization_id
+		foreign key (organization_id) references Organization (organization_id);
+
+select * from GOZ;

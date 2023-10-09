@@ -785,7 +785,7 @@ select * from company;
 select * from enterprise;
 
 -- Query1
-select name_cipher, year_number, expenditures_name, goz_value
+select name_cipher, year_id, expenditures_name, goz_value
 from GOZ
 inner join cipher c on GOZ.cipher_id = c.cipher_id
 inner join year y on GOZ.year_id = y.year_id
