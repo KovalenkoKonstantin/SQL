@@ -31,3 +31,14 @@ alter table ProjectWork
 alter table ProjectWork
 	add constraint FK_ProjectWork_project_id
 		foreign key (project_id) references Project (project_id);
+
+alter table ProjectWork
+    drop constraint FK_ProjectWork_tab_N;
+
+alter table ProjectWork alter column tab_N varchar(10) not null;
+
+alter table ProjectWork
+	add constraint FK_ProjectWork_tab_N
+		foreign key (tab_N) references Employee (tab_N);
+
+select * from ProjectWork;

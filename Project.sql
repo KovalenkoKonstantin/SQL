@@ -121,3 +121,14 @@ alter table Project
 exec sp_rename 'Project_pk', PK_Project_project_id, 'OBJECT';
 
 select * from Project;
+
+alter table Project
+    drop constraint FK_Project_tab_N;
+
+alter table Project alter column tab_N varchar(10);
+
+alter table Project
+	add constraint FK_Project_tab_N
+		foreign key (tab_N) references Employee (tab_N);
+
+select * from Project;

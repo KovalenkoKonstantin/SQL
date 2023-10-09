@@ -17,3 +17,14 @@ alter table Tax
     drop column tax_name
 
 select * from Tax;
+
+alter table Tax
+    drop constraint FK_Tax_tab_N;
+
+alter table Tax alter column tab_N varchar(10) not null;
+
+alter table Tax
+	add constraint FK_Tax_tab_N
+		foreign key (tab_N) references Employee (tab_N);
+
+select * from Tax;

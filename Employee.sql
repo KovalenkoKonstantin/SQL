@@ -39,3 +39,13 @@ alter table Employee
 		foreign key (organization_id) references Organization (organization_id);
 
 select * from Employee;
+
+alter table Employee
+    drop constraint PK_Employee
+go
+
+alter table Employee alter column tab_N varchar(10) not null;
+
+alter table Employee
+	add constraint PK_Employee_tab_N
+		primary key nonclustered (tab_N);
