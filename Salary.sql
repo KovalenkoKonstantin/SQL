@@ -8,3 +8,7 @@ alter table Salary
 		foreign key (tab_N) references Employee (tab_N);
 
 select * from Salary;
+
+alter table Salary
+	add constraint FK_Salary_tab_N
+		foreign key (tab_N) references Employee;
