@@ -132,3 +132,15 @@ alter table Project
 		foreign key (tab_N) references Employee (tab_N);
 
 select * from Project;
+
+insert into Project([1C_kod_project], project_cipher, start_date, end_date, tab_N)
+values ('00-00-00030', N'Улей-23 Этап 1', '2023-07-27', '2023-09-30','000000001 ');
+
+insert into Project([1C_kod_project], project_cipher, start_date, end_date, tab_N)
+values ('00-00-00044', N'Улей-23 Этап 2', '2023-10-01', '2023-10-31','000000001 ');
+
+insert into Project([1C_kod_project], project_cipher, start_date, end_date, tab_N)
+values ('00-00-00103', N'ПАК ViPNet Coordinator HW100 C 4.x (+unlim) с проведением СП', '2023-01-01', '2023-12-31','000000001 ');
+
+insert into Project([1C_kod_project], project_cipher, start_date, end_date, tab_N)
+values ('00-00-00104', N'ПАК ViPNet Coordinator HW100 C 4.x (+unlim) с проведением СП Этап 1', '2023-01-01', '2023-12-31','000000001 ');
