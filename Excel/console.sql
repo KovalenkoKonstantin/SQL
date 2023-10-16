@@ -793,7 +793,7 @@ inner join expenditures e on GOZ.expenditures_id = e.expenditures_id
 order by 1, 2;
 
 ----Query2
-select year_number, expenditures_name, enterprise_value_GOZ
+select year_id, expenditures_name, enterprise_value_GOZ
 from enterprise
 inner join year y2 on enterprise.year_id = y2.year_id
 inner join expenditures e2 on enterprise.expenditures_id = e2.expenditures_id
