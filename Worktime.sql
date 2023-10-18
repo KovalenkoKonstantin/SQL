@@ -39,3 +39,13 @@ alter table Worktime
 		foreign key (tab_N) references Employee (tab_N);
 
 select * from Worktime;
+
+select rtrim(employee_name) as employee_name, month_name, year_number,
+       norm_hours, work_hours from Worktime
+inner join Employee E on Worktime.tab_N = E.tab_N
+inner join Month M on Worktime.month_id = M.month_id
+inner join Year Y on Worktime.year_id = Y.year_id
+
+where employee_name <> ''
+and year_number > 2022
+order by employee_name;

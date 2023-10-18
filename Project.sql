@@ -144,3 +144,28 @@ values ('00-00-00103', N'ПАК ViPNet Coordinator HW100 C 4.x (+unlim) с пр�
 
 insert into Project([1C_kod_project], project_cipher, start_date, end_date, tab_N)
 values ('00-00-00104', N'ПАК ViPNet Coordinator HW100 C 4.x (+unlim) с проведением СП Этап 1', '2023-01-01', '2023-12-31','000000001 ');
+
+insert into Project([1C_kod_project], project_cipher, start_date, end_date, tab_N)
+values ('00-00-00106',
+N'Программно-аппаратный комплекс ViPNet Coordinator HW50 A 4.x (+unlim) Этап 1',
+        '2023-01-01', '2023-12-31','000000762 ');
+
+insert into Project([1C_kod_project], project_cipher, start_date, end_date, tab_N)
+values ('00-00-00108',
+N'Программно-аппаратный комплекс ViPNet Coordinator HW50 A 4.x (+WiFi)(+unlim) Этап 1',
+        '2023-01-01', '2023-12-31','000000762 '); -- Стенечкна
+
+insert into Project([1C_kod_project], project_cipher, start_date, end_date, tab_N)
+values ('00-00-00110',
+N'Программно-аппаратный комплекс ViPNet Coordinator HW100 C 4.x (+unlim) Этап 1',
+        '2023-01-01', '2023-12-31','000000762 '); -- Стенечкна
+
+insert into Project([1C_kod_project], project_cipher, start_date, end_date, tab_N)
+values ('00-00-00112',
+N'Программно-аппаратный комплекс ViPNet Coordinator HW1000 D 4.x Этап 1',
+        '2023-01-01', '2023-12-31','000000762 '); -- Стенечкна
+
+insert into Project([1C_kod_project], project_cipher, start_date, end_date, tab_N)
+values ('00-00-00114',
+N'Программно-аппаратный комплекс ViPNet Coordinator HW2000 4.x (платформа HW2000 Q5) Этап 1',
+        '2023-01-01', '2023-12-31','000000762 '); -- Стенечкна

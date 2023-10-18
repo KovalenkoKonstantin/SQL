@@ -88,10 +88,32 @@ where employee_name <> '' --and accrual_type = 'ОКЛАД' or accrual_type = '�
 --and year_number = 2023 and month_name = 'Сентябрь'
 order by employee_name;
 
-select rtrim(employee_name) as employee_name, month_name, year_number,
-       employee_accounting_type, employee_position from EmployeeChanges
+select tab_N, rtrim(employee_name) as employee_name, month_name, year_number,
+       employee_position from EmployeeChanges
 inner join Employee E on EmployeeChanges.tab_N = E.tab_N
 inner join Month M on EmployeeChanges.month_id = M.month_id
 inner join Year Y on EmployeeChanges.year_id = Y.year_id
-where employee_name <> '' and year_number > 2022
-order by employee_name;
+where employee_name = 'Бушма Роман Александрович' and year_number > 2022
+order by month_name;
+
+select tab_N from Employee
+where employee_name = 'Бушма Роман Александрович';
+
+select employee_name from Employee
+where tab_N = '000001762 '
+
+select employee_position from EmployeeChanges
+where tab_N = '000001762 '
+
+update EmployeeChanges
+set employee_position = 'Старший специалист'
+where tab_N = '000001762 ';
+
+update Employee
+set employee_name = 'Бушма Роман Александрович Старый'
+where tab_N = '000001762 ';
+
+select rtrim(employee_name) as employee_name, tab_N from Employee;
+
+select tab_N from Employee
+where rtrim(employee_name) like 'Стенечкина Елена Александровна';
