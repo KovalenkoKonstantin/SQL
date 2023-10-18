@@ -19,7 +19,7 @@ create table LabourIntensity
 	labour_intensity_hour_value decimal(10,2)
 );
 
-insert into LabourIntensity (organization_id, project_id, decimal_number_id, operation_id, labour_intensity_month_value)
+insert into LabourIntensity (organization_id, project_id, decimal_number_id, operation_id, labour_intensity_hour_value)
 values (3, 1087, 11, 2, 0.10),
        (3, 1087, 11, 3, 0.05),
        (3, 1087, 11, 4, 0.02),
