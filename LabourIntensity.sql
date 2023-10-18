@@ -295,17 +295,17 @@ begin
     --prevent the "1 row affected" message from being returned for every operation
     set nocount on
 --statement for the procedure
-    select operation_name, labour_intensity_month_value
+    select operation_name, labour_intensity_hour_value
     from LabourIntensity l
              inner join Operations O on l.operation_id = O.operation_id
-             inner join Project P on l.project_id = P.[1C_kod_project]
+             inner join Project P on l.project_id = P.project_id
     where project_cipher like
---       'Программно-аппаратный комплекс ViPNet Coordinator HW50 A 4.x (+3G)(+u%';
+       'Программно-аппаратный комплекс ViPNet Coordinator HW50 A 4.x (+3G)(+u%';
           @cipher;
 end
 go
 
-exec LabourRefresh 'Программно-аппаратный комплекс ViPNet Coordinator HW50 A 4.x (+3G)(+u%'
+exec LabourRefresh 'Программно-аппаратный комплекс ViPNet Coordinator HW50 A 4.x (+3G)(+u%';
 
 drop procedure if exists LabourRefreshAlt;
 create procedure LabourRefreshAlt @cipher as nvarchar(150)
@@ -313,7 +313,7 @@ as
 declare @SQLString nvarchar(1000)
 
     set @SQLString =
-            N'select operation_name, labour_intensity_month_value
+            N'select operation_name, labour_intensity_hour_value
             from LabourIntensity l
             inner join Operations O on l.operation_id = O.operation_id
             inner join Project P on l.project_id = P.project_id
@@ -325,7 +325,7 @@ declare @SQLString nvarchar(1000)
 
 go
 
-exec LabourRefreshAlt 'Программно-аппаратный комплекс ViPNet Coordinator HW50 A 4.x (+3G)(+u%'
+exec LabourRefreshAlt 'Программно-аппаратный комплекс ViPNet Coordinator HW50 A 4.x (+3G)(+u%';
 
 insert into LabourIntensity (organization_id, project_id, decimal_number_id, operation_id, labour_intensity_month_value)
 values (3, '00-00-00086', 14, 11, 1.93),
@@ -385,3 +385,5 @@ alter table LabourIntensity
 
 select *
 from LabourIntensity;
+
+exec LabourRefreshAlt 'Программно-аппаратный комплекс ViPNet Coordinator HW50 A 4.x (+unlim%';
