@@ -169,3 +169,6 @@ insert into Project([1C_kod_project], project_cipher, start_date, end_date, tab_
 values ('00-00-00114',
 N'Программно-аппаратный комплекс ViPNet Coordinator HW2000 4.x (платформа HW2000 Q5) Этап 1',
         '2023-01-01', '2023-12-31','000000762 '); -- Стенечкна
+
+select project_id from Project
+where [1C_kod_project] = '00-00-00105';
