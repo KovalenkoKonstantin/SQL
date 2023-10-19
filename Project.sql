@@ -172,5 +172,3 @@ N'Программно-аппаратный комплекс ViPNet Coordinator 
 
 select project_id from Project
 where [1C_kod_project] = '00-00-00105';
-
-select [1C_kod_project] as Code_1C, project_cipher, project_id, [1C_kod_project] as Code_1C from Project;
