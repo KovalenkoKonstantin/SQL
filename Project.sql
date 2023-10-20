@@ -170,5 +170,38 @@ values ('00-00-00114',
 N'Программно-аппаратный комплекс ViPNet Coordinator HW2000 4.x (платформа HW2000 Q5) Этап 1',
         '2023-01-01', '2023-12-31','000000762 '); -- Стенечкна
 
+insert into Project([1C_kod_project], project_cipher, start_date, end_date, tab_N)
+values ('00-00-00081',
+N'Программно-аппаратный комплекс ViPNet Coordinator HW5000 4.x (платформа HW5000 Q2) Этап 1',
+        '2023-01-01', '2023-12-31','000000762 '); -- Стенечкна
+
+insert into Project([1C_kod_project], project_cipher, start_date, end_date, tab_N)
+values ('00-00-00082',
+N'Программно-аппаратный комплекс ViPNet Coordinator KB 4 (Исп. KB100) Этап 1',
+        '2023-01-01', '2023-12-31','000000762 '); -- Стенечкна
+
+insert into Project([1C_kod_project], project_cipher, start_date, end_date, tab_N)
+values ('00-00-00083',
+N'Программно-аппаратный комплекс ViPNet Coordinator KB 4 (Исп. KB1000) Этап 1',
+        '2023-01-01', '2023-12-31','000000762 '); -- Стенечкна
+
+insert into Project([1C_kod_project], project_cipher, start_date, end_date, tab_N)
+values ('00-00-00084',
+N'Программно-аппаратный комплекс ViPNet Coordinator KB 4 (Исп. KB2000) (платформа KB2000 Q5) Этап 1',
+        '2023-01-01', '2023-12-31','000000762 '); -- Стенечкна
+
+insert into Project([1C_kod_project], project_cipher, start_date, end_date, tab_N)
+values ('00-00-00085',
+N'Программно-аппаратный комплекс ViPNet Coordinator KB 4 (Исп. KB5000) (платформа KB5000 Q2) Этап 1',
+        '2023-01-01', '2023-12-31','000000762 '); -- Стенечкна
+
+
 select project_id from Project
 where [1C_kod_project] = '00-00-00105';
+
+select [1C_kod_project] as Code_1C,
+       rtrim(project_cipher), project_id,
+       [1C_kod_project] as Code_1C from Project;
+
+select project_id from Project
+where project_cipher = 'Программно-аппаратный комплекс ViPNet Coordinator HW5000 4.x (платформа HW5000 Q2) Этап 1';

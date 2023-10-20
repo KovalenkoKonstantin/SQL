@@ -22,4 +22,4 @@ set contractor_inn = '7714434221'
 where contractor_inn = '7726387713';
 
 select contractor_name, contractor_full_name,
-       contractor_inn, cod_UPP from Contractors;
+       contractor_inn, cod_UPP, contractor_id from Contractors;
