@@ -205,3 +205,15 @@ select [1C_kod_project] as Code_1C,
 
 select project_id from Project
 where project_cipher = 'Программно-аппаратный комплекс ViPNet Coordinator HW5000 4.x (платформа HW5000 Q2) Этап 1';
+
+update Project
+set project_cipher =
+    'Программно-аппаратный комплекс ViPNet Coordinator КВ 4 (Исп. KB100) Этап 1'
+where [1C_kod_project] = '00-00-00082';
+
+select [1C_kod_project] from Project
+where project_cipher =
+      'Программно-аппаратный комплекс ViPNet Coordinator КВ 4 (Исп. KB100) Этап 1';
+
+select project_cipher from Project
+where [1C_kod_project] = '00-00-00081';
