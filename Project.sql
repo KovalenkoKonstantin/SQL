@@ -217,3 +217,6 @@ where project_cipher =
 
 select project_cipher from Project
 where [1C_kod_project] = '00-00-00081';
+
+select project_cipher from Project
+where [1C_kod_project] = '000008666';

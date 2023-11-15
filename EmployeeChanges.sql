@@ -38,4 +38,17 @@ inner join Schedule S on EmployeeChanges.schedule_id = S.schedule_id
 
 where employee_name <> ''
 and year_number > 2022
+and employee_position <> NULL
+order by employee_name;
+
+select E.tab_N, month_id, year_id, employee_position, employee_nameE from EmployeeChanges
+inner join Employee E on EmployeeChanges.tab_N = E.tab_N
+where employee_name = 'Юркин Константин Юрьевич';
+
+select rtrim(employee_name) as employee_name, month_name, year_number,
+       employee_accounting_type, employee_position from EmployeeChanges
+inner join Employee E on EmployeeChanges.tab_N = E.tab_N
+inner join Month M on EmployeeChanges.month_id = M.month_id
+inner join Year Y on EmployeeChanges.year_id = Y.year_id
+where employee_name <> '' and year_number > 2022 and employee_position <> ''
 order by employee_name;
