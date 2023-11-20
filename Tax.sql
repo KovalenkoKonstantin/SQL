@@ -83,7 +83,7 @@ where tax_name_id between 3 and 7
 alter table Tax
     add tax_sum_amount float;
 
-select employee_name,
+select rtrim(employee_name) as employee_name,
        month_name,
        year_number,
        round(sum(tax_sum), 2) as tax_sum_amount
@@ -92,5 +92,7 @@ from Tax
          inner join Month M on Tax.month_id = M.month_id
          inner join Year Y on Tax.year_id = Y.year_id
 where tax_name_id between 3 and 7
+and employee_name <> ''
+and organization_id = 3
 group by employee_name, month_name, year_number
 order by employee_name, year_number;
