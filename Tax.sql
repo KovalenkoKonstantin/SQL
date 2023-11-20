@@ -96,3 +96,28 @@ and employee_name <> ''
 and organization_id = 3
 group by employee_name, month_name, year_number
 order by employee_name, year_number;
+
+drop procedure if exists GetTaxRefresh;
+create procedure GetTaxRefresh
+as
+begin
+--prevent the "1 row affected" message from being returned for every operation
+    set nocount on
+--statement for the procedure
+select rtrim(employee_name) as employee_name,
+       month_name,
+       year_number,
+       round(sum(tax_sum), 2) as tax_sum_amount
+from Tax
+         inner join Employee E on Tax.tab_N = E.tab_N
+         inner join Month M on Tax.month_id = M.month_id
+         inner join Year Y on Tax.year_id = Y.year_id
+where tax_name_id between 3 and 7
+and employee_name <> ''
+and organization_id = 3
+group by employee_name, month_name, year_number
+order by employee_name, year_number
+end
+go
+
+exec GetTaxRefresh;

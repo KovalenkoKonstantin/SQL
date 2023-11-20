@@ -51,4 +51,5 @@ inner join Employee E on EmployeeChanges.tab_N = E.tab_N
 inner join Month M on EmployeeChanges.month_id = M.month_id
 inner join Year Y on EmployeeChanges.year_id = Y.year_id
 where employee_name <> '' and year_number > 2022 and employee_position <> ''
+and organization_id = 3
 order by employee_name;

@@ -17,6 +17,6 @@ inner join Month M on SalaryBudget.month_id = M.month_id
 inner join Year Y on SalaryBudget.year_id = Y.year_id
 
 where employee_name <> '' --and accrual_type = 'ОКЛАД' or accrual_type = 'НАДБАВКА'
---and year_number = 2023 and month_name = 'Сентябрь'
+and year_number > 2021 -- and month_name = 'Сентябрь'
 and organization_id = 3
 order by employee_name;
