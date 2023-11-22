@@ -115,6 +115,7 @@ from Tax
 where tax_name_id between 3 and 7
 and employee_name <> ''
 and organization_id = 3
+and year_number > 2021
 group by employee_name, month_name, year_number
 order by employee_name, year_number
 end

@@ -50,6 +50,26 @@ select rtrim(employee_name) as employee_name, month_name, year_number,
 inner join Employee E on EmployeeChanges.tab_N = E.tab_N
 inner join Month M on EmployeeChanges.month_id = M.month_id
 inner join Year Y on EmployeeChanges.year_id = Y.year_id
-where employee_name <> '' and year_number > 2022 and employee_position <> ''
+where employee_name <> '' and year_number > 2021 and employee_position <> ''
 and organization_id = 3
 order by employee_name;
+
+drop procedure if exists GetEmployeeChangesRefresh;
+create procedure GetEmployeeChangesRefresh
+as
+begin
+--prevent the "1 row affected" message from being returned for every operation
+    set nocount on
+--statement for the procedure
+select rtrim(employee_name) as employee_name, month_name, year_number,
+       employee_accounting_type, employee_position from EmployeeChanges
+inner join Employee E on EmployeeChanges.tab_N = E.tab_N
+inner join Month M on EmployeeChanges.month_id = M.month_id
+inner join Year Y on EmployeeChanges.year_id = Y.year_id
+where employee_name <> '' and year_number > 2021 and employee_position <> ''
+and organization_id = 3
+order by employee_name, year_number
+end
+go
+
+exec GetEmployeeChangesRefresh;
