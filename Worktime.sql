@@ -61,3 +61,25 @@ where employee_name <> ''
 and year_number > 2023
 and organization_id = 3
 order by employee_name;
+
+drop procedure if exists GetWorktimeRefresh;
+create procedure GetWorktimeRefresh
+as
+begin
+--prevent the "1 row affected" message from being returned for every operation
+    set nocount on
+--statement for the procedure
+select rtrim(employee_name) as employee_name, month_name, year_number,
+       norm_hours, work_hours from Worktime
+inner join Employee E on Worktime.tab_N = E.tab_N
+inner join Month M on Worktime.month_id = M.month_id
+inner join Year Y on Worktime.year_id = Y.year_id
+
+where employee_name <> ''
+and year_number > 2023
+and organization_id = 3
+order by employee_name;
+end
+go
+
+exec GetWorktimeRefresh;
