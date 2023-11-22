@@ -23,3 +23,17 @@ where contractor_inn = '7726387713';
 
 select contractor_name, contractor_full_name,
        contractor_inn, cod_UPP, contractor_id from Contractors;
+
+drop procedure if exists GetContractorsRefresh;
+create procedure GetContractorsRefresh
+as
+begin
+--prevent the "1 row affected" message from being returned for every operation
+    set nocount on
+--statement for the procedure
+select contractor_name, contractor_full_name,
+       contractor_inn, cod_UPP, contractor_id from Contractors
+end
+go
+
+exec GetContractorsRefresh;
