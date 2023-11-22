@@ -117,3 +117,18 @@ select rtrim(employee_name) as employee_name, tab_N from Employee;
 
 select tab_N from Employee
 where rtrim(employee_name) like 'Стенечкина Елена Александровна';
+
+select rtrim(employee_name) as employee_name, tab_N from Employee;
+
+drop procedure if exists GetEmployeeRefresh;
+create procedure GetEmployeeRefresh
+as
+begin
+--prevent the "1 row affected" message from being returned for every operation
+    set nocount on
+--statement for the procedure
+select rtrim(employee_name) as employee_name, tab_N from Employee
+end
+go
+
+exec GetEmployeeRefresh;
