@@ -118,7 +118,10 @@ select rtrim(employee_name) as employee_name, tab_N from Employee;
 select tab_N from Employee
 where rtrim(employee_name) like 'Стенечкина Елена Александровна';
 
-select rtrim(employee_name) as employee_name, tab_N from Employee;
+select rtrim(employee_name) as employee_name, tab_N from Employee
+where employee_name <> ''
+and organization_id = 3
+order by employee_name;
 
 drop procedure if exists GetEmployeeRefresh;
 create procedure GetEmployeeRefresh
@@ -128,6 +131,9 @@ begin
     set nocount on
 --statement for the procedure
 select rtrim(employee_name) as employee_name, tab_N from Employee
+where employee_name <> ''
+and organization_id = 3
+order by employee_name
 end
 go
 
