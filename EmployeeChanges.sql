@@ -56,6 +56,7 @@ order by employee_name;
 
 drop procedure if exists GetEmployeeChangesRefresh;
 create procedure GetEmployeeChangesRefresh
+@index as integer
 as
 begin
 --prevent the "1 row affected" message from being returned for every operation
@@ -67,7 +68,7 @@ inner join Employee E on EmployeeChanges.tab_N = E.tab_N
 inner join Month M on EmployeeChanges.month_id = M.month_id
 inner join Year Y on EmployeeChanges.year_id = Y.year_id
 where employee_name <> '' and year_number > 2021 and employee_position <> ''
-and organization_id = 3
+and organization_id = @index
 order by employee_name, year_number
 end
 go

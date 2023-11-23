@@ -64,6 +64,7 @@ order by employee_name;
 
 drop procedure if exists GetWorktimeRefresh;
 create procedure GetWorktimeRefresh
+@index as integer
 as
 begin
 --prevent the "1 row affected" message from being returned for every operation
@@ -76,8 +77,8 @@ inner join Month M on Worktime.month_id = M.month_id
 inner join Year Y on Worktime.year_id = Y.year_id
 
 where employee_name <> ''
-and year_number > 2023
-and organization_id = 3
+and year_number > 2022
+and organization_id = @index
 order by employee_name;
 end
 go

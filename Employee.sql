@@ -125,6 +125,7 @@ order by employee_name;
 
 drop procedure if exists GetEmployeeRefresh;
 create procedure GetEmployeeRefresh
+@index as integer
 as
 begin
 --prevent the "1 row affected" message from being returned for every operation
@@ -132,7 +133,7 @@ begin
 --statement for the procedure
 select rtrim(employee_name) as employee_name, tab_N from Employee
 where employee_name <> ''
-and organization_id = 3
+and organization_id = @index
 order by employee_name
 end
 go

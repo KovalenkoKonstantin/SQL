@@ -46,7 +46,9 @@ update Project
 set tab_N = '000000001'
 where [1C_kod_project] = '00-00-00100';
 
-        select [1C_kod_project], project_cipher, project_id from Project;
+        select [1C_kod_project], project_cipher, project_id from Project
+        inner join Employee E on Project.tab_N = E.tab_N
+        where organization_id = 3;
 
 drop procedure if exists GetProjectRefresh;
 create procedure GetProjectRefresh
@@ -55,7 +57,9 @@ begin
 --prevent the "1 row affected" message from being returned for every operation
     set nocount on
 --statement for the procedure
-select [1C_kod_project], project_cipher, project_id from Project
+select [1C_kod_project] as Code_1C,
+       rtrim(project_cipher) as project_cipher, project_id,
+       [1C_kod_project] as Code_1C from Project
 end
 go
 
@@ -220,3 +224,20 @@ where [1C_kod_project] = '00-00-00081';
 
 select project_cipher from Project
 where [1C_kod_project] = '000008666';
+
+drop procedure if exists GetProjectRefresh_SP;
+create procedure GetProjectRefresh_SP
+@index as integer
+as
+begin
+--prevent the "1 row affected" message from being returned for every operation
+    set nocount on
+--statement for the procedure
+select [1C_kod_project], project_cipher, project_id from Project
+        inner join Employee E on Project.tab_N = E.tab_N
+        where organization_id = @index
+end
+go
+
+exec GetProjectRefresh_SP;
+exec GetProjectRefresh;

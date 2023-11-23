@@ -23,6 +23,7 @@ where rtrim(employee_name) = 'Науменко Антон Павлович';
 
 drop procedure if exists GetTaxBaseRefresh;
 create procedure GetTaxBaseRefresh
+@index as integer
 as
 begin
 --prevent the "1 row affected" message from being returned for every operation
@@ -34,7 +35,7 @@ inner join Employee E on TaxBase.tab_N = E.tab_N
 inner join Month M on TaxBase.month_id = M.month_id
 inner join Year Y on TaxBase.year_id = Y.year_id
 where employee_name <> ''
-and organization_id = 3
+and organization_id = @index
 and year_number > 2021
 order by employee_name, year_number;
 end

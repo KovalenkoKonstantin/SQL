@@ -23,6 +23,7 @@ order by employee_name;
 
 drop procedure if exists GetSalaryBudgetRefresh;
 create procedure GetSalaryBudgetRefresh
+@index as integer
 as
 begin
 --prevent the "1 row affected" message from being returned for every operation
@@ -37,7 +38,7 @@ inner join Year Y on SalaryBudget.year_id = Y.year_id
 
 where employee_name <> '' --and accrual_type = 'ОКЛАД' or accrual_type = 'НАДБАВКА'
 and year_number > 2021 -- and month_name = 'Сентябрь'
-and organization_id = 3
+and organization_id = @index
 order by employee_name;
 end
 go
