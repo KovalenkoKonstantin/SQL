@@ -241,3 +241,8 @@ go
 
 exec GetProjectRefresh_SP;
 exec GetProjectRefresh;
+
+insert into Project([1C_kod_project], project_cipher, start_date, end_date, tab_N)
+values ('00-00-00122',
+N'Знание-Аккредитация Этап 1',
+        '2024-02-01', '2024-11-29','0000000353 '); -- Марченко

@@ -84,3 +84,6 @@ end
 go
 
 exec GetWorktimeRefresh;
+
+select * from Worktime
+where tab_N = '0000000340' and year_id = 24;

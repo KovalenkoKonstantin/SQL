@@ -74,3 +74,6 @@ end
 go
 
 exec GetEmployeeChangesRefresh;
+
+select * from EmployeeChanges
+where year_id > 2023;

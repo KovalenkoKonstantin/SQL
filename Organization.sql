@@ -7,12 +7,11 @@ begin
 --prevent the "1 row affected" message from being returned for every operation
     set nocount on
 --statement for the procedure
-select organization_name, organization_id from Organization
+select rtrim(organization_name) as organization_name, organization_id from Organization
 end
 go
 
 exec GetOrganizationRefresh;
-
 
 alter table Organization
     drop constraint PK_Organization_organization_inn;
