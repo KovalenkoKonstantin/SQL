@@ -141,7 +141,7 @@ go
 exec GetEmployeeRefresh;
 
 select employee_name, tab_N from Employee
-where tab_N = '0000000353';
+where tab_N = '0000000162';
 
 select employee_name, tab_N from Employee
 where organization_id = 9 and employee_name = '';
