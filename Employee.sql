@@ -145,3 +145,32 @@ where tab_N = '0000000162';
 
 select employee_name, tab_N from Employee
 where organization_id = 9 and employee_name = '';
+
+drop procedure if exists GetEmployee
+create procedure GetEmployee
+@org as int
+as
+begin
+--prevent the "1 row affected" message from being returned for every operation
+    set nocount on
+--statement for the procedure
+select employee_name, tab_N, format(date_of_dismissal, 'dd.MM.yyyy') as date_of_dismissal from Employee
+-- inner join Organization O on Employee.organization_id = O.organization_id
+-- where organization_name = 'АО "ПМ"'
+where organization_id = @org
+    order by employee_name
+end
+
+exec GetEmployee 9;
+
+select employee_name, tab_N from Employee
+where employee_name = 'Кислова Татьяна Константиновна';
+
+select * from Employee
+    where employee_name = 'Ганжа Юрий Сергеевич';
+
+
+select employee_name, tab_N, format(date_of_dismissal, 'dd.MM.yyyy') as date_of_dismissal
+from Employee
+where organization_id = 9 and employee_name = 'Родионов Феликс Николаевич'
+    order by employee_name;

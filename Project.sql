@@ -239,10 +239,24 @@ select [1C_kod_project], project_cipher, project_id from Project
 end
 go
 
-exec GetProjectRefresh_SP;
+exec GetProjectRefresh_SP 9;
 exec GetProjectRefresh;
 
 insert into Project([1C_kod_project], project_cipher, start_date, end_date, tab_N)
 values ('00-00-00122',
 N'Знание-Аккредитация Этап 1',
         '2024-02-01', '2024-11-29','0000000353 '); -- Марченко
+
+insert into Project([1C_kod_project], project_cipher, start_date, end_date, tab_N)
+values ('00-00-00128',
+N'НОУ-ХАУ НХ-2023-6 Этап 1',
+        '2023-07-01', '2023-09-30', NULL);
+
+insert into Project([1C_kod_project], project_cipher, start_date, end_date, tab_N)
+values ('00-00-00128',
+N'НОУ-ХАУ НХ-2023-5 Этап 1',
+        '2022-07-01', '2023-07-31', NULL)
+
+update Project
+set [1C_kod_project] = '00-00-00129'
+where project_cipher = N'НОУ-ХАУ НХ-2023-5 Этап 1';

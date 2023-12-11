@@ -83,7 +83,46 @@ order by employee_name;
 end
 go
 
-exec GetWorktimeRefresh;
+exec GetWorktimeRefresh 9;
 
 select * from Worktime
 where tab_N = '0000000340' and year_id = 24;
+
+select * from Worktime;
+
+drop procedure if exists GetWorktime;
+create procedure GetWorktime
+@index as integer
+as
+begin
+--prevent the "1 row affected" message from being returned for every operation
+    set nocount on
+--statement for the procedure
+select rtrim(employee_name) as employee_name, month_name, year_number,
+       norm_days, format(date_of_dismissal, 'dd.MM.yyyy')
+           as date_of_dismissal from Worktime
+inner join Employee E on Worktime.tab_N = E.tab_N
+inner join Month M on Worktime.month_id = M.month_id
+inner join Year Y on Worktime.year_id = Y.year_id
+
+where employee_name <> ''
+and year_number > 2022
+and organization_id = @index
+order by employee_name;
+end
+go
+
+exec GetWorktime 9;
+
+
+select rtrim(employee_name) as employee_name, month_name, year_number,
+       norm_days from Worktime
+inner join Employee E on Worktime.tab_N = E.tab_N
+inner join Month M on Worktime.month_id = M.month_id
+inner join Year Y on Worktime.year_id = Y.year_id
+
+where employee_name = 'Звягина Дарья Сергеевна'
+and year_number = 2024
+and month_name = 'Январь'
+and organization_id = 9
+order by employee_name;

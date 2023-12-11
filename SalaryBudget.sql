@@ -55,3 +55,6 @@ where employee_name = 'Фефилов Александр Валерьевич'
 and year_id = 23
 and month_id between 9 and 10
 and accrual_id = 4;
+
+select * from SalaryBudget
+where year_id = 23;
