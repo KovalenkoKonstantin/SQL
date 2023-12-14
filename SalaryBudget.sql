@@ -56,5 +56,8 @@ and year_id = 23
 and month_id between 9 and 10
 and accrual_id = 4;
 
-select * from SalaryBudget
-where year_id = 23;
+select avg(salary_bugget_ammount) as salary from SalaryBudget
+inner join Employee E on SalaryBudget.tab_N = E.tab_N
+inner join Organization O on E.organization_id = O.organization_id
+where E.organization_id = 3 and accrual_id = 5 -- 5 ОЗП, 3 - Инфотекс
+and year_id = 22;
