@@ -77,7 +77,7 @@ inner join Month M on Worktime.month_id = M.month_id
 inner join Year Y on Worktime.year_id = Y.year_id
 
 where employee_name <> ''
-and year_number > 2022
+and year_number >= 2022
 and organization_id = @index
 order by employee_name;
 end
