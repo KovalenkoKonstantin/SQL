@@ -158,7 +158,7 @@ select employee_name, tab_N, format(date_of_dismissal, 'dd.MM.yyyy') as date_of_
 -- inner join Organization O on Employee.organization_id = O.organization_id
 -- where organization_name = 'АО "ПМ"'
 where organization_id = @org
-    order by employee_name
+    order by tab_N desc
 end
 
 exec GetEmployee 9;
@@ -174,3 +174,6 @@ select employee_name, tab_N, format(date_of_dismissal, 'dd.MM.yyyy') as date_of_
 from Employee
 where organization_id = 9 and employee_name = 'Родионов Феликс Николаевич'
     order by employee_name;
+
+select * from Employee
+where employee_name like '%(%'
