@@ -126,3 +126,7 @@ and year_number = 2024
 and month_name = 'Январь'
 and organization_id = 9
 order by employee_name;
+
+alter table Worktime
+	add calendar_days int
+go
