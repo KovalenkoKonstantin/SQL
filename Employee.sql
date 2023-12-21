@@ -177,3 +177,6 @@ where organization_id = 9 and employee_name = 'Родионов Феликс Н�
 
 select * from Employee
 where employee_name like '%(%'
+
+select * from Employee
+where employee_name like 'Каминский Сергей Владимирович';

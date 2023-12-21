@@ -34,4 +34,8 @@ select FORMAT(getdate(),'MMMM') as year from VHI;
 select FORMAT(policy_issue_date,'MMMM') as year from VHI;
 
 select * from VHI
-where tab_N = '0000000330';
+where tab_N = '0000000235';
+
+alter table VHI
+	add detachment_date date default null
+go
