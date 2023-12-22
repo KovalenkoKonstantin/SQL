@@ -108,3 +108,5 @@ end
 go
 
 exec GetEmployeeChanges 9;
+
+select * from EmployeeChanges;
