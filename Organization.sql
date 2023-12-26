@@ -40,3 +40,8 @@ end
 go
 
 exec GetOrganization;
+
+select top 5 * from Organization;
+select top 5 organization_id, count(*) from Organization
+group by organization_id;
+

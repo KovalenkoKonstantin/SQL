@@ -109,4 +109,9 @@ go
 
 exec GetEmployeeChanges 9;
 
-select * from EmployeeChanges;
+select count(*) from EmployeeChanges
+    where month_id in (
+        select top 10 month_id from EmployeeChanges
+    );
+
+print getdate();

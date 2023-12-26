@@ -22,7 +22,7 @@ begin
 --statement for the procedure
 select tab_N, insurance_program, policy_issue_date,
        policy_expiration_date, employer_cost, employee_cost, policy_number,
-       employee_insurance, FORMAT(policy_issue_date,'yyyy') as year
+       employee_insurance, FORMAT(policy_issue_date,'yyyy') as year, detachment_date
  from VHI
     order by policy_issue_date
 end

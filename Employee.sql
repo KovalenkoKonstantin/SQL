@@ -180,3 +180,8 @@ where employee_name like '%(%'
 
 select * from Employee
 where employee_name like 'Каминский Сергей Владимирович';
+
+select top 50 * from Employee
+    where employment !='';
+
+select * from Employee;
