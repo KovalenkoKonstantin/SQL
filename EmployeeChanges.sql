@@ -56,7 +56,8 @@ order by employee_name;
 
 drop procedure if exists GetEmployeeChangesRefresh;
 create procedure GetEmployeeChangesRefresh
-@index as integer
+@index as integer,
+@year as integer
 as
 begin
 --prevent the "1 row affected" message from being returned for every operation
@@ -67,13 +68,13 @@ select rtrim(employee_name) as employee_name, month_name, year_number,
 inner join Employee E on EmployeeChanges.tab_N = E.tab_N
 inner join Month M on EmployeeChanges.month_id = M.month_id
 inner join Year Y on EmployeeChanges.year_id = Y.year_id
-where employee_name <> '' and year_number > 2021 and employee_position <> ''
+where employee_name <> '' and year_number > @year and employee_position <> ''
 and organization_id = @index
 order by employee_name, year_number
 end
 go
 
-exec GetEmployeeChangesRefresh 9;
+exec GetEmployeeChangesRefresh 9, 2021;
 
 select * from EmployeeChanges
 where year_id > 23;
@@ -89,7 +90,8 @@ order by employee_name, year_number;
 
 drop procedure if exists GetEmployeeChanges;
 create procedure GetEmployeeChanges
-@index as integer
+@index as integer,
+@year as integer
 as
 begin
 --prevent the "1 row affected" message from being returned for every operation
@@ -101,13 +103,13 @@ select rtrim(employee_name) as employee_name, month_name, year_number,
 inner join Employee E on EmployeeChanges.tab_N = E.tab_N
 inner join Month M on EmployeeChanges.month_id = M.month_id
 inner join Year Y on EmployeeChanges.year_id = Y.year_id
-where employee_name <> '' and year_number >= 2023 and employee_position <> ''
+where employee_name <> '' and year_number > @year and employee_position <> ''
 and organization_id = @index
 order by employee_name, year_number
 end
 go
 
-exec GetEmployeeChanges 9;
+exec GetEmployeeChanges 3, 2021;
 
 select count(*) from EmployeeChanges
     where month_id in (
@@ -115,3 +117,10 @@ select count(*) from EmployeeChanges
     );
 
 print getdate();
+
+select schedule_description from EmployeeChanges
+inner join Employee E on EmployeeChanges.tab_N = E.tab_N
+inner join Schedule S on EmployeeChanges.schedule_id = S.schedule_id
+where employee_name = 'Махмутов Амир Рашитович'
+and month_id = 2
+and year_id = 23;

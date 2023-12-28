@@ -99,7 +99,8 @@ order by employee_name, year_number;
 
 drop procedure if exists GetTaxRefresh;
 create procedure GetTaxRefresh
-@index as integer
+@organization_id as integer,
+@year_number as integer
 as
 begin
 --prevent the "1 row affected" message from being returned for every operation
@@ -115,11 +116,25 @@ from Tax
          inner join Year Y on Tax.year_id = Y.year_id
 where tax_name_id between 3 and 7
 and employee_name <> ''
-and organization_id = @index
-and year_number > 2021
+and organization_id = @organization_id
+and year_number > @year_number
+and tax_name_id != 2 -- исключаю НДФЛ (тоже налог)
 group by employee_name, month_name, year_number
 order by employee_name, year_number
 end
 go
 
-exec GetTaxRefresh 9;
+exec GetTaxRefresh 3, 2021;
+
+select * from Tax;
+
+select sum(tax_sum) from Tax
+inner join EmployeeChanges EC on Tax.tab_N = EC.tab_N
+inner join Employee E on Tax.tab_N = E.tab_N
+where employee_accounting_type like '%20%'
+and Tax.month_id = 6
+and Tax.year_id = 22
+and EC.month_id = 6
+and EC.year_id = 22
+and tax_name_id != 2
+and employee_name = 'Абдрафиков Ахат Раушанович';
