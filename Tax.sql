@@ -107,20 +107,19 @@ begin
     set nocount on
 --statement for the procedure
 select rtrim(employee_name) as employee_name,
+       Tax.tab_N,
        month_name,
        year_number,
        round(sum(tax_sum), 2) as tax_sum_amount
 from Tax
-         inner join Employee E on Tax.tab_N = E.tab_N
-         inner join Month M on Tax.month_id = M.month_id
-         inner join Year Y on Tax.year_id = Y.year_id
-where tax_name_id between 3 and 7
-and employee_name <> ''
+inner join TaxName TN on Tax.tax_name_id = TN.tax_name_id
+inner join Employee E on Tax.tab_N = E.tab_N
+inner join Month M on Tax.month_id = M.month_id
+inner join Year Y on Tax.year_id = Y.year_id
+where TN.tax_name_id between 3 and 7
 and organization_id = @organization_id
 and year_number > @year_number
-and tax_name_id != 2 -- исключаю НДФЛ (тоже налог)
-group by employee_name, month_name, year_number
-order by employee_name, year_number
+group by rtrim(employee_name), Tax.tab_N, month_name, year_number
 end
 go
 
@@ -128,38 +127,49 @@ exec GetTaxRefresh 3, 2021;
 
 select * from Tax;
 
-select tax_sum, tax_name, TN.tax_name_id, E.tab_N from Tax
-inner join EmployeeChanges EC on Tax.tab_N = EC.tab_N
-inner join Employee E on Tax.tab_N = E.tab_N
-inner join TaxName TN on Tax.tax_name_id = TN.tax_name_id
-where employee_accounting_type like '%20%'
-and Tax.month_id = 7
-and Tax.year_id = 22
-and EC.month_id = 7
-and EC.year_id = 22
--- and tax_name_id != 2
-and employee_name = 'Картамышев Антон Викторович';
-
-select rtrim(employee_name) as employee_name,
-       month_name,
-       year_number,
-       round(sum(tax_sum), 2) as tax_sum_amount
+select rtrim(employee_name)            as employee_name,
+       --month_name,
+       --year_number,
+       --round(sum(tax_sum), 2)          as tax_sum_amount,
+       tax_name, tax_sum,
+       rtrim(employee_accounting_type) as employee_accounting_type,
+       Tax.tab_N
 from Tax
          inner join Employee E on Tax.tab_N = E.tab_N
          inner join Month M on Tax.month_id = M.month_id
          inner join Year Y on Tax.year_id = Y.year_id
-where tax_name_id between 3 and 7
-and employee_name = 'Арестов Михаил Сергеевич'
-and organization_id = 3
-and year_number = 2022
+         inner join EmployeeChanges EC on Tax.tab_N = EC.tab_N
+         inner join TaxName TN on Tax.tax_name_id = TN.tax_name_id
+where TN.tax_name_id between 3 and 7
+  and employee_name = 'Якушин Вадим Андреевич'
+  and organization_id = 3
+  and year_number = 2023
   and M.month_id = 7
-and tax_name_id != 2 -- исключаю НДФЛ (тоже налог)
-group by employee_name, month_name, year_number
-order by employee_name, year_number
+  and employee_accounting_type != ''
+  --and TN.tax_name_id != 2 -- исключаю НДФЛ
+group by employee_name, month_name, year_number,
+         employee_accounting_type, Tax.tab_N, tax_sum, TN.tax_name
+order by employee_name, employee_accounting_type;
 
-select employee_name, Tax.tax_sum, tax_name_id,
-employment from Tax
+select rtrim(employee_name) as employee_name,
+       Tax.tab_N,
+       --month_id,
+       month_name,
+       --year_id,
+       year_number,
+       --tax_name,
+       employee_accounting_type,
+       round(sum(tax_sum), 2) as tax_sum_amount
+from Tax
+inner join TaxName TN on Tax.tax_name_id = TN.tax_name_id
 inner join Employee E on Tax.tab_N = E.tab_N
-where employee_name = 'Титов Олег Николаевич'
-and Tax.month_id = 10
-and Tax.year_id = 22;
+inner join Month M on Tax.month_id = M.month_id
+inner join Year Y on Tax.year_id = Y.year_id
+inner join EmployeeChanges EC on Tax.tab_N = EC.tab_N
+where TN.tax_name_id between 3 and 7
+and employee_name = 'Якушин Вадим Андреевич'
+and Tax.month_id = 7
+and Tax.year_id = 23
+group by rtrim(employee_name), Tax.tab_N, month_name,
+         year_number,
+         employee_accounting_type;

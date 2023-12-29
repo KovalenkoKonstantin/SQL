@@ -101,6 +101,7 @@ begin
     set nocount on
 --statement for the procedure
 select rtrim(employee_name)            as employee_name,
+       EmployeeChanges.tab_N,
        month_name,
        year_number,
        rtrim(employee_accounting_type) as employee_accounting_type,
@@ -120,28 +121,3 @@ go
 
 exec GetEmployeeChanges 3, 2021;
 
-select count(*) from EmployeeChanges
-    where month_id in (
-        select top 10 month_id from EmployeeChanges
-    );
-
-print getdate();
-
-select schedule_description from EmployeeChanges
-inner join Employee E on EmployeeChanges.tab_N = E.tab_N
-inner join Schedule S on EmployeeChanges.schedule_id = S.schedule_id
-where employee_name = 'Махмутов Амир Рашитович'
-and month_id = 2
-and year_id = 23;
-
-select rtrim(employee_name) as employee_name, month_name, year_number,
-       rtrim(employee_accounting_type)as employee_accounting_type,
-       rtrim(employee_position) as employee_position from EmployeeChanges
-inner join Employee E on EmployeeChanges.tab_N = E.tab_N
-inner join Month M on EmployeeChanges.month_id = M.month_id
-inner join Year Y on EmployeeChanges.year_id = Y.year_id
-where employee_name = 'Бызов Виктор Юрьевич'
-  and year_number = 2022
--- and employee_position <> ''
-and organization_id = 3
-order by employee_name, year_number
