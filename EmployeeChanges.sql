@@ -56,35 +56,38 @@ order by employee_name;
 
 drop procedure if exists GetEmployeeChangesRefresh;
 create procedure GetEmployeeChangesRefresh
-@index as integer,
-@year as integer
+@organization_id as integer,
+@year_number as integer
 as
 begin
 --prevent the "1 row affected" message from being returned for every operation
     set nocount on
 --statement for the procedure
 select rtrim(employee_name) as employee_name, month_name, year_number,
-       employee_accounting_type, employee_position from EmployeeChanges
+       rtrim(employee_accounting_type) as employee_accounting_type,
+       rtrim(employee_position) as employee_position from EmployeeChanges
 inner join Employee E on EmployeeChanges.tab_N = E.tab_N
 inner join Month M on EmployeeChanges.month_id = M.month_id
 inner join Year Y on EmployeeChanges.year_id = Y.year_id
-where employee_name <> '' and year_number > @year and employee_position <> ''
-and organization_id = @index
+where employee_name <> '' and year_number > @year_number and employee_position <> ''
+and organization_id = @organization_id
 order by employee_name, year_number
 end
 go
 
-exec GetEmployeeChangesRefresh 9, 2021;
+exec GetEmployeeChangesRefresh 3, 2021;
 
 select * from EmployeeChanges
 where year_id > 23;
 
 select rtrim(employee_name) as employee_name, month_name, year_number,
-       employee_accounting_type, employee_position, employee_department from EmployeeChanges
+       rtrim(employee_accounting_type), employee_position, employee_department from EmployeeChanges
 inner join Employee E on EmployeeChanges.tab_N = E.tab_N
 inner join Month M on EmployeeChanges.month_id = M.month_id
 inner join Year Y on EmployeeChanges.year_id = Y.year_id
-where employee_name = 'Моногаров Вячеслав Яковлевич' and year_number > 2023 and employee_position <> ''
+where employee_name = 'Моногаров Вячеслав Яковлевич'
+and year_number > 2023
+and employee_position <> ''
 and organization_id = 9
 order by employee_name, year_number;
 
@@ -97,14 +100,20 @@ begin
 --prevent the "1 row affected" message from being returned for every operation
     set nocount on
 --statement for the procedure
-select rtrim(employee_name) as employee_name, month_name, year_number,
-       employee_accounting_type, employee_position,
-       employee_department from EmployeeChanges
-inner join Employee E on EmployeeChanges.tab_N = E.tab_N
-inner join Month M on EmployeeChanges.month_id = M.month_id
-inner join Year Y on EmployeeChanges.year_id = Y.year_id
-where employee_name <> '' and year_number > @year and employee_position <> ''
-and organization_id = @index
+select rtrim(employee_name)            as employee_name,
+       month_name,
+       year_number,
+       rtrim(employee_accounting_type) as employee_accounting_type,
+       rtrim(employee_position)        as employee_position,
+       rtrim(employee_department)      as employee_department
+from EmployeeChanges
+         inner join Employee E on EmployeeChanges.tab_N = E.tab_N
+         inner join Month M on EmployeeChanges.month_id = M.month_id
+         inner join Year Y on EmployeeChanges.year_id = Y.year_id
+where employee_name <> ''
+  and year_number > @year
+-- and employee_position <> ''
+  and organization_id = @index
 order by employee_name, year_number
 end
 go
@@ -124,3 +133,15 @@ inner join Schedule S on EmployeeChanges.schedule_id = S.schedule_id
 where employee_name = 'Махмутов Амир Рашитович'
 and month_id = 2
 and year_id = 23;
+
+select rtrim(employee_name) as employee_name, month_name, year_number,
+       rtrim(employee_accounting_type)as employee_accounting_type,
+       rtrim(employee_position) as employee_position from EmployeeChanges
+inner join Employee E on EmployeeChanges.tab_N = E.tab_N
+inner join Month M on EmployeeChanges.month_id = M.month_id
+inner join Year Y on EmployeeChanges.year_id = Y.year_id
+where employee_name = 'Бызов Виктор Юрьевич'
+  and year_number = 2022
+-- and employee_position <> ''
+and organization_id = 3
+order by employee_name, year_number

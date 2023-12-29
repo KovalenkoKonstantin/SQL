@@ -128,13 +128,38 @@ exec GetTaxRefresh 3, 2021;
 
 select * from Tax;
 
-select sum(tax_sum) from Tax
+select tax_sum, tax_name, TN.tax_name_id, E.tab_N from Tax
 inner join EmployeeChanges EC on Tax.tab_N = EC.tab_N
 inner join Employee E on Tax.tab_N = E.tab_N
+inner join TaxName TN on Tax.tax_name_id = TN.tax_name_id
 where employee_accounting_type like '%20%'
-and Tax.month_id = 6
+and Tax.month_id = 7
 and Tax.year_id = 22
-and EC.month_id = 6
+and EC.month_id = 7
 and EC.year_id = 22
-and tax_name_id != 2
-and employee_name = 'Абдрафиков Ахат Раушанович';
+-- and tax_name_id != 2
+and employee_name = 'Картамышев Антон Викторович';
+
+select rtrim(employee_name) as employee_name,
+       month_name,
+       year_number,
+       round(sum(tax_sum), 2) as tax_sum_amount
+from Tax
+         inner join Employee E on Tax.tab_N = E.tab_N
+         inner join Month M on Tax.month_id = M.month_id
+         inner join Year Y on Tax.year_id = Y.year_id
+where tax_name_id between 3 and 7
+and employee_name = 'Арестов Михаил Сергеевич'
+and organization_id = 3
+and year_number = 2022
+  and M.month_id = 7
+and tax_name_id != 2 -- исключаю НДФЛ (тоже налог)
+group by employee_name, month_name, year_number
+order by employee_name, year_number
+
+select employee_name, Tax.tax_sum, tax_name_id,
+employment from Tax
+inner join Employee E on Tax.tab_N = E.tab_N
+where employee_name = 'Титов Олег Николаевич'
+and Tax.month_id = 10
+and Tax.year_id = 22;

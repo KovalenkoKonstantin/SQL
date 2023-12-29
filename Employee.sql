@@ -184,4 +184,5 @@ where employee_name like 'Каминский Сергей Владимирови
 select top 50 * from Employee
     where employment !='';
 
-select * from Employee;
+select * from Employee
+    where employee_name = 'Титов Олег Николаевич';
