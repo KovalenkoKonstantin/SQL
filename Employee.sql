@@ -185,4 +185,21 @@ select top 50 * from Employee
     where employment !='';
 
 select * from Employee
-    where employee_name = 'Титов Олег Николаевич';
+    where employee_name = 'Булавкин Даниил Сергеевич';
+
+select * from Employee
+    where tab_N like '0000000075'
+    order by employee_name;
+
+select * from Employee
+    where organization_id = 6
+order by employee_name;
+
+drop index PK_Employee_tab_N on Employee
+go
+alter table Employee
+    drop constraint PK_Employee_tab_N
+go
+alter table Employee
+	add GUID varchar(100)
+go
