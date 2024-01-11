@@ -203,3 +203,5 @@ go
 alter table Employee
 	add GUID varchar(100)
 go
+alter table Employee alter column GUID nvarchar(36) null
+go
