@@ -260,3 +260,6 @@ N'НОУ-ХАУ НХ-2023-5 Этап 1',
 update Project
 set [1C_kod_project] = '00-00-00129'
 where project_cipher = N'НОУ-ХАУ НХ-2023-5 Этап 1';
+
+select * from Project
+where [1C_kod_project] = '00-00-00043'
