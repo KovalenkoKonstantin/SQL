@@ -166,3 +166,9 @@ from Worktime
 where employee_name = 'Махмутов Амир Рашитович'
   and month_name = 'Февраль'
   and year_number = 2023;
+
+select norm_hours from Worktime
+inner join Employee E on Worktime.tab_N = E.tab_N
+where E.employee_name = 'Закиров Ратмир Эльвирович'
+and month_id = 4
+and year_id = 23;
