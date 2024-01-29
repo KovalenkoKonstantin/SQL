@@ -39,3 +39,16 @@ where tab_N = '0000000235';
 alter table VHI
 	add detachment_date date default null
 go
+
+alter table VHI
+    drop constraint FK_Employee_tab_N
+go
+
+alter table VHI
+	add GUID nvarchar(36)
+go
+
+alter table VHI
+	add constraint FK_VHI_GUID
+		foreign key (GUID) references Employee (GUID)
+go

@@ -61,3 +61,16 @@ inner join Employee E on SalaryBudget.tab_N = E.tab_N
 inner join Organization O on E.organization_id = O.organization_id
 where E.organization_id = 3 and accrual_id = 5 -- 5 ОЗП, 3 - Инфотекс
 and year_id = 22;
+
+alter table SalaryBudget
+    drop constraint FK_SalaryBudget_tab_N
+go
+
+alter table SalaryBudget
+	add GUID nvarchar(36)
+go
+
+alter table SalaryBudget
+	add constraint FK_SalaryBudget_GUID
+		foreign key (GUID) references Employee (GUID)
+go

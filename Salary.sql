@@ -77,3 +77,16 @@ where organization_id = @org
 end
 
 exec GetSalary 3, 2021;
+
+alter table Salary
+    drop constraint FK_Salary_tab_N
+go
+
+alter table Salary
+	add GUID nvarchar(36)
+go
+
+alter table Salary
+	add constraint FK_Salary_GUID
+		foreign key (GUID) references Employee (GUID)
+go

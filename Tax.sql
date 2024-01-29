@@ -173,3 +173,16 @@ and Tax.year_id = 23
 group by rtrim(employee_name), Tax.tab_N, month_name,
          year_number,
          employee_accounting_type;
+
+alter table Tax
+    drop constraint FK_Tax_tab_N
+go
+
+alter table Tax
+	add GUID nvarchar(36)
+go
+
+alter table Tax
+	add constraint FK_Tax_GUID
+		foreign key (GUID) references Employee (GUID)
+go

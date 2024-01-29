@@ -172,3 +172,16 @@ inner join Employee E on Worktime.tab_N = E.tab_N
 where E.employee_name = 'Закиров Ратмир Эльвирович'
 and month_id = 4
 and year_id = 23;
+
+alter table Worktime
+    drop constraint FK_Worktime_tab_N
+go
+
+alter table Worktime
+	add GUID nvarchar(36)
+go
+
+alter table Worktime
+	add constraint FK_Worktime_GUID
+		foreign key (GUID) references Employee (GUID)
+go

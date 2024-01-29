@@ -42,3 +42,16 @@ alter table ProjectWork
 		foreign key (tab_N) references Employee (tab_N);
 
 select * from ProjectWork;
+
+alter table ProjectWork
+    drop constraint FK_ProjectWork_tab_N
+go
+
+alter table ProjectWork
+	add GUID nvarchar(36)
+go
+
+alter table ProjectWork
+	add constraint FK_ProjectWork_GUID
+		foreign key (GUID) references Employee (GUID)
+go

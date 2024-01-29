@@ -121,3 +121,16 @@ go
 
 exec GetEmployeeChanges 3, 2021;
 
+alter table EmployeeChanges
+    drop constraint FK_EmployeeChanges_tab_N
+go
+
+alter table EmployeeChanges
+	add GUID nvarchar(36)
+go
+
+alter table EmployeeChanges
+	add constraint FK_EmployeeChanges_GUID
+		foreign key (GUID) references Employee (GUID)
+go
+

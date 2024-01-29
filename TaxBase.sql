@@ -42,3 +42,16 @@ end
 go
 
 exec GetTaxBaseRefresh;
+
+alter table TaxBase
+    drop constraint FK_TaxBase_tab_N
+go
+
+alter table TaxBase
+	add GUID nvarchar(36)
+go
+
+alter table TaxBase
+	add constraint FK_TaxBase_GUID
+		foreign key (GUID) references Employee (GUID)
+go

@@ -263,3 +263,16 @@ where project_cipher = N'НОУ-ХАУ НХ-2023-5 Этап 1';
 
 select * from Project
 where [1C_kod_project] = '00-00-00043'
+
+alter table Project
+    drop constraint FK_Project_tab_N
+go
+
+alter table Project
+	add GUID nvarchar(36)
+go
+
+alter table Project
+	add constraint FK_Project_GUID
+		foreign key (GUID) references Employee (GUID)
+go

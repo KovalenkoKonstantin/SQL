@@ -224,3 +224,15 @@ or date_of_dismissal = '1753-01-01'
 end
 
 exec GetEmployee 3, '2022-06-01';
+
+select * from Employee
+where tab_N = '0000000129'
+
+alter table Employee
+    drop constraint PK_Employee_tab_N
+go
+
+select * from Employee
+where GUID is null
+--and employee_name <> ''
+order by employee_name;
