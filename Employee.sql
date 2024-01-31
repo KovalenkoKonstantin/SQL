@@ -236,3 +236,13 @@ select * from Employee
 where GUID is null
 --and employee_name <> ''
 order by employee_name;
+
+delete from Employee where GUID is null;
+
+alter table Employee alter column GUID nvarchar(36) not null
+go
+
+alter table Employee
+	add constraint PK_Employee_GUID
+		primary key nonclustered (GUID)
+go
