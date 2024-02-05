@@ -246,3 +246,6 @@ alter table Employee
 	add constraint PK_Employee_GUID
 		primary key nonclustered (GUID)
 go
+
+select * from Employee
+where employee_name = 'Юркин Константин Юрьевич'

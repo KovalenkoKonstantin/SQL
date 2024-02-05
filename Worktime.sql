@@ -185,3 +185,10 @@ alter table Worktime
 	add constraint FK_Worktime_GUID
 		foreign key (GUID) references Employee (GUID)
 go
+
+select work_hours from Worktime
+--inner join Employee E on Worktime.GUID = E.GUID
+where month_id = 1
+and year_id = 24
+and tab_N = '000000484'
+--and employee_name = 'Елисеев Владимир Леонидович'

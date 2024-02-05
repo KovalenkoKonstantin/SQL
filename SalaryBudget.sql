@@ -74,3 +74,9 @@ alter table SalaryBudget
 	add constraint FK_SalaryBudget_GUID
 		foreign key (GUID) references Employee (GUID)
 go
+
+select month_id, sum(salary_bugget_ammount) from SalaryBudget
+where tab_N = '000000618'
+and year_id = 24
+and month_id between 1 and 7
+group by month_id;

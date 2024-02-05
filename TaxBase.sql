@@ -41,7 +41,7 @@ order by employee_name, year_number;
 end
 go
 
-exec GetTaxBaseRefresh;
+exec GetTaxBaseRefresh 3;
 
 alter table TaxBase
     drop constraint FK_TaxBase_tab_N
@@ -55,3 +55,11 @@ alter table TaxBase
 	add constraint FK_TaxBase_GUID
 		foreign key (GUID) references Employee (GUID)
 go
+
+alter table TaxBase
+	add tax_base_civil_contract_amount float
+go
+
+select * from TaxBase
+where tab_N = '000000484'
+and year_id = 24;

@@ -186,3 +186,23 @@ alter table Tax
 	add constraint FK_Tax_GUID
 		foreign key (GUID) references Employee (GUID)
 go
+
+select * from Tax
+where tab_N = '000000484'
+and year_id = 24;
+
+select rtrim(employee_name) as employee_name,
+       Tax.tab_N,
+       month_name,
+       year_number,
+       round(sum(tax_sum), 2) as tax_sum_amount
+from Tax
+inner join TaxName TN on Tax.tax_name_id = TN.tax_name_id
+inner join Employee E on Tax.tab_N = E.tab_N
+inner join Month M on Tax.month_id = M.month_id
+inner join Year Y on Tax.year_id = Y.year_id
+where TN.tax_name_id between 3 and 7
+and organization_id = 3
+and year_number > 2023
+and Tax.tab_N = '000000484'
+group by rtrim(employee_name), Tax.tab_N, month_name, year_number
