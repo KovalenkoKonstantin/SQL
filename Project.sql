@@ -243,9 +243,9 @@ exec GetProjectRefresh_SP 9;
 exec GetProjectRefresh;
 
 insert into Project([1C_kod_project], project_cipher, start_date, end_date, tab_N)
-values ('00-00-00122',
-N'Знание-Аккредитация Этап 1',
-        '2024-02-01', '2024-11-29','0000000353 '); -- Марченко
+values ('00-00-00140',
+N'022/7',
+        '2022-06-08', '2024-07-01','000000618'); -- Юркин
 
 insert into Project([1C_kod_project], project_cipher, start_date, end_date, tab_N)
 values ('00-00-00128',
@@ -276,3 +276,7 @@ alter table Project
 	add constraint FK_Project_GUID
 		foreign key (GUID) references Employee (GUID)
 go
+
+select * from Project;
+select * from Project
+where [1C_kod_project] = '00-00-00141'

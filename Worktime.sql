@@ -64,7 +64,8 @@ order by employee_name;
 
 drop procedure if exists GetWorktimeRefresh;
 create procedure GetWorktimeRefresh
-@index as integer
+@organization_id as integer,
+@year_number as integer
 as
 begin
 --prevent the "1 row affected" message from being returned for every operation
@@ -77,13 +78,13 @@ inner join Month M on Worktime.month_id = M.month_id
 inner join Year Y on Worktime.year_id = Y.year_id
 
 where employee_name <> ''
-and year_number >= 2022
-and organization_id = @index
+and year_number >= @year_number
+and organization_id = @organization_id
 order by employee_name;
 end
 go
 
-exec GetWorktimeRefresh 9;
+exec GetWorktimeRefresh 3, 2024;
 
 select * from Worktime
 where tab_N = '0000000340' and year_id = 24;
@@ -92,7 +93,8 @@ select * from Worktime;
 
 drop procedure if exists GetWorktime;
 create procedure GetWorktime
-@index as integer
+@organization_id as integer,
+@year_number as integer
 as
 begin
 --prevent the "1 row affected" message from being returned for every operation
@@ -106,13 +108,13 @@ inner join Month M on Worktime.month_id = M.month_id
 inner join Year Y on Worktime.year_id = Y.year_id
 
 where employee_name <> ''
-and year_number > 2022
-and organization_id = @index
+and year_number >= @year_number
+and organization_id = @organization_id
 order by employee_name;
 end
 go
 
-exec GetWorktime 9;
+exec GetWorktime 3;
 
 
 select rtrim(employee_name) as employee_name, month_name, year_number,
@@ -121,10 +123,10 @@ inner join Employee E on Worktime.tab_N = E.tab_N
 inner join Month M on Worktime.month_id = M.month_id
 inner join Year Y on Worktime.year_id = Y.year_id
 
-where employee_name = 'Звягина Дарья Сергеевна'
-and year_number = 2024
+where employee_name = 'Пискунов Михаил Борисович'
+and year_number = 2025
 and month_name = 'Январь'
-and organization_id = 9
+and organization_id = 3
 order by employee_name;
 
 alter table Worktime
@@ -192,3 +194,22 @@ where month_id = 1
 and year_id = 24
 and tab_N = '000000484'
 --and employee_name = 'Елисеев Владимир Леонидович'
+
+alter table SalaryBudget
+	add consumer_price_index float default 1
+go
+
+alter table SalaryBudget
+	add real_wage_ratio float default 1
+go
+
+update SalaryBudget
+set SalaryBudget.consumer_price_index = 1
+where year_id = 22;
+
+update SalaryBudget
+set SalaryBudget.real_wage_ratio = 1
+where year_id = 22;
+
+select * from SalaryBudget
+where year_id = 24;

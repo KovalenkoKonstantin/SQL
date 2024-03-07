@@ -248,4 +248,4 @@ alter table Employee
 go
 
 select * from Employee
-where employee_name = 'Юркин Константин Юрьевич'
+where employee_name = 'Хромова Анна Владимировна'

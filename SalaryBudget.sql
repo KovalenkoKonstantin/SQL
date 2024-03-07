@@ -51,10 +51,10 @@ exec GetSalaryBudgetRefresh 9,2024;
 
 select * from SalaryBudget
 inner join Employee E on SalaryBudget.tab_N = E.tab_N
-where employee_name = 'Фефилов Александр Валерьевич'
-and year_id = 23
-and month_id between 9 and 10
-and accrual_id = 4;
+where employee_name = 'Пискунов Михаил Борисович'
+and year_id = 25
+-- and month_id between 4 and 10
+and accrual_id = 3; -- Оклад
 
 select avg(salary_bugget_ammount) as salary from SalaryBudget
 inner join Employee E on SalaryBudget.tab_N = E.tab_N
@@ -80,3 +80,5 @@ where tab_N = '000000618'
 and year_id = 24
 and month_id between 1 and 7
 group by month_id;
+
+select * from SalaryBudget;

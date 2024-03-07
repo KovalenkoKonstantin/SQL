@@ -134,3 +134,15 @@ alter table EmployeeChanges
 		foreign key (GUID) references Employee (GUID)
 go
 
+select rtrim(employee_name) as employee_name, month_name, year_number,
+       rtrim(employee_accounting_type) as employee_accounting_type,
+       rtrim(employee_position) as employee_position,
+       rtrim(schedule_description) as schedule_description
+from EmployeeChanges
+inner join Employee E on EmployeeChanges.tab_N = E.tab_N
+inner join Month M on EmployeeChanges.month_id = M.month_id
+inner join Year Y on EmployeeChanges.year_id = Y.year_id
+inner join Schedule S on EmployeeChanges.schedule_id = S.schedule_id
+where employee_name <> '' and year_number > 2023 and employee_position <> ''
+and organization_id = 3
+order by employee_name, year_number
