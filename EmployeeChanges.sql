@@ -85,7 +85,7 @@ select rtrim(employee_name) as employee_name, month_name, year_number,
 inner join Employee E on EmployeeChanges.tab_N = E.tab_N
 inner join Month M on EmployeeChanges.month_id = M.month_id
 inner join Year Y on EmployeeChanges.year_id = Y.year_id
-where employee_name = 'Моногаров Вячеслав Яковлевич'
+where employee_name = 'Артёмов Виктор Романович'
 and year_number > 2023
 and employee_position <> ''
 and organization_id = 9
