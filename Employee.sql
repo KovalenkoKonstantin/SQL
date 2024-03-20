@@ -248,4 +248,6 @@ alter table Employee
 go
 
 select * from Employee
-where employee_name = 'Артёмов Виктор Романович'
+where employee_name = 'Казарин Иван Юрьевич'
+
+exec GetEmployeeRefresh 9;
