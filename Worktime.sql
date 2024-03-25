@@ -188,28 +188,37 @@ alter table Worktime
 		foreign key (GUID) references Employee (GUID)
 go
 
-select work_hours from Worktime
---inner join Employee E on Worktime.GUID = E.GUID
-where month_id = 1
+select norm_hours from Worktime
+inner join Employee E on Worktime.GUID = E.GUID
+where month_id = 5
 and year_id = 24
-and tab_N = '000000484'
---and employee_name = 'Елисеев Владимир Леонидович'
+and employee_name = 'Давлетшин Александр Сагитович'
 
-alter table SalaryBudget
-	add consumer_price_index float default 1
-go
+select rtrim(employee_name) as employee_name, month_name, year_number,
+       norm_hours, work_hours from Worktime
+inner join Employee on Worktime.GUID = Employee.GUID
+inner join Month M on Worktime.month_id = M.month_id
+inner join Year Y on Worktime.year_id = Y.year_id
 
-alter table SalaryBudget
-	add real_wage_ratio float default 1
-go
+where employee_name <> ''
+and year_number >= 2024
+and organization_id = 9
+and employee_name = 'Родионов Феликс Николаевич'
+and month_name = 'Май'
+and year_number = 2024
+and date_of_dismissal = '1753-01-01'
+order by employee_name;
 
-update SalaryBudget
-set SalaryBudget.consumer_price_index = 1
-where year_id = 22;
 
-update SalaryBudget
-set SalaryBudget.real_wage_ratio = 1
-where year_id = 22;
+select * from Worktime
+inner join Employee E on Worktime.GUID = E.GUID
+where employee_name = 'Кабакова Наталия Вячеславовна'
+and month_id = 4
+and year_id = 24
+and date_of_dismissal = '1753-01-01'
 
-select * from SalaryBudget
-where year_id = 24;
+
+select * from ProjectWork
+where tab_N like '%405%'
+select * from ProjectWork
+where tab_N = '0000000020'

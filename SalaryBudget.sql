@@ -102,3 +102,24 @@ from SalaryBudget
 --   and Month(date_of_dismissal) > month_id
 -- and employee_name = 'Лыфенко Николай Дмитриевич';
 where employee_name = 'Лыфенко Николай Дмитриевич';
+
+drop procedure if exists GetSalaryList
+create procedure GetSalaryList
+@organization_id as integer,
+@year_number as integer
+as
+begin
+    select rtrim(employee_name) as employee_name, month_name, year_number,
+       accrual_type, salary_bugget_ammount from SalaryBudget
+inner join Employee E on SalaryBudget.GUID = E.GUID
+inner join AccrualType A on SalaryBudget.accrual_id = A.accrual_id
+inner join Month M on SalaryBudget.month_id = M.month_id
+inner join Year Y on SalaryBudget.year_id = Y.year_id
+where employee_name <> ''
+and year_number >= @year_number
+and organization_id = @organization_id
+and date_of_dismissal = '1753-01-01'
+order by employee_name, year_number
+end
+
+execute GetSalaryList 9, 2024;

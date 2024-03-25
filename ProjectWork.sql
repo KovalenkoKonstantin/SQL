@@ -55,3 +55,64 @@ alter table ProjectWork
 	add constraint FK_ProjectWork_GUID
 		foreign key (GUID) references Employee (GUID)
 go
+
+select * from ProjectWork
+inner join Employee E on ProjectWork.GUID = E.GUID
+inner join Organization O on E.organization_id = O.organization_id
+where ProjectWork.tab_N = '0000000222';
+
+
+update ProjectWork
+set ProjectWork.organization_id = Employee.organization_id
+from Employee
+where ProjectWork.GUID = Employee.GUID
+
+select month_name, year_number,
+       project_hours, employee_name,
+       ProjectWork.organization_id,
+       project_cipher
+from ProjectWork
+inner join Year Y on ProjectWork.year_id = Y.year_id
+inner join Month M on ProjectWork.month_id = M.month_id
+inner join Employee E on ProjectWork.GUID = E.GUID
+inner join Project P on ProjectWork.project_id = P.project_id
+where ProjectWork.organization_id = 9
+and year_number = 2024;
+
+drop procedure if exists GetProJectWork
+create procedure GetProjectWork
+            @organization_id as integer,
+            @year_number as integer
+        as
+begin
+select month_name, year_number,
+       project_hours, employee_name,
+       ProjectWork.organization_id,
+       project_cipher
+from ProjectWork
+inner join Year Y on ProjectWork.year_id = Y.year_id
+inner join Month M on ProjectWork.month_id = M.month_id
+inner join Employee E on ProjectWork.GUID = E.GUID
+inner join Project P on ProjectWork.project_id = P.project_id
+where ProjectWork.organization_id = @organization_id
+and year_number = @year_number
+end
+
+execute GetProJectWork 9, 2024;
+
+exec sp_addextendedproperty 'MS_Description', 'Часы отнесённые на проекты', 'SCHEMA', 'dbo', 'TABLE', 'ProjectWork'
+go
+
+select * from ProjectWork
+inner join Employee E on ProjectWork.GUID = E.GUID
+inner join Month M on ProjectWork.month_id = M.month_id
+inner join Year Y on ProjectWork.year_id = Y.year_id
+inner join Project P on ProjectWork.project_id = P.project_id;
+
+select * from ProjectWork
+inner join Project P on ProjectWork.project_id = P.project_id
+where year_id = 24
+and [1C_kod_project] = '00-00-00150';
+
+delete from ProjectWork
+where project_id = 6534;
