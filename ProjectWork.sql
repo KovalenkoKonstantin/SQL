@@ -116,3 +116,6 @@ and [1C_kod_project] = '00-00-00150';
 
 delete from ProjectWork
 where project_id = 6534;
+
+delete from ProjectWork
+where tab_N = '0000000194';
