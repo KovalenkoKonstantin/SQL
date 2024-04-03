@@ -248,6 +248,22 @@ alter table Employee
 go
 
 select * from Employee
-where employee_name = 'Серова Ирина Юрьевна'
+where employee_name = 'Адыкаев Чингиз Улугбекович'
 
 exec GetEmployeeRefresh 9;
+
+drop procedure if exists GetEmployeeRefreshAlt;
+create procedure GetEmployeeRefreshAlt
+@index as integer
+as
+begin
+--prevent the "1 row affected" message from being returned for every operation
+    set nocount on
+--statement for the procedure
+select rtrim(employee_name) as employee_name, tab_N from Employee
+where employee_name <> ''
+and organization_id = @index
+and date_of_dismissal = '1753-01-01'
+order by employee_name
+end
+go

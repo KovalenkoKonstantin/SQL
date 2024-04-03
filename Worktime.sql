@@ -222,3 +222,5 @@ select * from ProjectWork
 where tab_N like '%405%'
 select * from ProjectWork
 where tab_N = '0000000020'
+
+execute GetWorktimeAlt 9, 2023;

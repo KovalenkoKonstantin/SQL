@@ -15,40 +15,39 @@ select * from VHI;
 
 drop procedure if exists GetVHI;
 create procedure GetVHI
+    @organization_id as integer,
+    @year_id as integer
 as
 begin
 --prevent the "1 row affected" message from being returned for every operation
     set nocount on
 --statement for the procedure
-select tab_N, insurance_program, policy_issue_date,
-       policy_expiration_date, employer_cost, employee_cost, policy_number,
-       employee_insurance, FORMAT(policy_issue_date,'yyyy') as year, detachment_date
- from VHI
-    order by policy_issue_date
+select VHI.tab_N,
+       insurance_program,
+       policy_issue_date,
+       policy_expiration_date,
+       employer_cost,
+       employee_cost,
+       policy_number,
+       employee_insurance,
+       FORMAT(policy_issue_date, 'yyyy') as year,
+       detachment_date,
+       employee_name
+from VHI
+         inner join Employee E on VHI.GUID = E.GUID
+where VHI.organization_id = @organization_id
+  and FORMAT(policy_issue_date, 'yyyy') >= @year_id
+  and date_of_dismissal = '1753-01-01'
+order by employee_name, policy_issue_date
 end
 go;
 
-exec GetVHI;
+exec GetVHI 9, 2023;
 
 select FORMAT(getdate(),'MMMM') as year from VHI;
 select FORMAT(policy_issue_date,'MMMM') as year from VHI;
 
 select * from VHI
-where tab_N = '0000000235';
+where tab_N = '0000000082'
+and year(policy_issue_date) > 2022
 
-alter table VHI
-	add detachment_date date default null
-go
-
-alter table VHI
-    drop constraint FK_Employee_tab_N
-go
-
-alter table VHI
-	add GUID nvarchar(36)
-go
-
-alter table VHI
-	add constraint FK_VHI_GUID
-		foreign key (GUID) references Employee (GUID)
-go

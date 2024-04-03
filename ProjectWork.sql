@@ -119,3 +119,11 @@ where project_id = 6534;
 
 delete from ProjectWork
 where tab_N = '0000000194';
+
+select * from ProjectWork
+inner join Employee E on ProjectWork.GUID = E.GUID
+where employee_name = 'Байдельдинова Айнагуль Джабраиловна';
+
+select * from ProjectWork
+where year_id = 24
+and organization_id = 9;
