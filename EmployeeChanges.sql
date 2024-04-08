@@ -196,6 +196,8 @@ and date_of_dismissal = '1753-01-01'
 order by employee_name, year_number
 end
 
+execute GetEmployeeChangesRefreshAlt 9, 2024
+
 select rtrim(employee_name) as employee_name, month_name, year_number,
        rtrim(employee_position) as employee_position,
        rtrim(employee_department) as employee_department
@@ -204,8 +206,8 @@ inner join Month M on EmployeeChanges.month_id = M.month_id
 inner join Year Y on EmployeeChanges.year_id = Y.year_id
 -- inner join Schedule S on EmployeeChanges.schedule_id = S.schedule_id
 inner join Employee E on EmployeeChanges.GUID = E.GUID
-where employee_name <> ''
-and year_number >= 2024
+where employee_name = 'Лысенко Екатерина Евгеньевна'
+and year_number >= 2023
 and employee_position <> ''
 and organization_id = 9
 and date_of_dismissal = '1753-01-01'

@@ -248,7 +248,7 @@ alter table Employee
 go
 
 select * from Employee
-where employee_name = 'Адыкаев Чингиз Улугбекович'
+where employee_name = 'Аверкина Ольга Викторовна'
 
 exec GetEmployeeRefresh 9;
 
@@ -264,6 +264,7 @@ select rtrim(employee_name) as employee_name, tab_N from Employee
 where employee_name <> ''
 and organization_id = @index
 and date_of_dismissal = '1753-01-01'
+and fired = 0
 order by employee_name
 end
 go
