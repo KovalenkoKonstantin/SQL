@@ -95,7 +95,7 @@ inner join Month M on ProjectWork.month_id = M.month_id
 inner join Employee E on ProjectWork.GUID = E.GUID
 inner join Project P on ProjectWork.project_id = P.project_id
 where ProjectWork.organization_id = @organization_id
-and year_number = @year_number
+and year_number >= @year_number
 end
 
 execute GetProJectWork 9, 2024;
