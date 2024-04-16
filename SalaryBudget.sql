@@ -60,11 +60,11 @@ exec GetSalaryBudgetRefresh 9, 2024;
 
 select *
 from SalaryBudget
-         inner join Employee E on SalaryBudget.tab_N = E.tab_N
-where employee_name = 'Пискунов Михаил Борисович'
-  and year_id = 25
--- and month_id between 4 and 10
-  and accrual_id = 3; -- Оклад
+inner join Employee E on SalaryBudget.GUID = E.GUID
+where employee_name = 'Дескат Михаил Витальевич'
+  and year_id = 24
+and month_id = 1
+--   and accrual_id = 3; -- Оклад
 
 select avg(salary_bugget_ammount) as salary
 from SalaryBudget
@@ -101,7 +101,7 @@ from SalaryBudget
 --   and YEAR(date_of_dismissal) > year_id
 --   and Month(date_of_dismissal) > month_id
 -- and employee_name = 'Лыфенко Николай Дмитриевич';
-where employee_name = 'Лыфенко Николай Дмитриевич';
+where employee_name = 'Гончаров Никита Владимирович';
 
 drop procedure if exists GetSalaryList
 create procedure GetSalaryList
@@ -122,4 +122,54 @@ and date_of_dismissal = '1753-01-01'
 order by employee_name, year_number
 end
 
+drop procedure if exists GetSalaryListShchepetova
+create procedure GetSalaryListShchepetova
+@organization_id as integer,
+@year_number as integer
+as
+begin
+    select rtrim(employee_name) as employee_name, month_name, year_number,
+       sum(salary_bugget_ammount) as salary_bugget_ammount, fired from SalaryBudget
+inner join Employee E on SalaryBudget.GUID = E.GUID
+-- inner join AccrualType A on SalaryBudget.accrual_id = A.accrual_id
+inner join Month M on SalaryBudget.month_id = M.month_id
+inner join Year Y on SalaryBudget.year_id = Y.year_id
+where employee_name <> ''
+and year_number >= @year_number
+and organization_id = @organization_id
+-- and year_number >= 2024
+-- and organization_id = 9
+-- and date_of_dismissal = '1753-01-01'
+and accrual_id between 2 and 3
+group by rtrim(employee_name), month_name, year_number, fired
+order by employee_name, year_number
+end
+
+drop procedure if exists GetSalaryListShchepetovaGPC
+create procedure GetSalaryListShchepetovaGPC
+@organization_id as integer,
+@year_number as integer
+as
+begin
+    select rtrim(employee_name) as employee_name, month_name, year_number,
+       sum(salary_bugget_ammount) as salary_bugget_ammount, fired from SalaryBudget
+inner join Employee E on SalaryBudget.GUID = E.GUID
+-- inner join AccrualType A on SalaryBudget.accrual_id = A.accrual_id
+inner join Month M on SalaryBudget.month_id = M.month_id
+inner join Year Y on SalaryBudget.year_id = Y.year_id
+where employee_name <> ''
+and year_number >= @year_number
+and organization_id = @organization_id
+-- and year_number >= 2024
+-- and organization_id = 9
+-- and date_of_dismissal = '1753-01-01'
+and accrual_id = 1
+group by rtrim(employee_name), month_name, year_number, fired
+order by employee_name, year_number
+end
+
 execute GetSalaryList 9, 2024;
+execute GetSalaryListShchepetova 9, 2024;
+execute GetSalaryListShchepetovaGPC 9, 2024;
+execute GetSalaryBudgetRefresh 9, 2024;
+

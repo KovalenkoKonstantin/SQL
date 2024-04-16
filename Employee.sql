@@ -248,7 +248,7 @@ alter table Employee
 go
 
 select * from Employee
-where employee_name = 'Аверкина Ольга Викторовна'
+where employee_name = 'Дескат Михаил Витальевич'
 
 exec GetEmployeeRefresh 9;
 
@@ -268,3 +268,5 @@ and fired = 0
 order by employee_name
 end
 go
+
+execute GetEmployeeRefreshAlt 9;
