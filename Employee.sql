@@ -270,3 +270,6 @@ end
 go
 
 execute GetEmployeeRefreshAlt 9;
+
+update Employee
+set city_id = 4;
