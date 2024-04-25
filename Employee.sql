@@ -273,3 +273,35 @@ execute GetEmployeeRefreshAlt 9;
 
 update Employee
 set city_id = 4;
+
+select employee_name,
+       replace(city_name, N'г. ', '') as city_name from Employee
+inner join City C on Employee.city_id = C.city_id
+where organization_id = 3;
+
+exec GetEmployeeRefresh 9;
+
+drop procedure if exists GetEmployeeListShchepetova;
+create procedure GetEmployeeListShchepetova
+@organization_id as integer
+as
+begin
+--prevent the "1 row affected" message from being returned for every operation
+    set nocount on
+--statement for the procedure
+select employee_name,
+       replace(city_name, N'г. ', '') as city_name from Employee
+inner join City C on Employee.city_id = C.city_id
+where organization_id = @organization_id
+order by employee_name
+end
+go
+
+execute GetEmployeeListShchepetova 9;
+
+select employee_name, city_name, fired from Employee
+inner join City C on Employee.city_id = C.city_id
+where employee_name = 'Шалаев Илья Александрович'
+
+select employee_name, city_id from Employee
+where employee_name = 'Шалаев Илья Александрович'

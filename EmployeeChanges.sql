@@ -274,5 +274,3 @@ select rtrim(employee_name) as employee_name,
                  and date_of_dismissal = '1753-01-01'
              order by employee_name, year_number
 
-update EmployeeChanges
-set city_id = 4;
