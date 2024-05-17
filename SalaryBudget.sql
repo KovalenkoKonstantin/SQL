@@ -163,11 +163,11 @@ inner join Employee E on SalaryBudget.GUID = E.GUID
 inner join Month M on SalaryBudget.month_id = M.month_id
 inner join Year Y on SalaryBudget.year_id = Y.year_id
 where employee_name <> ''
-and year_number >= @year_number
-and organization_id = @organization_id
--- and year_number >= 2024
--- and organization_id = 9
--- and date_of_dismissal = '1753-01-01'
+-- and year_number >= @year_number
+-- and organization_id = @organization_id
+and year_number >= 2024
+and organization_id = 9
+and employee_name = 'Бреус Данил Евгеньевич'
 and accrual_id = 1
 group by rtrim(employee_name), month_name, year_number, fired
 order by employee_name, year_number
@@ -233,6 +233,6 @@ execute GetSalaryList 9, 2024;
 execute GetSalaryListShchepetova 9, 2023;
 execute GetSalaryListShchepetovaAlt 04, 2024,9;
 execute GetSalaryListShchepetovaRK 9,2024;
-execute GetSalaryListShchepetovaGPC 9, 2023;
+execute GetSalaryListShchepetovaGPC 9, 2024;
 execute GetSalaryBudgetRefresh 9, 2024;
 
