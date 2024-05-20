@@ -177,10 +177,11 @@ execute GetEmployeeChangesRefreshAlt 9, 2023;
 drop procedure if exists GetEmployeeChangesRefreshAlt
 create procedure GetEmployeeChangesRefreshAlt
     @organization_id as integer,
-    @year_number as integer
+    @year_number as integer,
+    @date as date
     as
     begin
-select rtrim(employee_name) as employee_name, month_name, year_number,
+select distinct rtrim(employee_name) as employee_name, month_name, year_number,
        rtrim(employee_position) as employee_position,
        rtrim(employee_department) as employee_department
 from EmployeeChanges
@@ -192,11 +193,27 @@ where employee_name <> ''
 and year_number >= @year_number
 and employee_position <> ''
 and organization_id = @organization_id
-and date_of_dismissal = '1753-01-01'
+and date_of_dismissal > @date
+-- order by employee_name, year_number
+        union
+select distinct rtrim(employee_name) as employee_name, month_name, year_number,
+       rtrim(employee_position) as employee_position,
+       rtrim(employee_department) as employee_department
+from EmployeeChanges
+inner join Month M on EmployeeChanges.month_id = M.month_id
+inner join Year Y on EmployeeChanges.year_id = Y.year_id
+-- inner join Schedule S on EmployeeChanges.schedule_id = S.schedule_id
+inner join Employee E on EmployeeChanges.GUID = E.GUID
+where employee_name <> ''
+and year_number >= @year_number
+and employee_position <> ''
+and organization_id = @organization_id
+and fired = 0
 order by employee_name, year_number
 end
 
-execute GetEmployeeChangesRefreshAlt 9, 2024
+execute GetEmployeeChangesRefreshAlt 9,
+    2024,'2023-07-30'
 
 select rtrim(employee_name) as employee_name, month_name, year_number,
        rtrim(employee_position) as employee_position,
@@ -210,7 +227,7 @@ where employee_name = 'Лысенко Екатерина Евгеньевна'
 and year_number >= 2023
 and employee_position <> ''
 and organization_id = 9
-and date_of_dismissal = '1753-01-01'
+and date_of_dismissal > '2023-07-30'
 order by employee_name, year_number
 
 drop procedure if exists GetEmployeeListShchepetova

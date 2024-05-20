@@ -366,18 +366,24 @@ begin
     set nocount on
     --statement for the procedure
 --     set @year_id = convert(date, @year_id, 101)
-    select rtrim(employee_name) as employee_name, tab_N
+    select distinct rtrim(employee_name) as employee_name, Employee.tab_N
     from Employee
+    inner join VHI V on Employee.GUID = V.GUID
     where employee_name <> ''
-      and organization_id = @organization_id
+      and Employee.organization_id = @organization_id
       and date_of_dismissal > @date
+      and insurance_program <> ''
+      and policy_issue_date > @date
     -- order by employee_name
     UNION
-    select rtrim(employee_name) as employee_name, tab_N
+    select distinct rtrim(employee_name) as employee_name, Employee.tab_N
     from Employee
+    inner join VHI V on Employee.GUID = V.GUID
     where employee_name <> ''
-      and organization_id = @organization_id
+      and Employee.organization_id = @organization_id
       and fired = 0
+      and insurance_program <> ''
+      and policy_issue_date > @date
     order by employee_name
 end
 go
@@ -385,16 +391,24 @@ go
 execute GetEmployeeRefreshAltДМС 9, '2023-07-30';
 
 
-select rtrim(employee_name) as employee_name, tab_N
+select distinct rtrim(employee_name) as employee_name, Employee.tab_N
 from Employee
+inner join VHI V on Employee.GUID = V.GUID
 where employee_name <> ''
-  and organization_id = 9
+  and Employee.organization_id = 9
   and date_of_dismissal > '2023-07-30'
+  and insurance_program <> ''
 -- order by employee_name
 UNION
-select rtrim(employee_name) as employee_name, tab_N
+select distinct rtrim(employee_name) as employee_name, Employee.tab_N
 from Employee
+inner join VHI V on Employee.GUID = V.GUID
 where employee_name <> ''
-  and organization_id = 9
+  and Employee.organization_id = 9
   and fired = 0
+  and insurance_program <> ''
 order by employee_name
+
+select * from Employee
+inner join VHI V on Employee.GUID = V.GUID
+where Employee.tab_N = '0000000357'
