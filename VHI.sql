@@ -34,7 +34,9 @@ select VHI.tab_N,
        FORMAT(policy_issue_date, 'yyyy') as year,
        replace(detachment_date, '1753-01-01', '')as N'Дата открепления',
        replace(date_of_dismissal, '1753-01-01', '')as N'Дата увольнения',
-       employee_name
+       employee_name,
+       [relative's_insurance],
+       relative
 from VHI
          inner join Employee E on VHI.GUID = E.GUID
 where VHI.organization_id = @organization_id
@@ -53,7 +55,9 @@ select VHI.tab_N,
        FORMAT(policy_issue_date, 'yyyy') as year,
        replace(detachment_date, '1753-01-01', '')as N'Дата открепления',
        replace(date_of_dismissal, '1753-01-01', '')as N'Дата увольнения',
-       employee_name
+       employee_name,
+       [relative's_insurance],
+       relative
 from VHI
          inner join Employee E on VHI.GUID = E.GUID
 where VHI.organization_id = @organization_id
@@ -83,12 +87,15 @@ select VHI.tab_N,
        employee_insurance,
        FORMAT(policy_issue_date, 'yyyy') as year,
        detachment_date as N'Дата открепления',
-       employee_name
+       employee_name,
+       [relative's_insurance],
+       relative
 from VHI
          inner join Employee E on VHI.GUID = E.GUID
 where VHI.organization_id = 9
   and FORMAT(policy_issue_date, 'yyyy') >= 2023
   and date_of_dismissal > '2023-07-30'
+-- order by employee_name, policy_issue_date
 union
 select VHI.tab_N,
        insurance_program,
@@ -100,7 +107,9 @@ select VHI.tab_N,
        employee_insurance,
        FORMAT(policy_issue_date, 'yyyy') as year,
        detachment_date as N'Дата открепления',
-       employee_name
+       employee_name,
+       [relative's_insurance],
+       relative
 from VHI
          inner join Employee E on VHI.GUID = E.GUID
 where VHI.organization_id = 9
@@ -111,3 +120,22 @@ order by employee_name, policy_issue_date
 
 select * from VHI
 where tab_N = '0000000320'
+
+update VHI
+set [relative's_insurance ] = 1
+where relative = 'Панов Тимофей Иванович'
+
+select * from VHI
+where policy_number = '66579559'
+and tab_N = '0000000179'
+
+select * from VHI
+where tab_N = '0000000181'
+and policy_number = '66579574'
+
+select GUID, tab_N from Employee
+where employee_name = 'Хачатрян Микаэл Гагикович'
+
+
+
+

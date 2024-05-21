@@ -183,7 +183,8 @@ create procedure GetEmployeeChangesRefreshAlt
     begin
 select distinct rtrim(employee_name) as employee_name, month_name, year_number,
        rtrim(employee_position) as employee_position,
-       rtrim(employee_department) as employee_department
+       rtrim(employee_department) as employee_department,
+       EmployeeChanges.tab_N
 from EmployeeChanges
 inner join Month M on EmployeeChanges.month_id = M.month_id
 inner join Year Y on EmployeeChanges.year_id = Y.year_id
@@ -198,7 +199,8 @@ and date_of_dismissal > @date
         union
 select distinct rtrim(employee_name) as employee_name, month_name, year_number,
        rtrim(employee_position) as employee_position,
-       rtrim(employee_department) as employee_department
+       rtrim(employee_department) as employee_department,
+       EmployeeChanges.tab_N
 from EmployeeChanges
 inner join Month M on EmployeeChanges.month_id = M.month_id
 inner join Year Y on EmployeeChanges.year_id = Y.year_id

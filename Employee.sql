@@ -384,6 +384,11 @@ begin
       and fired = 0
       and insurance_program <> ''
       and policy_issue_date > @date
+    union
+    select relative, E.tab_N from VHI
+    inner join Employee E on VHI.GUID = E.GUID
+    where [relative's_insurance ] = 1
+    and E.organization_id = 9
     order by employee_name
 end
 go
@@ -407,8 +412,19 @@ where employee_name <> ''
   and Employee.organization_id = 9
   and fired = 0
   and insurance_program <> ''
+union
+select relative, E.tab_N from VHI
+inner join Employee E on VHI.GUID = E.GUID
+where [relative's_insurance ] = 1
+and E.organization_id = 9
 order by employee_name
 
 select * from Employee
 inner join VHI V on Employee.GUID = V.GUID
 where Employee.tab_N = '0000000357'
+
+select employee_name, relative, E.tab_N from VHI
+inner join Employee E on VHI.GUID = E.GUID
+where employee_insurance = 1
+and E.organization_id = 9
+
