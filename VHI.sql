@@ -133,8 +133,8 @@ select * from VHI
 where tab_N = '0000000181'
 and policy_number = '66579574'
 
-select GUID, tab_N from Employee
-where employee_name = 'Хачатрян Микаэл Гагикович'
+select * from VHI
+where policy_number = '66579601'
 
 
 
