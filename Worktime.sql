@@ -137,7 +137,8 @@ select * FROM Worktime;
 
 drop procedure if exists GetWorktimeAlt;
 create procedure GetWorktimeAlt
-@index as integer
+@organization_id as integer,
+@year_id as integer
 as
 begin
 --prevent the "1 row affected" message from being returned for every operation
@@ -145,19 +146,19 @@ begin
 --statement for the procedure
 select rtrim(employee_name) as employee_name, month_name, year_number,
        calendar_days, format(date_of_dismissal, 'dd.MM.yyyy')
-           as date_of_dismissal from Worktime
+           as date_of_dismissal, E.tab_N from Worktime
 inner join Employee E on Worktime.tab_N = E.tab_N
 inner join Month M on Worktime.month_id = M.month_id
 inner join Year Y on Worktime.year_id = Y.year_id
 
 where employee_name <> ''
-and year_number >= 2022
-and organization_id = @index
+and year_number >= @year_id
+and organization_id = @organization_id
 order by employee_name;
 end
 go
 
-exec GetWorktimeAlt 3;
+exec GetWorktimeAlt 9, 2023;
 
 select employee_name, month_name, year_number,
        norm_days, norm_hours, work_days, work_hours
