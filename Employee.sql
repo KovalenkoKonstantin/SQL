@@ -242,7 +242,7 @@ go
 
 alter procedure GetEmployee
     @org as int,
-        @startdate as date
+    @startdate as date
     as
     begin
         --prevent the "1 row affected" message from being returned for every operation
@@ -255,6 +255,7 @@ alter procedure GetEmployee
         where organization_id = @org
             and date_of_dismissal > @startdate
            or date_of_dismissal = '1753-01-01'
+        and fired = 0
         order by tab_N desc
     end
     exec GetEmployee 3, '2022-06-01';
@@ -428,3 +429,29 @@ inner join Employee E on VHI.GUID = E.GUID
 where employee_insurance = 1
 and E.organization_id = 9
 
+drop procedure if exists GetEmployeeList
+create procedure GetEmployeeList
+    @organization_id as integer,
+    @year_number as integer
+    as
+    begin
+select rtrim(employee_name) as employee_name, month_name, year_number,
+       rtrim(employee_accounting_type) as employee_accounting_type,
+       rtrim(employee_position) as employee_position,
+       rtrim(schedule_description) as schedule_description,
+       rtrim(employee_department) as employee_department
+from EmployeeChanges
+inner join Month M on EmployeeChanges.month_id = M.month_id
+inner join Year Y on EmployeeChanges.year_id = Y.year_id
+inner join Schedule S on EmployeeChanges.schedule_id = S.schedule_id
+inner join Employee E on EmployeeChanges.GUID = E.GUID
+where employee_name <> ''
+and year_number >= @year_number
+and employee_position <> ''
+and organization_id = @organization_id
+and date_of_dismissal = '1753-01-01'
+order by employee_name, year_number
+end
+go
+
+execute GetEmployeeList 3, 2024;

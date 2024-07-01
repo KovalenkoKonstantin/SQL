@@ -176,7 +176,7 @@ where E.employee_name = 'Закиров Ратмир Эльвирович'
 and month_id = 4
 and year_id = 23;
 
-alter table Worktime
+alter table Worktim
     drop constraint FK_Worktime_tab_N
 go
 

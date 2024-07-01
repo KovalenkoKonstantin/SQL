@@ -206,3 +206,5 @@ and organization_id = 3
 and year_number > 2023
 and Tax.tab_N = '000000484'
 group by rtrim(employee_name), Tax.tab_N, month_name, year_number
+
+execute GetTaxRefresh 3, 2024

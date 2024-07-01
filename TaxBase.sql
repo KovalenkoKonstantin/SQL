@@ -41,7 +41,7 @@ order by employee_name, year_number;
 end
 go
 
-exec GetTaxBaseRefresh 3;
+exec GetTaxBaseRefresh 3, 2024;
 
 alter table TaxBase
     drop constraint FK_TaxBase_tab_N
