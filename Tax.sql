@@ -207,4 +207,47 @@ and year_number > 2023
 and Tax.tab_N = '000000484'
 group by rtrim(employee_name), Tax.tab_N, month_name, year_number
 
-execute GetTaxRefresh 3, 2024
+execute GetTaxRefresh 9, 2024, 2024;
+
+
+-- Этот код создает хранимую процедуру,
+-- которая возвращает данные о налогах сотрудников
+-- для заданной организации и диапазона лет.
+-- Создание хранимой процедуры с именем GetTaxRefresh
+CREATE PROCEDURE GetTaxRefresh
+    @organization_id AS INTEGER,       -- Входной параметр: идентификатор организации
+    @start_year_number AS INTEGER,     -- Входной параметр: начальный год
+    @end_year_number AS INTEGER        -- Входной параметр: конечный год
+AS
+BEGIN
+    -- Отключение вывода сообщения "1 row affected" для каждой операции
+    SET NOCOUNT ON;
+
+    -- Основной запрос для процедуры
+    SELECT
+        RTRIM(employee_name) AS employee_name,  -- Удаление пробелов справа от имени сотрудника
+        Tax.tab_N,                              -- Табельный номер сотрудника
+        month_name,                             -- Название месяца
+        year_number,                            -- Номер года
+        ROUND(SUM(tax_sum), 2) AS tax_sum_amount -- Сумма налога, округленная до 2 знаков после запятой
+    FROM
+        Tax
+    INNER JOIN
+        TaxName TN ON Tax.tax_name_id = TN.tax_name_id -- Соединение с таблицей TaxName по идентификатору названия налога
+    INNER JOIN
+        Employee E ON Tax.tab_N = E.tab_N             -- Соединение с таблицей Employee по табельному номеру
+    INNER JOIN
+        Month M ON Tax.month_id = M.month_id          -- Соединение с таблицей Month по идентификатору месяца
+    INNER JOIN
+        Year Y ON Tax.year_id = Y.year_id             -- Соединение с таблицей Year по идентификатору года
+    WHERE
+        TN.tax_name_id BETWEEN 3 AND 7                -- Фильтрация по диапазону идентификаторов названий налогов
+        AND organization_id = @organization_id        -- Фильтрация по идентификатору организации
+        AND year_number BETWEEN @start_year_number AND @end_year_number -- Фильтрация по диапазону лет
+    GROUP BY
+        RTRIM(employee_name),                         -- Группировка по имени сотрудника
+        Tax.tab_N,                                    -- Группировка по табельному номеру
+        month_name,                                   -- Группировка по названию месяца
+        year_number                                   -- Группировка по номеру года
+END
+GO
