@@ -22,8 +22,9 @@ select * from Employee
 where rtrim(employee_name) = 'Науменко Антон Павлович';
 
 drop procedure if exists GetTaxBaseRefresh;
-create procedure GetTaxBaseRefresh
-@index as integer
+CREATE procedure GetTaxBaseRefresh
+@organization_id as integer,
+@year_number as integer
 as
 begin
 --prevent the "1 row affected" message from being returned for every operation
@@ -35,8 +36,8 @@ inner join Employee E on TaxBase.tab_N = E.tab_N
 inner join Month M on TaxBase.month_id = M.month_id
 inner join Year Y on TaxBase.year_id = Y.year_id
 where employee_name <> ''
-and organization_id = @index
-and year_number > 2021
+and organization_id = @organization_id
+and year_number >= @year_number
 order by employee_name, year_number;
 end
 go
@@ -63,3 +64,37 @@ go
 select * from TaxBase
 where tab_N = '000000484'
 and year_id = 24;
+
+-- Создание хранимой процедуры с именем GetTaxBaseRefresh
+alter PROCEDURE GetTaxBaseRefresh
+    @organization_id AS INTEGER,       -- Входной параметр: идентификатор организации
+    @start_year_number AS INTEGER,     -- Входной параметр: начальный год
+    @end_year_number AS INTEGER        -- Входной параметр: конечный год
+AS
+BEGIN
+    -- Отключение вывода сообщения "1 row affected" для каждой операции
+    SET NOCOUNT ON;
+
+    -- Основной запрос для процедуры
+    SELECT
+        RTRIM(employee_name) AS employee_name,  -- Удаление пробелов справа от имени сотрудника
+        month_name,                             -- Название месяца
+        year_number,                            -- Номер года
+        tax_base_ammount                        -- Сумма налоговой базы
+    FROM
+        TaxBase
+    INNER JOIN
+        Employee E ON TaxBase.tab_N = E.tab_N   -- Соединение с таблицей Employee по табельному номеру
+    INNER JOIN
+        Month M ON TaxBase.month_id = M.month_id -- Соединение с таблицей Month по идентификатору месяца
+    INNER JOIN
+        Year Y ON TaxBase.year_id = Y.year_id   -- Соединение с таблицей Year по идентификатору года
+    WHERE
+        employee_name <> ''                     -- Исключение записей с пустым именем сотрудника
+        AND organization_id = @organization_id  -- Фильтрация по идентификатору организации
+        AND year_number BETWEEN @start_year_number AND @end_year_number -- Фильтрация по диапазону лет
+    ORDER BY
+        employee_name,                          -- Сортировка по имени сотрудника
+        year_number;                            -- Сортировка по номеру года
+END
+go

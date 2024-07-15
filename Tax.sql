@@ -188,7 +188,7 @@ alter table Tax
 go
 
 select * from Tax
-where tab_N = '000000484'
+where tab_N = '0000000029'
 and year_id = 24;
 
 select rtrim(employee_name) as employee_name,

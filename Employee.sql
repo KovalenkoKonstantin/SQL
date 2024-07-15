@@ -455,3 +455,8 @@ end
 go
 
 execute GetEmployeeList 3, 2024;
+
+execute GetEmployee 3;
+
+select * from Employee
+where employee_name = 'Мосалев Андрей Вячеславович';

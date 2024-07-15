@@ -213,10 +213,11 @@ order by employee_name;
 
 select * from Worktime
 inner join Employee E on Worktime.GUID = E.GUID
-where employee_name = 'Кабакова Наталия Вячеславовна'
-and month_id = 4
+where employee_name = 'Мосалев Андрей Вячеславович'
+-- where Worktime.tab_N = '0000000029'
+and month_id = 6
 and year_id = 24
-and date_of_dismissal = '1753-01-01'
+-- and date_of_dismissal = '1753-01-01'
 
 
 select * from ProjectWork
@@ -225,3 +226,5 @@ select * from ProjectWork
 where tab_N = '0000000020'
 
 execute GetWorktimeAlt 9, 2023;
+
+select * from Worktime;
