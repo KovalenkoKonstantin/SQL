@@ -454,9 +454,50 @@ order by employee_name, year_number
 end
 go
 
-execute GetEmployeeList 3, 2024;
+execute GetEmployeeList 9, 2024, 2025;
 
 execute GetEmployee 3;
 
 select * from Employee
 where employee_name = 'Мосалев Андрей Вячеславович';
+
+-- Этот код создает хранимую процедуру,
+-- которая возвращает список сотрудников
+-- для заданной организации и диапазона лет.
+-- Создание хранимой процедуры с именем GetEmployeeList
+CREATE PROCEDURE GetEmployeeList
+    @organization_id AS INTEGER,       -- Входной параметр: идентификатор организации
+    @start_year_number AS INTEGER,     -- Входной параметр: начальный год
+    @end_year_number AS INTEGER        -- Входной параметр: конечный год
+AS
+BEGIN
+    -- Основной запрос для процедуры
+    SELECT
+        RTRIM(employee_name) AS employee_name,  -- Удаление пробелов справа от имени сотрудника
+        month_name,                             -- Название месяца
+        year_number,                            -- Номер года
+        RTRIM(employee_accounting_type) AS employee_accounting_type, -- Удаление пробелов справа от типа учета сотрудника
+        RTRIM(employee_position) AS employee_position, -- Удаление пробелов справа от должности сотрудника
+        RTRIM(schedule_description) AS schedule_description, -- Удаление пробелов справа от описания графика
+        RTRIM(employee_department) AS employee_department -- Удаление пробелов справа от отдела сотрудника
+    FROM
+        EmployeeChanges
+    INNER JOIN
+        Month M ON EmployeeChanges.month_id = M.month_id -- Соединение с таблицей Month по идентификатору месяца
+    INNER JOIN
+        Year Y ON EmployeeChanges.year_id = Y.year_id    -- Соединение с таблицей Year по идентификатору года
+    INNER JOIN
+        Schedule S ON EmployeeChanges.schedule_id = S.schedule_id -- Соединение с таблицей Schedule по идентификатору графика
+    INNER JOIN
+        Employee E ON EmployeeChanges.GUID = E.GUID      -- Соединение с таблицей Employee по GUID
+    WHERE
+        employee_name <> ''                              -- Исключение записей с пустым именем сотрудника
+        AND year_number BETWEEN @start_year_number AND @end_year_number -- Фильтрация по диапазону лет
+        AND employee_position <> ''                      -- Исключение записей с пустой должностью сотрудника
+        AND organization_id = @organization_id           -- Фильтрация по идентификатору организации
+        AND fired = 0                                    -- Фильтрация по статусу увольнения (0 - не уволен)
+    ORDER BY
+        employee_name,                                   -- Сортировка по имени сотрудника
+        year_number;                                     -- Сортировка по номеру года
+END
+GO
