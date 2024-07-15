@@ -127,3 +127,40 @@ where employee_name = 'Байдельдинова Айнагуль Джабра�
 select * from ProjectWork
 where year_id = 24
 and organization_id = 9;
+
+--Этот код создает хранимую процедуру, которая возвращает данные о работе над проектами
+-- для заданной организации и диапазона лет.
+-- Создание хранимой процедуры с именем GetProjectWork
+CREATE PROCEDURE GetProjectWork
+    @organization_id AS INTEGER,       -- Входной параметр: идентификатор организации
+    @start_year_number AS INTEGER,     -- Входной параметр: начальный год
+    @end_year_number AS INTEGER        -- Входной параметр: конечный год
+AS
+BEGIN
+    -- Основной запрос для процедуры
+    SELECT
+        month_name,                             -- Название месяца
+        year_number,                            -- Номер года
+        project_hours,                          -- Часы, затраченные на проект
+        employee_name,                          -- Имя сотрудника
+        ProjectWork.organization_id,            -- Идентификатор организации
+        project_cipher                          -- Шифр проекта
+    FROM
+        ProjectWork
+    INNER JOIN
+        Year Y ON ProjectWork.year_id = Y.year_id   -- Соединение с таблицей Year по идентификатору года
+    INNER JOIN
+        Month M ON ProjectWork.month_id = M.month_id -- Соединение с таблицей Month по идентификатору месяца
+    INNER JOIN
+        Employee E ON ProjectWork.GUID = E.GUID     -- Соединение с таблицей Employee по GUID
+    INNER JOIN
+        Project P ON ProjectWork.project_id = P.project_id -- Соединение с таблицей Project по идентификатору проекта
+    WHERE
+        ProjectWork.organization_id = @organization_id  -- Фильтрация по идентификатору организации
+        AND year_number BETWEEN @start_year_number AND @end_year_number -- Фильтрация по диапазону лет
+END
+GO
+
+drop procedure GetProjectWork;
+
+execute GetProjectWork 9, 2024, 2024;
