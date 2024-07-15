@@ -225,6 +225,45 @@ where tab_N like '%405%'
 select * from ProjectWork
 where tab_N = '0000000020'
 
-execute GetWorktimeAlt 9, 2023;
+execute GetWorktimeRefresh 9, 2024, 2024;
 
+drop procedure GetWorktimeRefresh;
 select * from Worktime;
+
+-- Этот код создает хранимую процедуру,
+-- которая возвращает данные о рабочем времени сотрудников
+-- для заданной организации и диапазона лет.
+-- Создание хранимой процедуры с именем GetWorktimeRefresh
+CREATE PROCEDURE GetWorktimeRefresh
+    @organization_id AS INTEGER,       -- Входной параметр: идентификатор организации
+    @start_year_number AS INTEGER,     -- Входной параметр: начальный год
+    @end_year_number AS INTEGER        -- Входной параметр: конечный год
+AS
+BEGIN
+    -- Отключение вывода сообщения "1 row affected" для каждой операции
+    SET NOCOUNT ON;
+
+    -- Основной запрос для процедуры
+    SELECT
+        RTRIM(employee_name) AS employee_name,  -- Удаление пробелов справа от имени сотрудника
+        month_name,                             -- Название месяца
+        year_number,                            -- Номер года
+        norm_hours,                             -- Нормативные часы
+        work_hours                              -- Рабочие часы
+    FROM
+        Worktime
+    INNER JOIN
+        Employee ON Worktime.GUID = Employee.GUID -- Соединение с таблицей Employee по GUID
+    INNER JOIN
+        Month M ON Worktime.month_id = M.month_id -- Соединение с таблицей Month по идентификатору месяца
+    INNER JOIN
+        Year Y ON Worktime.year_id = Y.year_id    -- Соединение с таблицей Year по идентификатору года
+    WHERE
+        employee_name <> ''                       -- Исключение записей с пустым именем сотрудника
+        AND year_number BETWEEN @start_year_number AND @end_year_number -- Фильтрация по диапазону лет
+        AND organization_id = @organization_id    -- Фильтрация по идентификатору организации
+        -- AND date_of_dismissal = '1753-01-01'   -- Закомментированное условие для фильтрации по дате увольнения
+    ORDER BY
+        employee_name;                            -- Сортировка по имени сотрудника
+END
+GO

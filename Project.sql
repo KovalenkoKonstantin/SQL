@@ -279,4 +279,4 @@ go
 
 select * from Project;
 select * from Project
-where [1C_kod_project] = '00-00-00150'
+where organization_id <> ''
