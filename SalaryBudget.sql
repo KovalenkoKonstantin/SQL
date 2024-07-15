@@ -261,3 +261,45 @@ where tab_N = '0000000084'
 -- and year_id = 24
 -- and accrual_id = 2
 and salary_budget_ammount = 275870
+
+-- Этот код создает хранимую процедуру,
+-- которая возвращает данные о бюджете на зарплату сотрудников
+-- для заданной организации и диапазона лет.
+-- Создание хранимой процедуры с именем GetSalaryBudgetRefresh
+CREATE PROCEDURE GetSalaryBudgetRefresh
+    @organization_id AS INTEGER,       -- Входной параметр: идентификатор организации
+    @start_year_number AS INTEGER,     -- Входной параметр: начальный год
+    @end_year_number AS INTEGER        -- Входной параметр: конечный год
+AS
+BEGIN
+    -- Отключение вывода сообщения "1 row affected" для каждой операции
+    SET NOCOUNT ON;
+
+    -- Основной запрос для процедуры
+    SELECT
+        RTRIM(employee_name) AS employee_name,  -- Удаление пробелов справа от имени сотрудника
+        month_name,                             -- Название месяца
+        year_number,                            -- Номер года
+        accrual_type,                           -- Тип начисления
+        salary_budget_ammount                   -- Сумма бюджета на зарплату
+    FROM
+        SalaryBudget
+    INNER JOIN
+        AccrualType A ON SalaryBudget.accrual_id = A.accrual_id -- Соединение с таблицей AccrualType по идентификатору начисления
+    INNER JOIN
+        Employee E ON SalaryBudget.tab_N = E.tab_N              -- Соединение с таблицей Employee по табельному номеру
+    INNER JOIN
+        Month M ON SalaryBudget.month_id = M.month_id           -- Соединение с таблицей Month по идентификатору месяца
+    INNER JOIN
+        Year Y ON SalaryBudget.year_id = Y.year_id              -- Соединение с таблицей Year по идентификатору года
+    WHERE
+        employee_name <> ''                                     -- Исключение записей с пустым именем сотрудника
+        -- AND accrual_type = 'ОКЛАД' OR accrual_type = 'НАДБАВКА' -- Закомментированное условие для фильтрации по типу начисления
+        -- AND year_number >= 2021 -- AND month_name = 'Сентябрь'  -- Закомментированное условие для фильтрации по году и месяцу
+        AND year_number BETWEEN @start_year_number AND @end_year_number -- Фильтрация по диапазону лет
+        AND organization_id = @organization_id                  -- Фильтрация по идентификатору организации
+        AND date_of_dismissal = '1753-01-01'                    -- Фильтрация по дате увольнения
+    ORDER BY
+        employee_name;                                          -- Сортировка по имени сотрудника
+END
+GO
