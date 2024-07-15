@@ -303,3 +303,42 @@ BEGIN
         employee_name;                                          -- Сортировка по имени сотрудника
 END
 GO
+
+-- Этот код создает хранимую процедуру,
+-- которая возвращает данные о бюджете на зарплату сотрудников
+-- для заданной организации и диапазона лет.
+
+-- Создание хранимой процедуры с именем GetSalaryList
+CREATE PROCEDURE GetSalaryList
+    @organization_id AS INTEGER,       -- Входной параметр: идентификатор организации
+    @start_year_number AS INTEGER,     -- Входной параметр: начальный год
+    @end_year_number AS INTEGER        -- Входной параметр: конечный год
+AS
+BEGIN
+    -- Основной запрос для процедуры
+    SELECT
+        RTRIM(employee_name) AS employee_name,  -- Удаление пробелов справа от имени сотрудника
+        month_name,                             -- Название месяца
+        year_number,                            -- Номер года
+        accrual_type,                           -- Тип начисления
+        salary_budget_ammount                   -- Сумма бюджета на зарплату
+    FROM
+        SalaryBudget
+    INNER JOIN
+        Employee E ON SalaryBudget.GUID = E.GUID              -- Соединение с таблицей Employee по GUID
+    INNER JOIN
+        AccrualType A ON SalaryBudget.accrual_id = A.accrual_id -- Соединение с таблицей AccrualType по идентификатору начисления
+    INNER JOIN
+        Month M ON SalaryBudget.month_id = M.month_id           -- Соединение с таблицей Month по идентификатору месяца
+    INNER JOIN
+        Year Y ON SalaryBudget.year_id = Y.year_id              -- Соединение с таблицей Year по идентификатору года
+    WHERE
+        employee_name <> ''                                     -- Исключение записей с пустым именем сотрудника
+        AND year_number BETWEEN @start_year_number AND @end_year_number -- Фильтрация по диапазону лет
+        AND organization_id = @organization_id                  -- Фильтрация по идентификатору организации
+        AND date_of_dismissal = '1753-01-01'                    -- Фильтрация по дате увольнения
+    ORDER BY
+        employee_name,                                          -- Сортировка по имени сотрудника
+        year_number;                                            -- Сортировка по номеру года
+END
+GO
