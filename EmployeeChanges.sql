@@ -293,3 +293,41 @@ select rtrim(employee_name) as employee_name,
                  and date_of_dismissal = '1753-01-01'
              order by employee_name, year_number
 
+-- Этот код создает хранимую процедуру,
+-- которая возвращает данные о изменениях сотрудников
+-- для заданной организации и диапазона лет.
+-- Создание хранимой процедуры с именем GetEmployeeChangesRefresh
+CREATE PROCEDURE GetEmployeeChangesRefresh
+    @organization_id AS INTEGER,       -- Входной параметр: идентификатор организации
+    @start_year_number AS INTEGER,     -- Входной параметр: начальный год
+    @end_year_number AS INTEGER        -- Входной параметр: конечный год
+AS
+BEGIN
+    -- Отключение вывода сообщения "1 row affected" для каждой операции
+    SET NOCOUNT ON;
+
+    -- Основной запрос для процедуры
+    SELECT
+        RTRIM(employee_name) AS employee_name,  -- Удаление пробелов справа от имени сотрудника
+        month_name,                             -- Название месяца
+        year_number,                            -- Номер года
+        RTRIM(employee_accounting_type) AS employee_accounting_type, -- Удаление пробелов справа от типа учета сотрудника
+        RTRIM(employee_position) AS employee_position -- Удаление пробелов справа от должности сотрудника
+    FROM
+        EmployeeChanges
+    INNER JOIN
+        Employee E ON EmployeeChanges.tab_N = E.tab_N -- Соединение с таблицей Employee по табельному номеру
+    INNER JOIN
+        Month M ON EmployeeChanges.month_id = M.month_id -- Соединение с таблицей Month по идентификатору месяца
+    INNER JOIN
+        Year Y ON EmployeeChanges.year_id = Y.year_id    -- Соединение с таблицей Year по идентификатору года
+    WHERE
+        employee_name <> ''                    -- Исключение записей с пустым именем сотрудника
+        AND employee_position <> ''            -- Исключение записей с пустой должностью сотрудника
+        AND organization_id = @organization_id -- Фильтрация по идентификатору организации
+        AND year_number BETWEEN @start_year_number AND @end_year_number -- Фильтрация по диапазону лет
+    ORDER BY
+        employee_name,                         -- Сортировка по имени сотрудника
+        year_number;                           -- Сортировка по номеру года
+END
+GO
