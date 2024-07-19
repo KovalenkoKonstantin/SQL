@@ -277,6 +277,7 @@ alter table Project
 		foreign key (GUID) references Employee (GUID)
 go
 
-select * from Project;
+select * from Project
+where organization_id = 3;
 select * from Project
 where organization_id <> ''

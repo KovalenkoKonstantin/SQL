@@ -41,9 +41,12 @@ and year_number > 2022
 and employee_position <> NULL
 order by employee_name;
 
-select E.tab_N, month_id, year_id, employee_position, employee_nameE from EmployeeChanges
+select E.tab_N, month_id, year_id, employee_position, employee_name, E.GUID from EmployeeChanges
 inner join Employee E on EmployeeChanges.tab_N = E.tab_N
-where employee_name = 'Юркин Константин Юрьевич';
+where employee_name = 'Макеева Антонина Борисовна'
+and month_id = 10
+and year_id = 24
+and organization_id = 9;
 
 select rtrim(employee_name) as employee_name, month_name, year_number,
        employee_accounting_type, employee_position from EmployeeChanges
@@ -316,7 +319,7 @@ BEGIN
     FROM
         EmployeeChanges
     INNER JOIN
-        Employee E ON EmployeeChanges.tab_N = E.tab_N -- Соединение с таблицей Employee по табельному номеру
+        Employee E ON EmployeeChanges.GUID = E.GUID -- Соединение с таблицей Employee по табельному номеру
     INNER JOIN
         Month M ON EmployeeChanges.month_id = M.month_id -- Соединение с таблицей Month по идентификатору месяца
     INNER JOIN

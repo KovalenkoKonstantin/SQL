@@ -459,7 +459,7 @@ execute GetEmployeeList 9, 2024, 2025;
 execute GetEmployee 3;
 
 select * from Employee
-where employee_name = 'Мосалев Андрей Вячеславович';
+where employee_name = 'Погорелов Матвей Владимирович';
 
 -- Этот код создает хранимую процедуру,
 -- которая возвращает список сотрудников
