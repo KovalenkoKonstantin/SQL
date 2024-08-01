@@ -134,8 +134,5 @@ where tab_N = '0000000181'
 and policy_number = '66579574'
 
 select * from VHI
-where policy_number = '66579601'
-
-
-
+where policy_number = '68072798'
 

@@ -459,7 +459,7 @@ execute GetEmployeeList 9, 2024, 2025;
 execute GetEmployee 3;
 
 select * from Employee
-where employee_name = 'Погорелов Матвей Владимирович';
+where employee_name = 'Коновалов Павел Сергеевич';
 
 -- Этот код создает хранимую процедуру,
 -- которая возвращает список сотрудников
@@ -528,3 +528,172 @@ BEGIN
         tab_N DESC;  -- Сортировка по табельному номеру в порядке убывания
 END
 GO
+
+-- Этот код создает хранимую процедуру, которая возвращает данные о сотрудниках,
+-- работающих в заданной организации, и их статусах по страховке.
+-- Процедура GetEmployeeRefreshAltДМС принимает два параметра:
+-- идентификатор организации и дату, и возвращает список несократимых
+-- дробей между 0 и 1, где знаменатель не превышает заданного значения.
+
+CREATE PROCEDURE GetEmployeeRefreshAltДМС
+    @organization_id AS INTEGER,  -- Параметр для передачи ID организации
+    @date AS DATE                   -- Параметр для передачи даты
+AS
+BEGIN
+    -- Предотвращение сообщения "1 row affected" для каждой операции
+    SET NOCOUNT ON;
+
+    -- Определение текущей даты для фильтрации
+    DECLARE @currentYear AS INT = YEAR(GETDATE());
+    DECLARE @currentMonth AS INT = MONTH(GETDATE());
+
+    -- Основной запрос процедуры
+    SELECT DISTINCT
+        RTRIM(employee_name) AS employee_name,  -- Выбор уникальных имен сотрудников с удалением пробелов справа
+        Employee.tab_N                            -- Выбор табельного номера сотрудника
+    FROM
+        Employee
+    INNER JOIN
+        VHI V ON Employee.GUID = V.GUID            -- Соединение таблиц Employee и VHI по GUID
+    WHERE
+        employee_name <> ''                        -- Исключение пустых имен сотрудников
+        AND Employee.organization_id = @organization_id  -- Фильтрация по ID организации
+        AND date_of_dismissal > @date             -- Условие для даты увольнения
+        AND insurance_program <> ''                -- Исключение пустых значений страховки
+        AND policy_issue_date > @date              -- Условие для даты выдачи полиса
+        AND NOT (YEAR(policy_issue_date) = @currentYear AND @currentMonth >= 8) -- Исключение полисов текущего года начиная с августа
+    UNION  -- Объединение результатов
+    SELECT DISTINCT
+        RTRIM(employee_name) AS employee_name,    -- Также выбираем уникальные имена сотрудников
+        Employee.tab_N                              -- И табельный номер сотрудника
+    FROM
+        Employee
+    INNER JOIN
+        VHI V ON Employee.GUID = V.GUID            -- Соединение таблиц Employee и VHI по GUID
+    WHERE
+        employee_name <> ''                        -- Исключение пустых имен сотрудников
+        AND Employee.organization_id = @organization_id  -- Фильтрация по ID организации
+        AND fired = 0                              -- Условия для сотрудников, которые не уволены
+        AND insurance_program <> ''                -- Исключение пустых значений страховки
+        AND policy_issue_date > @date              -- Условие для даты выдачи полиса
+        AND NOT (YEAR(policy_issue_date) = @currentYear AND @currentMonth >= 8) -- Исключение полисов текущего года начиная с августа
+    UNION  -- Объединение результатов
+    SELECT
+        relative, E.tab_N                          -- Выбор родственников из VHI и табельного номера
+    FROM
+        VHI
+    INNER JOIN
+        Employee E ON VHI.GUID = E.GUID           -- Соединение таблиц VHI и Employee по GUID
+    WHERE
+        [relative's_insurance] = 1                 -- Условие для проверки, есть ли страховка у родственников
+        AND E.organization_id = 9                  -- Фильтрация по ID организации (9)
+
+    ORDER BY
+        employee_name                               -- Сортировка результатов по имени сотрудника
+END
+GO
+
+create procedure GetEmployeeRefreshAltДМС
+    @organization_id as integer,
+    @date as date
+as
+begin
+    --prevent the "1 row affected" message from being returned for every operation
+    set nocount on
+    -- Определение текущей даты для фильтрации
+    DECLARE @currentYear AS INT = YEAR(GETDATE());
+    DECLARE @currentMonth AS INT = MONTH(GETDATE());
+    --statement for the procedure
+--     set @year_id = convert(date, @year_id, 101)
+    select distinct rtrim(employee_name) as employee_name, Employee.tab_N
+    from Employee
+    inner join VHI V on Employee.GUID = V.GUID
+    where employee_name <> ''
+      and Employee.organization_id = @organization_id
+      and date_of_dismissal > @date
+      and insurance_program <> ''
+      and policy_issue_date > @date
+      AND (YEAR(policy_issue_date) = @currentYear if @currentMonth >= 8
+                 or YEAR(policy_issue_date) = @currentYear - 1 if @currentMonth < 8)
+    -- order by employee_name
+    UNION
+    select distinct rtrim(employee_name) as employee_name, Employee.tab_N
+    from Employee
+    inner join VHI V on Employee.GUID = V.GUID
+    where employee_name <> ''
+      and Employee.organization_id = @organization_id
+      and fired = 0
+      and insurance_program <> ''
+      and policy_issue_date > @date
+      AND (YEAR(policy_issue_date) = @currentYear if @currentMonth >= 8
+                 or YEAR(policy_issue_date) = @currentYear - 1 if @currentMonth < 8)
+    union
+    select relative, E.tab_N from VHI
+    inner join Employee E on VHI.GUID = E.GUID
+    where [relative's_insurance ] = 1
+    and E.organization_id = 9
+    order by employee_name
+end
+go
+
+SELECT
+        relative, E.tab_N                          -- Имя родственника и табельный номер сотрудника
+    FROM
+        VHI
+    INNER JOIN
+        Employee E ON VHI.GUID = E.GUID           -- Соединение таблиц VHI и Employee по GUID
+    WHERE
+        [relative's_insurance] = 1                 -- Условие для проверки, есть ли страховка у родственников
+        AND E.organization_id = 9                -- Фильтрация по ID организации (9)
+        AND (   -- Условие для фильтрации по году полиса в зависимости от месяца
+            (YEAR(policy_issue_date) = 2024 AND 8 >= 8
+                and MONTH(policy_issue_date) >= 8)  -- Полисы текущего года и текущий месяц >= август
+            OR
+            (YEAR(policy_issue_date) = 2024 - 1 AND 8 < 8
+                and MONTH(policy_issue_date) < 8)  -- Полисы предыдущего года, если текущий месяц < август
+        )
+
+    ORDER BY
+        employee_name
+
+    SELECT DISTINCT
+        RTRIM(employee_name) AS employee_name,    -- Уникальные имена сотрудников с удалением пробелов справа
+        Employee.tab_N                              -- Табельный номер сотрудника
+    FROM
+        Employee
+    INNER JOIN
+        VHI V ON Employee.GUID = V.GUID            -- Соединение таблиц Employee и VHI по GUID
+    WHERE
+        employee_name <> ''                        -- Исключение пустых имен сотрудников
+        AND Employee.organization_id = 9  -- Фильтрация по ID организации
+        AND fired = 0                              -- Условия для сотрудников, которые не уволены
+        AND insurance_program <> ''                -- Исключение пустых значений страховки
+        AND policy_issue_date > '2024-07-31'              -- Условие для даты выдачи полиса
+        AND (   -- Условие для фильтрации по году полиса в зависимости от месяца
+            (YEAR(policy_issue_date) = 2024 AND 8 >= 8
+                and MONTH(policy_issue_date) >= 8)  -- Полисы текущего года и текущий месяц >= август
+            OR
+            (YEAR(policy_issue_date) = 2024 - 1 AND 8 < 8
+                and MONTH(policy_issue_date) < 8)  -- Полисы предыдущего года, если текущий месяц < август
+        )
+
+    SELECT DISTINCT
+        RTRIM(employee_name) AS employee_name,  -- Уникальные имена сотрудников с удалением пробелов справа
+        Employee.tab_N                            -- Табельный номер сотрудника
+    FROM
+        Employee
+    INNER JOIN
+        VHI V ON Employee.GUID = V.GUID            -- Соединение таблиц Employee и VHI по GUID
+    WHERE
+        employee_name <> ''                        -- Исключение пустых имен сотрудников
+        AND Employee.organization_id = 9  -- Фильтрация по ID организации
+        AND date_of_dismissal > '2024-07-31'            -- Условие для даты увольнения
+        AND insurance_program <> ''                -- Исключение пустых значений страховки
+        AND policy_issue_date > '2024-07-31'             -- Условие для даты выдачи полиса
+        AND (   -- Условие для фильтрации по году полиса в зависимости от месяца
+            (YEAR(policy_issue_date) = 2024 AND 8 >= 8
+                and MONTH(policy_issue_date) >= 8)  -- Полисы текущего года и текущий месяц >= август
+            OR
+            (YEAR(policy_issue_date) = 2024 - 1 AND 8 < 8
+                and MONTH(policy_issue_date) < 2024)  -- Полисы предыдущего года, если текущий месяц < август
+        )

@@ -334,3 +334,8 @@ BEGIN
         year_number;                           -- Сортировка по номеру года
 END
 GO
+
+select * from EmployeeChanges
+where year_id = 24
+and tab_N = '0000000301'
+order by month_id;
