@@ -101,9 +101,9 @@ from SalaryBudget
 --   and YEAR(date_of_dismissal) > year_id
 --   and Month(date_of_dismissal) > month_id
 -- and employee_name = 'Лыфенко Николай Дмитриевич';
-where employee_name = 'Макеева Антонина Борисовна'
+where employee_name = 'Сокуренко Анатолий Алексеевич'
 and year_id = 24
-and month_id = 4;
+and month_id = 8;
 
 drop procedure if exists GetSalaryList
 create procedure GetSalaryList

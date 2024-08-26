@@ -337,5 +337,6 @@ GO
 
 select * from EmployeeChanges
 where year_id = 24
-and tab_N = '0000000301'
+and tab_N = '0000000087'
+and month_id = 8
 order by month_id;
