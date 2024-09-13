@@ -134,7 +134,7 @@ where tab_N = '0000000181'
 and policy_number = '66579574'
 
 select * from VHI
-where tab_N = '0000000356'
+where tab_N = '0000000170'
 
 SELECT VHI.tab_N,            -- Номер записи
            insurance_program,    -- Программа страхования

@@ -697,3 +697,8 @@ SELECT
             (YEAR(policy_issue_date) = 2024 - 1 AND 8 < 8
                 and MONTH(policy_issue_date) < 2024)  -- Полисы предыдущего года, если текущий месяц < август
         )
+
+execute GetEmployeeRefreshAltДМС 9, '2023-07-31', 2023;
+
+select * from Employee
+where tab_N = '000002895'

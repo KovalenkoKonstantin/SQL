@@ -98,3 +98,6 @@ BEGIN
         year_number;                            -- Сортировка по номеру года
 END
 go
+
+select * from TaxBase
+where year_id = 25

@@ -251,3 +251,6 @@ BEGIN
         year_number                                   -- Группировка по номеру года
 END
 GO
+
+select * from Tax
+where year_id > 24

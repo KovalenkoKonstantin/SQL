@@ -255,12 +255,13 @@ and month_name = 'Июнь'
       and organization_id = 6
     order by employee_name;
 
-delete from SalaryBudget
-where tab_N = '0000000084'
+select month_id, year_id, salary_budget_ammount, accrual_type from SalaryBudget
+inner join AccrualType T on SalaryBudget.accrual_id = T.accrual_id
+where tab_N = '000002895'
 -- and month_id = 06
--- and year_id = 24
+and year_id = 24
 -- and accrual_id = 2
-and salary_budget_ammount = 275870
+--and salary_budget_ammount = 275870
 
 -- Этот код создает хранимую процедуру,
 -- которая возвращает данные о бюджете на зарплату сотрудников
@@ -342,3 +343,6 @@ BEGIN
         year_number;                                            -- Сортировка по номеру года
 END
 GO
+
+select * from SalaryBudget
+where year_id = 27

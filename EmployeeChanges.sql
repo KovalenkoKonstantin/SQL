@@ -336,7 +336,44 @@ END
 GO
 
 select * from EmployeeChanges
-where year_id = 24
-and tab_N = '0000000087'
-and month_id = 8
+--where year_id = 24
+where tab_N = '0000000270'
+--and month_id = 8
 order by month_id;
+
+execute GetEmployeeChangesRefreshAlt 9, 2024, '2024-07-31'
+
+SELECT DISTINCT
+        RTRIM(E.employee_name) AS employee_name,   -- Убираем пробелы справа от имени сотрудника
+        M.month_name,                               -- Название месяца
+        Y.year_number,                              -- Номер года
+        RTRIM(employee_position) AS employee_position,   -- Убираем пробелы справа от должности сотрудника
+        RTRIM(employee_department) AS employee_department, -- Убираем пробелы справа от отдела сотрудника
+        EC.tab_N,                                   -- Табельный номер сотрудника
+        employee_division                          -- Подразделение сотрудника
+    FROM
+        EmployeeChanges EC                           -- Используем алиас (EC) для таблицы EmployeeChanges
+    INNER JOIN
+        Month M ON EC.month_id = M.month_id        -- Соединяем таблицу EmployeeChanges с таблицей Month по идентификатору месяца
+    INNER JOIN
+        Year Y ON EC.year_id = Y.year_id            -- Соединяем таблицу EmployeeChanges с таблицей Year по идентификатору года
+    INNER JOIN
+        Employee E ON EC.GUID = E.GUID              -- Соединяем с таблицей Employee по уникальному идентификатору сотрудника
+    WHERE
+        E.employee_name <> ''                        -- Исключаем записи, где имя сотрудника пустое
+        AND Y.year_number >= 2023          -- Фильтруем по номеру года, чтобы выбрать только записи с годом больше или равным переданному
+        AND employee_position <> ''                -- Исключаем записи, где должность сотрудника пустая
+        AND E.organization_id = 9    -- Фильтруем записи по идентификатору организации
+        AND (E.date_of_dismissal = '1753-01-01' OR E.date_of_dismissal > '2023-07-31')
+    ORDER BY
+        employee_name,                                -- Сортируем результат по имени сотрудника
+        year_number;
+
+
+select  * from EmployeeChanges
+inner join Employee E on EmployeeChanges.GUID = E.GUID
+where employee_name = 'Коновалов Павел Сергеевич'
+and year_id = 24
+and month_id>5
+and organization_id = 9
+
