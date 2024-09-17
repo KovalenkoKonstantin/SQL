@@ -277,7 +277,11 @@ alter table Project
 		foreign key (GUID) references Employee (GUID)
 go
 
+GetProjectRefresh 3, 2024, 2025
 select * from Project
-where organization_id = 3;
-select * from Project
-where organization_id <> ''
+where organization_id = 3
+
+update Project
+set end_date = '2025-06-30'
+where organization_id = 3
+and project_cipher = 'Техническое сопровождение информационной системы заказчика 2024 Этап 1'
