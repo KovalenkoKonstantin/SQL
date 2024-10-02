@@ -377,8 +377,8 @@ and year_id = 24
 and month_id>5
 and organization_id = 9
 
-EXEC GetSalaryBudgetRefresh
+EXEC GetTaxBaseRefresh
     @organization_id = 3,
-    @start_year_number = 2025,
+    @start_year_number = 2024,
     @end_year_number = 2025,
     @employee_names = 'Лялин Денис Александрович,Филипьев Дмитрий Алексеевич';
