@@ -85,3 +85,19 @@ end
 go
 
 exec GetExpendituresRefresh;
+
+select * from Enterprise
+where expenditures_id = 20
+and organization_id = 9
+and year_id = 26
+
+-- обновление годовых показателей страховых выплат
+update Enterprise
+-- set enterprise_value = 5316749.48 -- (69_957_230.00 * 0.076)
+-- set enterprise_value = 5848424.43 -- (5_316_679.48 * 1.1)
+set enterprise_value = 6433266.87 -- (5_848_424.43 * 1.1)
+where expenditures_id = 20
+and organization_id = 9
+-- and year_id = 24
+-- and year_id = 25
+and year_id = 26
