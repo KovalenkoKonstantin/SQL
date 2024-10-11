@@ -281,3 +281,21 @@ alter table Components
 alter table Components
     add constraint FK_Components_project_id
         foreign key (project_id) references Project (project_id);
+
+select *
+from Components
+
+-- Этот код создает хранимую процедуру,
+-- которая возвращает список матариалов
+-- Создание хранимой процедуры с именем GetComponents
+CREATE PROCEDURE GetComponents
+AS
+BEGIN
+    -- Отключение вывода сообщения "1 row affected" для каждой операции
+    SET NOCOUNT ON;
+
+    -- Основной запрос для процедуры
+    SELECT *
+    FROM Components
+END
+GO

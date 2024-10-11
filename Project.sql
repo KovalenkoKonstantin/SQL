@@ -279,9 +279,22 @@ go
 
 GetProjectRefresh 3, 2024, 2025
 select * from Project
-where organization_id = 3
+where [1C_kod_project] = '00-00-00118'
+
 
 update Project
-set end_date = '2025-06-30'
-where organization_id = 3
-and project_cipher = 'Техническое сопровождение информационной системы заказчика 2024 Этап 1'
+set organization_id = 3
+where [1C_kod_project] = '00-00-00118'
+
+execute GetProjectRefresh 3, 2023, 2026
+
+insert into Project ([1C_kod_project], project_cipher,
+                     start_date, end_date,
+                     tab_N, organization_id, GUID)
+values ('00-00-00118',
+        'Поставка ПАК ViPNet новая сеть',
+        '2023-11-01',
+        '2023-12-31',
+        null,
+        3,
+        null)
