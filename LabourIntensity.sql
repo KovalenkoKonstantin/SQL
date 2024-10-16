@@ -390,3 +390,18 @@ from LabourIntensity;
 exec LabourRefreshAlt 'Программно-аппаратный комплекс ViPNet Coordinator HW50 A 4.x (+unlim%';
 
 exec LabourRefresh '00-00-00081';
+
+IF NOT EXISTS (
+    SELECT 1
+    FROM LabourIntensity
+    WHERE organization_id = 3
+      AND project_id = 6557
+      AND decimal_number_id = 16
+      AND operation_id = 2
+)
+BEGIN
+    INSERT INTO LabourIntensity
+        (organization_id, project_id, decimal_number_id, operation_id, labour_intensity_hour_value)
+    VALUES
+        (3, 6557, 16, 2, 0.12);
+END

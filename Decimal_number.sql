@@ -75,3 +75,34 @@ WHERE decimal_number_id = 4
 UPDATE DecimalNumbers
 SET project_id = 82
 WHERE decimal_number_id = 5
+
+IF NOT EXISTS (
+    SELECT 1
+    FROM DecimalNumbers
+    WHERE decimal_number = 'ФРКЕ.00130-03-04-06'
+      AND project_id = 6557
+)
+BEGIN
+    INSERT INTO DecimalNumbers (decimal_number, project_id)
+    VALUES ('ФРКЕ.00130-03-04-06', 6557);
+END
+
+select * from DecimalNumbers
+
+-- Этот код создает хранимую процедуру,
+-- которая возвращает все записи из таблицы DecimalNumbers.
+-- Создание хранимой процедуры с именем DecimalNumbers_v_1_0
+
+CREATE PROCEDURE DecimalNumbers_v_1_0
+AS
+BEGIN
+    -- Отключение вывода сообщения "1 row affected" для каждой операции
+    SET NOCOUNT ON;
+
+    -- Основной запрос для процедуры
+    SELECT
+        * -- Извлечение всех столбцов из таблицы DecimalNumbers
+    FROM
+        DecimalNumbers; -- Указание таблицы для выборки
+END
+GO
