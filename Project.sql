@@ -286,7 +286,7 @@ update Project
 set organization_id = 3
 where [1C_kod_project] = '00-00-00118'
 
-execute GetProjectRefresh 3, 2023, 2026
+execute Project_v_1_0 3, 2023, 2026
 
 insert into Project ([1C_kod_project], project_cipher,
                      start_date, end_date,

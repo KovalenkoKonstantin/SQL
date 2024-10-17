@@ -312,3 +312,6 @@ values (6557, 'Сервер Аквариус T30 S100DC (HW100 Q1)', 1, 'шт.',
 
 
 execute Components_v_1_1 'Программно-аппаратный комплекс ViPNet Coordinator HW100 C 4.x (Платформа Q1)'
+
+select * from Components
+where project_id = 6557
