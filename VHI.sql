@@ -160,3 +160,28 @@ SELECT VHI.tab_N,            -- Номер записи
 
     -- Сортировка итогового результата по имени сотрудника и дате выдачи полиса
     ORDER BY employee_name, policy_issue_date;
+
+SELECT VHI.tab_N,            -- Номер записи
+           insurance_program,    -- Программа страхования
+           policy_issue_date,    -- Дата выдачи полиса
+           policy_expiration_date, -- Дата истечения полиса
+           employer_cost,        -- Стоимость для работодателя
+           employee_cost,        -- Стоимость для сотрудника
+           policy_number,        -- Номер полиса
+           employee_insurance,   -- Страхование сотрудника
+           FORMAT(policy_issue_date, 'yyyy') AS year, -- Год выдачи полиса
+           REPLACE(detachment_date, '1753-01-01', '') AS N'Дата открепления', -- Дата открепления, если отсутствует, возвращает пустую строку
+           REPLACE(date_of_dismissal, '1753-01-01', '') AS N'Дата увольнения', -- Дата увольнения, если отсутствует, возвращает пустую строку
+           employee_name,        -- Имя сотрудника
+           relative              -- Родственник
+    FROM VHI
+    INNER JOIN Employee E ON VHI.GUID = E.GUID  -- Соединение с таблицей Employee по GUID
+    WHERE VHI.organization_id = 9  -- Фильтр по ID организации
+      AND policy_issue_date BETWEEN
+          CONVERT(DATE, CAST(CONCAT(2024, '-07-01') AS DATE)) AND  -- Дата начала выборки (1 июля года)
+          CONVERT(DATE, CAST(CONCAT(2024 + 1, '-07-31') AS DATE))  -- Дата окончания выборки (31 июля следующего года)
+      AND policy_issue_date > '2024-07-31'  -- Полисы должны быть выданы после заданной даты
+--       AND employee_name = 'Горбачёва Анастасия Александровна'
+
+    -- Сортировка итогового результата по имени сотрудника и дате выдачи полиса
+    ORDER BY employee_name, policy_issue_date;

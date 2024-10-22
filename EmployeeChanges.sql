@@ -372,13 +372,7 @@ SELECT DISTINCT
 
 select  * from EmployeeChanges
 inner join Employee E on EmployeeChanges.GUID = E.GUID
-where employee_name = 'Коновалов Павел Сергеевич'
+where employee_name = 'Останин Егор Алексеевич'
 and year_id = 24
-and month_id>5
+and month_id > 5
 and organization_id = 9
-
-EXEC GetTaxBaseRefresh
-    @organization_id = 3,
-    @start_year_number = 2024,
-    @end_year_number = 2025,
-    @employee_names = 'Лялин Денис Александрович,Филипьев Дмитрий Алексеевич';

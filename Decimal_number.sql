@@ -89,20 +89,30 @@ END
 
 select * from DecimalNumbers
 
--- Этот код создает хранимую процедуру,
--- которая возвращает все записи из таблицы DecimalNumbers.
--- Создание хранимой процедуры с именем DecimalNumbers_v_1_0
+delete from DecimalNumbers
+where project_id = 1088
 
-CREATE PROCEDURE DecimalNumbers_v_1_0
-AS
-BEGIN
-    -- Отключение вывода сообщения "1 row affected" для каждой операции
-    SET NOCOUNT ON;
+ALTER TABLE DecimalNumbers
+ADD CONSTRAINT PK_DecimalNumbers PRIMARY KEY (decimal_number);
 
-    -- Основной запрос для процедуры
-    SELECT
-        * -- Извлечение всех столбцов из таблицы DecimalNumbers
-    FROM
-        DecimalNumbers; -- Указание таблицы для выборки
-END
-GO
+SELECT *
+FROM DecimalNumbers
+WHERE decimal_number IS NULL;
+
+ALTER TABLE DecimalNumbers
+ALTER COLUMN decimal_number NVARCHAR(50) NOT NULL;
+
+ALTER TABLE DecimalNumbers
+ADD CONSTRAINT PK_DecimalNumbers PRIMARY KEY (decimal_number);
+
+ALTER TABLE LabourIntensity
+ADD CONSTRAINT FK_LabourIntensity_DecimalNumbers
+FOREIGN KEY (decimal_number) REFERENCES DecimalNumbers(decimal_number);
+
+SELECT *
+FROM LabourIntensity li
+WHERE li.decimal_number NOT IN (SELECT dn.decimal_number FROM DecimalNumbers dn);
+
+UPDATE LabourIntensity
+set decimal_number = 'ФРКЕ.00130-03-08-03'
+where decimal_number = 'ФРКЕ.00130-03-00-01'

@@ -391,33 +391,34 @@ exec LabourRefreshAlt 'Программно-аппаратный комплек�
 
 exec LabourIntensity_v_1_0 'Программно-аппаратный комплекс ViPNet Coordinator HW100 C 4.x (Платформа Q1)';
 
-IF NOT EXISTS (
-    SELECT 1
-    FROM LabourIntensity
-    WHERE organization_id = 3
-      AND project_id = 6557
-      AND decimal_number_id = 16
-      AND operation_id = 2
-)
-BEGIN
+
     INSERT INTO LabourIntensity
-        (organization_id, project_id, decimal_number_id, operation_id, labour_intensity_hour_value)
+        (organization_id, project_id, operation_id,
+         labour_intensity_hour_value, decimal_number)
     VALUES
-(3, 6557, 16, 2, 0.12),
-(3, 6557, 16, 3, 0.07),
-(3, 6557, 16, 4, 0.05),
-(3, 6557, 16, 5, 0.05),
-(3, 6557, 16, 6, 0.55),
-(3, 6557, 16, 7, 0.33),
-(3, 6557, 16, 8, 0.08),
-(3, 6557, 16, 9, 0.05),
-(3, 6557, 16, 10, 0.08),
-(3, 6557, 16, 11, 0.07),
-(3, 6557, 16, 1, 0.07),
-(3, 6557, 16, 12, 0.07),
-(3, 6557, 16, 13, 0.15),
-(3, 6557, 16, 14, 0.05);
-END
+(3, 6563, 2, 0.08, 'ФРКЕ.00130-03-07-01'),
+(3, 6563, 3, 0.05, 'ФРКЕ.00130-03-07-01'),
+(3, 6563, 4, 0.02, 'ФРКЕ.00130-03-07-01'),
+(3, 6563, 5, 0.05, 'ФРКЕ.00130-03-07-01'),
+(3, 6563, 6, 0.29, 'ФРКЕ.00130-03-07-01'),
+(3, 6563, 7, 0.12, 'ФРКЕ.00130-03-07-01'),
+(3, 6563, 8, 0.08, 'ФРКЕ.00130-03-07-01'),
+(3, 6563, 9, 0.05, 'ФРКЕ.00130-03-07-01'),
+(3, 6563, 10, 0.08, 'ФРКЕ.00130-03-07-01'),
+(3, 6563, 11, 0.07, 'ФРКЕ.00130-03-07-01'),
+(3, 6563, 1, 0.07, 'ФРКЕ.00130-03-07-01'),
+(3, 6563, 13, 0.17, 'ФРКЕ.00130-03-07-01'),
+(3, 6563, 12, 0.05, 'ФРКЕ.00130-03-07-01')
+
+
 
 delete from LabourIntensity
-where project_id = 6557
+where project_id = 6563
+
+select * from LabourIntensity
+where project_id = 6563
+
+UPDATE li
+SET li.decimal_number = dn.decimal_number
+FROM LabourIntensity li
+JOIN DecimalNumbers dn ON li.decimal_number_id = dn.decimal_number_id;
