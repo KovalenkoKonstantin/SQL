@@ -267,3 +267,26 @@ BEGIN
         employee_name;                            -- Сортировка по имени сотрудника
 END
 GO
+
+select * from Worktime
+inner join Employee E on Worktime.GUID = E.GUID
+where E.tab_N = '000002227'
+and year_id = 22
+and month_id = 03
+and organization_id = 3
+
+BACKUP DATABASE RKM
+TO DISK = '\\MSK-FS-01\Kvant\_Свод документов для РКМ\RKM.bak'
+WITH INIT;
+
+SELECT name
+FROM sys.databases;
+
+select @@VERSION;
+
+select employee_name, schedule_description from Worktime
+inner join Employee E on Worktime.GUID = E.GUID
+inner join Schedule S on Worktime.schedule_id = S.schedule_id
+where employee_name = 'Сущинская Елена Викторовна'
+and month_id = 1
+and year_id = 24

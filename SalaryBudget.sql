@@ -344,5 +344,53 @@ BEGIN
 END
 GO
 
-select * from SalaryBudget
-where year_id = 27
+SELECT employee_name,
+--        salary_budget_ammount,
+       employee_position
+--        EC.employee_accounting_type,
+--        EC.employee_department,
+--        S.month_id,
+--        S.year_id
+
+FROM SalaryBudget S
+         inner join EmployeeChanges EC ON S.GUID = EC.GUID
+         INNER JOIN Employee E ON EC.GUID = E.GUID
+WHERE S.year_id = 25
+  AND S.month_id = 4
+  AND EC.employee_department = 'Отдел разработки компонентов инфраструктуры открытых ключей'
+  AND fired = 0
+GROUP BY E.employee_name,
+         EC.employee_position
+--          EC.employee_accounting_type,
+--          EC.employee_department,
+--          S.month_id,
+--          S.year_id,
+--          S.salary_budget_ammount
+ORDER BY E.employee_name;
+
+SELECT employee_name, employee_position
+FROM Employee E
+INNER JOIN EmployeeChanges EC ON E.GUID = EC.GUID
+WHERE employee_department = 'Отдел разработки компонентов инфраструктуры открытых ключей'
+  AND year_id = 25
+  AND month_id = 4
+
+UNION ALL
+
+SELECT employee_name, employee_position
+FROM Employee E
+INNER JOIN EmployeeChanges EC ON E.GUID = EC.GUID
+WHERE employee_department = 'Отдел разработки (ОП г. Уфа)'
+  AND year_id = 25
+  AND month_id = 4
+
+ORDER BY employee_name;
+
+execute SalaryBudget_v_1_1 3, 2025, 2025
+
+select salary_budget_ammount, accrual_type, employee_name from SalaryBudget
+inner join AccrualType A on SalaryBudget.accrual_id = A.accrual_id
+inner join Employee E on SalaryBudget.GUID = E.GUID
+where E.tab_N between '000000001' and '000000010'
+and month_id = 4
+and year_id = 25

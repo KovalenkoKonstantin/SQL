@@ -280,3 +280,44 @@ values ('<...>'),
 
 select *
 from Names_of_Articles_in_1C;
+
+ALTER TABLE Names_of_Articles_in_1C
+DROP COLUMN GUID;
+
+ALTER TABLE Names_of_Articles_in_1C
+ALTER COLUMN GUID UNIQUEIDENTIFIER;
+
+UPDATE Names_of_Articles_in_1C
+SET GUID = NEWID()
+WHERE GUID IS NULL;
+
+ALTER TABLE Names_of_Articles_in_1C
+ALTER COLUMN GUID UNIQUEIDENTIFIER NOT NULL;
+
+ALTER TABLE Names_of_Articles_in_1C
+ADD CONSTRAINT PK_Names_of_Articles_in_1C_GUID PRIMARY KEY (GUID);
+
+CREATE PROCEDURE UpdateArticles
+    @article_name NVARCHAR(100),
+    @guid UNIQUEIDENTIFIER
+AS
+BEGIN
+    -- Проверяем, существует ли
+    -- [1C_article_name] и GUID
+    IF EXISTS (SELECT 1 FROM Names_of_Articles_in_1C AS N
+    WHERE [1C_article_name] = @article_name AND N.GUID = @guid)
+    BEGIN
+        -- Если данные существуют, обновляем только GUID
+        UPDATE Names_of_Articles_in_1C
+        SET
+            GUID = @guid
+        WHERE [1C_article_name] = @article_name
+    END
+    ELSE
+    BEGIN
+        -- Если данных нет,
+        -- добавляем новую запись с [1C_article_name] и GUID
+        INSERT INTO Names_of_Articles_in_1C ([1C_article_name], GUID)
+        VALUES (@article_name, @guid)
+    END
+END

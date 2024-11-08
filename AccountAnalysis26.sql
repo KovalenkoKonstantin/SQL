@@ -15,3 +15,11 @@ create table Account_Analysis_26
 			references Organization
 )
 go
+
+ALTER TABLE Account_Analysis_26
+ADD CONSTRAINT FK_Account_Analysis_26_Names_of_Articles_in_1C_GUID
+FOREIGN KEY (GUID) REFERENCES Names_of_Articles_in_1C(GUID);
+
+select * from Account_Analysis_26 as A
+inner join Names_of_Articles_in_1C as N on N.GUID = A.GUID
+where [1C_article_name] = 'Амортизация ОС - ст 259 (Общехозяйственные расходы) - сч.26'
