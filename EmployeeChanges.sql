@@ -376,3 +376,39 @@ where employee_name = 'Останин Егор Алексеевич'
 and year_id = 24
 and month_id > 5
 and organization_id = 9
+
+CREATE PROCEDURE EmployeeChanges_v_1_2
+    @organization_id AS INT,   -- Идентификатор организации, передаваемый в процедуру
+    @year_number AS INT,        -- Номер года, передаваемый в процедуру
+    @date AS DATE               -- Дата, передаваемая в процедуру
+AS
+BEGIN
+    -- Выполнение общего запроса для получения информации об изменениях сотрудников
+    SELECT DISTINCT
+        RTRIM(E.employee_name) AS employee_name,   -- Убираем пробелы справа от имени сотрудника
+        M.month_name,                               -- Название месяца
+        Y.year_number,                              -- Номер года
+        RTRIM(employee_position) AS employee_position,   -- Убираем пробелы справа от должности сотрудника
+        RTRIM(employee_department) AS employee_department, -- Убираем пробелы справа от отдела сотрудника
+        EC.tab_N,                                   -- Табельный номер сотрудника
+        employee_division,                            -- Подразделение сотрудника
+        employee_accounting_type                    -- Способ отражения в бухучёте
+    FROM
+        EmployeeChanges EC                           -- Используем алиас (EC) для таблицы EmployeeChanges
+    INNER JOIN
+        Month M ON EC.month_id = M.month_id        -- Соединяем таблицу EmployeeChanges с таблицей Month по идентификатору месяца
+    INNER JOIN
+        Year Y ON EC.year_id = Y.year_id            -- Соединяем таблицу EmployeeChanges с таблицей Year по идентификатору года
+    INNER JOIN
+        Employee E ON EC.GUID = E.GUID              -- Соединяем с таблицей Employee по уникальному идентификатору сотрудника
+    WHERE
+        E.employee_name <> ''                        -- Исключаем записи, где имя сотрудника пустое
+        AND Y.year_number >= @year_number           -- Фильтруем по номеру года, чтобы выбрать только записи с годом больше или равным переданному
+        AND employee_position <> ''                  -- Исключаем записи, где должность сотрудника пустая
+        AND E.organization_id = @organization_id    -- Фильтруем записи по идентификатору организации
+        AND (E.date_of_dismissal = '1753-01-01' OR E.date_of_dismissal > DATEADD(DAY, -30, @date))  -- Фильтр по дате увольнения
+    ORDER BY
+        employee_name,                                -- Сортируем результат по имени сотрудника
+        Y.year_number;                                -- Сортируем результат по номеру года
+END
+GO
