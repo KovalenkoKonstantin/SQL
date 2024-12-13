@@ -279,7 +279,7 @@ go
 
 GetProjectRefresh 3, 2024, 2025
 select * from Project
-where [1C_kod_project] = '00-00-00187'
+where [1C_kod_project] = '00-00-00195'
 
 
 update Project

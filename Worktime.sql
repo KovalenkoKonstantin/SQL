@@ -428,3 +428,5 @@ WHEN MATCHED THEN
         target.norm_hours = source.norm_hours,
         target.schedule_id = source.schedule_id,
         target.tab_N = source.tab_N;
+
+exec Worktime_v_1_2 9, 2024

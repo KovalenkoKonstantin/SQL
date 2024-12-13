@@ -412,3 +412,8 @@ BEGIN
         Y.year_number;                                -- Сортируем результат по номеру года
 END
 GO
+
+
+select employee_department, employee_division from EmployeeChanges
+inner join Employee E on EmployeeChanges.GUID = E.GUID
+where organization_id = 9

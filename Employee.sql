@@ -728,3 +728,17 @@ BEGIN
         employee_name;  -- Сортировка по табельному номеру в порядке убывания
 END
 GO
+
+select * from Employee
+where employment_date >= '2024е-01-01'
+and SUBSTRING(
+        employee_name,
+        CHARINDEX(' ', employee_name) + 1,  -- начало второго слова
+        CHARINDEX(' ', employee_name + ' ', CHARINDEX(' ', employee_name) + 1) - CHARINDEX(' ', employee_name) - 1  -- длина второго слова
+    ) = 'Наталья'
+and city_id = 4
+
+select * from Employee
+where employee_name like 'Бугай%'
+
+exec Employee_v_1_2 9, 2024, 2024
